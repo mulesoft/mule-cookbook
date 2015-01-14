@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "id": {
+      "id": "http://jsonschema.net/id",
+      "type": "integer"
+    },
+    "isbn": {
+      "id": "http://jsonschema.net/isbn",
+      "type": "string"	
+    },
+    "description": {
+      "id": "http://jsonschema.net/description",
+      "type": "string"
+    },
+    "title": {
+      "id": "http://jsonschema.net/title",
+      "type": "string"
+    },
+    "authorId": {
+      "id": "http://jsonschema.net/authorId",
+      "type": "integer"
+    },
+    "genre": {
+      "id": "http://jsonschema.net/genre",
+      "type": "string",
+      "enum": [
+        null,
+        "SCIENCE_FICTION",
+        "SATIRE",
+        "DRAMA",
+        "ACTION_AND_ADVENTURE",
+        "ROMANCE",
+        "MYSTERY",
+        "HORROR",
+        "SELF_HELP",
+        "GUIDE",
+        "TRAVEL",
+        "CHILDRENS",
+        "RELIGIOUS",
+        "SCIENCE",
+        "HISTORY",
+        "MATH",
+        "ANTHOLOGIES",
+        "POETRY",
+        "ENCYCLOPEDIAS",
+        "DICTIONARIES",
+        "COMICS",
+        "ART",
+        "COOKBOOKS",
+        "DIARIES",
+        "JOURNALS",
+        "PRAYER_BOOKS",
+        "SERIES",
+        "TRILOGIES",
+        "BIOGRAPHIES",
+        "AUTOBIOGRAPHIES",
+        "FANTASY"
+	   ]
+    },
+    "required": [
+      "id",
+      "isbn",
+      "authorId",
+      "genre"
+    ]
+  }
+}
