@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "id": {
+      "id": "http://jsonschema.net/id",
+      "type": "integer"
+    },
+    "typeId": {
+      "id": "http://jsonschema.net/typeId",
+      "type": "string"
+    },
+    "displayName": {
+      "id": "http://jsonschema.net/displayName",
+      "type": "string"
+    },
+    "isCustom": {
+      "id": "http://jsonschema.net/isCustom",
+      "type": "boolean"
+    },
+    "fields": {
+      "id": "http://jsonschema.net/fields",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/fields/0",
+        "type": "object",
+        "properties": {
+          "id": {
+            "id": "http://jsonschema.net/fields/0/id",
+            "type": "string"
+          },
+          "displayName": {
+            "id": "http://jsonschema.net/fields/0/displayName",
+            "type": "string"
+          },
+          "dataType": {
+            "id": "http://jsonschema.net/fields/0/dataType",
+            "type": "string",
+            "enum": [
+                null,
+              "DATE",
+              "DOUBLE",
+              "ENTITY",
+              "INTEGER",
+              "STRING"
+           ]
+          },
+          "value": {
+            "id": "http://jsonschema.net/fields/0/value",
+            "type": "integer"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "id",
+    "typeId",
+    "displayName",
+    "isCustom",
+    "fields"
+  ]
+}
