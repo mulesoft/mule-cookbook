@@ -1,0 +1,271 @@
+:imagesdir: images
+= Anypoint Devkit Studio Plugin
+:TOC: right
+
+= Tutorial
+
+== What is DevKit
+
+The http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit[DevKit] is an important part of the Anypoint Platform. It is a maven based tool that allows developers to build reusable components that not only can be run as part of a Mule application, but also can easily be configured/consumed from http://www.mulesoft.com/platform/mule-studio[Anypoint Studio]. 
+
+== When to use it
+
+There are several scenarios in which you may want to build your own connector. Yours might fall under one or more of this scenarios:
+
+* You need to consume an API in one or more applications and you want to make sure everyone uses the same component. 
+* You have an API and want to add strategic value to your business by providing a connector and telling the world "I am part of Mule Platform". 
+* You want to facilitate integration with SaaS and on-premise Web services, applications, and data sources.
+* The API we are consuming supports Pagination, Batch and/or has a SQL capability.
+* The API we are consuming has different entity types and/or their structure can change.
+* I want to extend Mule core.
+
+= Prerequisites
+
+To develop a connector you should have a working knowledge of Mule, Anypoint Studio, and Java development in general, specifically the use of Java annotations. 
+
+DevKit's functionality is exposed to connector developers through http://docs.oracle.com/javase/tutorial/java/annotations/[Java annotations] that generate code and files to interact with Mule, and Anypoint Studio. The generated code provides the interface between the connector and Mule that would otherwise require each connector developer to include extensive boilerplate code, as well as the code and files required to interact with your connector in Anypoint Studio.
+
+You can develop a connector using Windows, Mac, or Linux.
+
+== Setup environment
+
+* Download and install http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html[Java 1.7 JDK]. 
+* Download and install http://maven.apache.org/download.cgi[Maven]. 
+* Download http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
+* Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[maven configuration] in Anypoint Studio.
+* Install Anypoint DevKit plugin.
+* Install a http://git-scm.com/downloads[GitHub] client.
+* Clone https://github.com/mulesoft/mule-store[tutorial] repository into your local machine.
+
+WARNING: JRE is not suited for development, you need to have a JDK installed.
+
+== Install Anypoint Devkit Plugin
+
+Installing the DevKit plugin is as easy as installing any eclipse plugin.
+
+The update site URL is already shipped in the update site list.
+
+1. From the Help menu in *Anypoint Studio*, click *Install New Software*.
++
+image::install-plugin-1.png[]
+
+2. In the Install menu > Work with, click the down arrow and click Anypoint Addons Update Site. Click the checkbox for Anypoint DevKit Plugin, and click Next.
++
+image::install-plugin-2.png[]
+
+3. Proceed through all remaining steps in the wizard to install.
+
+4. Restart Studio.
+
+NOTE: If the Anypoint Addons Update Site is not available in the dropdown list, click Add and copy this URL to the repository Location: http://studio.mulesoft.org/r4/addons/beta
+
+NOTE: This url is not an url you can explore, it is an update site that you can add in you Anypoint Studio.
+
+= Build Your Connector
+
+== What is a @Connector
+
+A @Connector is a reusable component that knows how to interact with Mule, and with Anypoint Studio. 
+
+From the developer point of view, it abstracts them from Mule interfaces required run in the platform, and the generation of the UI.
+
+For the users, it abstracts them from the complexity of initializing any required element (connecting to a sandbox for example). A well developed connector makes your Mule apps much more simple by handling internally things like pagination, session expirations or input and output meta data. 
+
+For a quick overview of the Anypoint Studio DevKit Plugin and how to create a basic Connector check the documentation.
+
+== Features to cover in tutorial
+
+In this tutorial we are going to  incrementally show you how to add value and simplify the connectors users interaction in Mule with the different features provided by DevKit.
+We are going to start by generating a simple @Connector for a web service.
+After that we will show you how to add configurable field (@Configurable) that will be used in our @Processor, and how to test it.
+Then we are going to show you how to enrich the errors returned by an API and how to make sure your users don't need to handle session expirations.
+As we understand more about the API being consumed, we will show you why we need to add DataSense to your connector and how it improves user experience.
+Having DataSense also allow you to use our DataSense Query Language (DSQL).
+Other important feature that most APIs support is the Pagination of results, as well as the Batch processing
+For a full list of Supported annotations check our current documentation.
+
+== MuleStore Service Description
+
+Describe in a simple way the web service provided by Mule Store. 
+
+=== WSDL API
+
+API description 
+
+=== REST API
+
+API description 
+
+=== SDK API
+
+API description 
+
+== Building a @Connector
+
+<Create a connector using the wizard and explain the code generated with screenshots showing code mapped to UI mapped to XML in the Mule app. Do something similar to Current doc> 
+
+=== Connecting to my service
+
+When consuming a service there you may need to configure different values in order to establish a connection. 
+
+To solve this, the DevKit provides a pair of annotations that allows developer to modularize in one class the behaviour exposed to the users (using the @Connector annotation) and in a different one the code related to the the connection.
+
+By marking a field with @org.mule.api.annotations.ConnectionStrategy the DevKit will make sure that you have an initialized object set when the Mule app is running.
+
+If there is no need for authentication and/or connection management you can have a class marked with @org.mule.api.annotations.components.Configuration.
+
+If you actually need an authentication there are several annotations that will help you achieve the desired behaviour as we will see in this tutorial.
+
+==== Using connection Management
+
+Use v1 to show how connection management works 
+
+==== Using OAuthV2
+
+Use v1 to show how to implement OAuthV2 in your connector 
+
+==== Testing Connection is Working
+
+Use v1 to show in studio how the Test Connection works 
+
+=== Adding configurable fields
+
+==== @Optional
+
+Show how to create an optional configurable field 
+
+==== @Default
+
+Show how to create a configurable field with a Default 
+
+=== Adding operations to my @Connector (@Processor)
+
+=== Testing your @Processor
+
+Explain how to use our testing framework 
+
+== Improving error Handling
+
+=== Exception Handling (@Handler)
+Use v1 with the @Handler to improve the errors returned to the user 
+
+=== How to handle session expiration (@ReconnectOn)
+Use v1 with the @ReconnectOn to show users how to create a @Processor capable of triggering reconnections 
+
+== Adding DataSense 
+
+=== What is it?
+
+=== How to implement it
+
+==== My model is static
+
+Use v1 of the API to generate dynamic data sense to describe Author, Book and Sale
+
+==== My model is dynamic
+
+Use v2 to generate a dynamic data sense to describe standard and custom entities using the operations provided by the API
+
+==== Testing it
+
+Show an unit test of DataSense.
+Show how to test it in Studio.
+
+=== Adding @Query
+
+Use v2 and extend datasense to describe what can be queryable.
+
+== Adding Pagination 
+A quick example of Pagination with the query operation
+
+=== Testing it
+
+== Adding Batch 
+
+=== What is it?
+
+=== Implement it in your connector
+
+Add batch to the operations that handle list of elements
+
+=== Testing it
+
+== Installing my @Connector 
+
+Show how to install it using the plugin.
+Show how to install it without it.
+
+=== Debugging your @Connector
+
+After successfully installing your connector, you can start using your connector in a Mule App.
+By simple putting a breakpoint on your source code of the connector, you will be able to debug it.
+If your connector is a Community connector the source code will be shipped automatically in the installed connector. 
+If your connector is an Enterprise, you will need to manually attach the source code of your jar.
+WARNING: In order to correctly debug your code, take into account that the Mule app you are running is using the latest installed version, so if you did some changes, and you want to debug the Mule app, you need to install the connector again.
+
+=== Documenting my @Connector
+Show how to document your connector and the samples. < Current Doc >
+
+=== Sharing my @Connector
+Connector, as a component that can be installed in Anypoint Studio, is an Update Site.
+Update Sites are used to organize and export features so they can be installed into Eclipse applications.
+
+When the site is built, the included features (along with all plug-ins part of those features) will be exported into an installable form. The exported plug-ins and features will be put into two folders "plug-ins" and "features". Two other files, "content.xml" and "artifacts.xml" will also be generated and contain metadata for the exported files that make installing easier. These files, along with "site.xml", collectively form an Eclipse update site. To make the update site available to others you must make all these files available in a shared directory or web site.
+
+When building a connector, DevKit generates this for you, so that you don't need to worry about generating this. 
+
+You can use the Anypoint DevKit plugin to either install the connector on your current Studio, or export it as an update-site for others to use.
+
+== Other Features
+
+=== Adding @Source
+
+==== What is a @Source
+In some cases it is necessary to create Message Sources instead of Message Processors. 
+
+Basically, a Message Source receives or generates new messages to be processed by Mule.
+One of the use cases of Message Sources is implementing Streaming APIs. The @Source annotation marks a method inside a @Connector annotated class as callable from a Mule flow and capable of generating Mule events. Each marked method will have a Message Source generated. The method must receive a SourceCallback as one of its arguments that represents the next message processor in the chain. It does not matter the order in which this parameter appears as long it is present in the method signature.
+
+==== Create a @Source 
+Create a @Source that consumes the Get Recently Updated on the Connector
+Show how to use it in an app. Video of user drag and dropping into the canvas and configuring it.
+
+==== Test my @Source
+
+=== Adding @Transformer
+
+==== What is a @Transformer
+Transformers convert message payloads to formats expected by their destinations. Mule ESB provides many standard transformers, which you configure using predefined elements and attributes in your Mule XML configuration file but sometimes is useful to build custom transformers.
+
+Annotating a method with @Transformer signals the Mule DevKit to export this method functionality as a transformer. Transformers need to be declared in classes annotated with @Module or @Connector and many transformers can be declared in the one class. It is possible to declare transformers, message processors and message sources in the same class.
+The @Transformer annotated method must follow certain rules:
+* It must be static
+* It must be public
+* It must not return void
+* It must not return java.lang.Object
+* It must receive exactly one argument
+* It must be inside a class annotated with @Connector
+
+==== Creating a transformer 
+From String Json representation to Entity
+
+==== Using the transformer in a Mule app
+Show how it is used with autodiscovery
+
+Show how it is used explicitly
+
+==== Test my @Transformer
+
+=== Improve UI Layout
+
+==== Using friendlyName
+
+Show how to change the display name of the @Connector
+
+==== Using @Password
+
+==== Using @Placement
+
+==== Understanding @RefOnly
+
+Explain the annotation and show how to use it and the impact on the UI this has.
