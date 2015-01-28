@@ -1,3 +1,5 @@
+:mule: Mule Store
+
 == Adding DataSense
 
 === What is it?
@@ -6,13 +8,15 @@ http://www.mulesoft.org/documentation/display/current/DataSense[DataSense] is a 
 
 If coded correctly, user will be able to take advantage of the messages metadata to facilitate application design. With this functionality, Anypoint(TM) Studio proactively acquires information about data, such as data type and structure, in order to prescribe how to accurately map or use data in your application.
 
-Rather than forcing you to manually discover information about the data your internal and external resources employ, Mule intelligently discovers this information and uses it to make application design suggestions.
+Is feature that displays the metadata of the entities included in the service in a friendly manner. Although this feature is optional, Mule strongly recommends that you use DataSense in your connector much easier to use for end users.
 
 === How to implement it
 
 ==== My model is static
 
-Use v1 of the API to generate dynamic data sense to describe Author, Book and Sale
+Lets take a look at the v1 of the {mule} entities.
+
+We only have Author, Book and Sale entities.
 
 ==== My model is dynamic
 

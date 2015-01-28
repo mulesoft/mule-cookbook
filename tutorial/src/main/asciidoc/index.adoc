@@ -87,7 +87,7 @@ Having DataSense also allow you to use our DataSense Query Language (DSQL).
 Other important feature that most APIs support is the Pagination of results, as well as the Batch processing
 For a full list of Supported annotations check our current documentation.
 
-include::service-description.ad[]
+include::service-description.adoc[]
 
 == Building a @Connector
 
@@ -141,7 +141,7 @@ Use v1 with the @Handler to improve the errors returned to the user
 === How to handle session expiration (@ReconnectOn)
 Use v1 with the @ReconnectOn to show users how to create a @Processor capable of triggering reconnections 
 
-include::datasense.ad[]
+include::datasense.adoc[]
 
 == Adding Pagination 
 A quick example of Pagination with the query operation
