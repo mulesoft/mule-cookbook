@@ -1,0 +1,118 @@
+== {tutorial} Service Description
+
+The {tutorial} is a software that provides a basic and limited products store capabilities. It initially supported selling books only. The product was so good, that the product now supports any kind of product that store owners can configure.
+
+Users can search for items, look for books by author and customize the items they sell, and check sales.
+
+=== API Evolution
+
+==== Version 1
+
+When the first version was released, the API allowed users to use the CRUD operations for single and multiple elements
+
+[cols="2*", options="header"]
+|===
+|Entities
+|Operations
+
+|
+- Book
+
+- Author
+
+- Sale
+
+|
+- Create
+
+- Retrieve
+
+- Update
+
+- Delete
+
+For Single and multiple elements
+
+- Get Recently Added
+
+
+|===
+
+===== Authentication
+
+* Custom with username and password
+
+* OAuthV2
+
+==== Version 2
+
+[cols="2*", options="header"]
+|===
+|Entities
+|Operations
+
+|
+- Book
+
+- Author
+
+- Sale
+
+- Custom Entity
+
+|
+- Create
+
+- Retrieve
+
+- Update
+
+- Delete
+
+For Single and multiple elements
+
+- Search
+
+- Get Recently Added
+
+- List Custom Entities
+
+- Create Custom Entity Definition
+
+- Describe Entity
+
+
+|===
+
+===== Authentication
+
+* Custom with username and password
+
+* OAuthV2
+
+=== WSDL API
+
+[source,xml]
+----
+
+include::IMuleStoreService.wsdl_2[]
+
+----
+
+=== REST API
+
+[source,yaml]
+----
+
+include::api.raml[]
+
+----
+=== SDK API
+
+
+[source,java]
+----
+
+include::MuleStoreClient.java[]
+
+----

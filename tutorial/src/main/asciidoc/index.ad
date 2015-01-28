@@ -1,5 +1,8 @@
-:imagesdir: images
-= Anypoint Devkit Studio Plugin
+:imagesdir: ./images
+
+:tutorial: Mule Store
+
+= Anypoint Studio Devkit
 :TOC: right
 
 = Tutorial
@@ -84,21 +87,7 @@ Having DataSense also allow you to use our DataSense Query Language (DSQL).
 Other important feature that most APIs support is the Pagination of results, as well as the Batch processing
 For a full list of Supported annotations check our current documentation.
 
-== MuleStore Service Description
-
-Describe in a simple way the web service provided by Mule Store. 
-
-=== WSDL API
-
-API description 
-
-=== REST API
-
-API description 
-
-=== SDK API
-
-API description 
+include::service-description.ad[]
 
 == Building a @Connector
 
@@ -152,28 +141,7 @@ Use v1 with the @Handler to improve the errors returned to the user
 === How to handle session expiration (@ReconnectOn)
 Use v1 with the @ReconnectOn to show users how to create a @Processor capable of triggering reconnections 
 
-== Adding DataSense 
-
-=== What is it?
-
-=== How to implement it
-
-==== My model is static
-
-Use v1 of the API to generate dynamic data sense to describe Author, Book and Sale
-
-==== My model is dynamic
-
-Use v2 to generate a dynamic data sense to describe standard and custom entities using the operations provided by the API
-
-==== Testing it
-
-Show an unit test of DataSense.
-Show how to test it in Studio.
-
-=== Adding @Query
-
-Use v2 and extend datasense to describe what can be queryable.
+include::datasense.ad[]
 
 == Adding Pagination 
 A quick example of Pagination with the query operation

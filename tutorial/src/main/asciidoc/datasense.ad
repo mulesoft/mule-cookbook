@@ -1,0 +1,28 @@
+== Adding DataSense
+
+=== What is it?
+
+http://www.mulesoft.org/documentation/display/current/DataSense[DataSense] is a feature used to improve the user experience at design time when creating Mule applications.
+
+If coded correctly, user will be able to take advantage of the messages metadata to facilitate application design. With this functionality, Anypoint(TM) Studio proactively acquires information about data, such as data type and structure, in order to prescribe how to accurately map or use data in your application.
+
+Rather than forcing you to manually discover information about the data your internal and external resources employ, Mule intelligently discovers this information and uses it to make application design suggestions.
+
+=== How to implement it
+
+==== My model is static
+
+Use v1 of the API to generate dynamic data sense to describe Author, Book and Sale
+
+==== My model is dynamic
+
+Use v2 to generate a dynamic data sense to describe standard and custom entities using the operations provided by the API
+
+==== Testing it
+
+Show an unit test of DataSense.
+Show how to test it in Studio.
+
+=== Adding @Query
+
+Use v2 and extend datasense to describe what can be queryable.
