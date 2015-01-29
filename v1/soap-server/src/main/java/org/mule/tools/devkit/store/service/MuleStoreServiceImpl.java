@@ -93,7 +93,7 @@ public class MuleStoreServiceImpl implements IMuleStoreService {
 
     @Override public List<Entity> addList(@WebParam(name = "entities", targetNamespace = "") List<Entity> entities) throws InvalidEntityException, SessionExpiredException {
         for(Entity entity:entities){
-            add(entity);
+            create(entity);
         }
         return entities;
     }
@@ -126,7 +126,7 @@ public class MuleStoreServiceImpl implements IMuleStoreService {
         }
     }
 
-    @Override public Entity add(@WebParam(name = "entity", targetNamespace = "") Entity entity) throws InvalidEntityException, SessionExpiredException {
+    @Override public Entity create(@WebParam(name = "entity", targetNamespace = "") Entity entity) throws InvalidEntityException, SessionExpiredException {
         entity.setId(currentIndex);
         currentIndex=currentIndex+1;
         entities.put(entity.getId(),entity);

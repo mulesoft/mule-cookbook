@@ -6,11 +6,13 @@ import javax.xml.crypto.Data;
  * Created by Mulesoft.
  */
 public class Field {
+
     private String id;
     private String displayName;
     private DataType dataType;
+    private boolean required;
     private Object value;
-    
+
     public String getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class Field {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
     }
 }

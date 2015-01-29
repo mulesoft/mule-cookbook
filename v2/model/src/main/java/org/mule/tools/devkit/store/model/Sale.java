@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Sale extends Entity {
 
-   private List<Entity> items;
+    private List<Entity> items;
 
     public List<Entity> getItems() {
         return items;

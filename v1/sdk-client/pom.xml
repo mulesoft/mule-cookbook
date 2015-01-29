@@ -10,7 +10,7 @@
     <artifactId>sdk-client</artifactId>
     <packaging>jar</packaging>
 
-    
+
     <build>
         <plugins>
             <plugin>

@@ -12,18 +12,19 @@ import static org.junit.Assert.assertNotNull;
 public class MuleStoreClientTestDriver {
 
     MuleStoreClient client;
+
     @Before
-    public void setup(){
+    public void setup() {
         client = new MuleStoreClient();
         //client = new MuleStoreClient("http://localhost:8081/mule-store");
     }
 
     @Test
-    public void add() throws InvalidEntityException, SessionExpiredException {
+    public void create() throws InvalidEntityException, SessionExpiredException {
         Author author = new Author();
         author.setFirstName("Pedro");
         author.setLastName("Foo");
-        assertNotNull(client.add(author).getId());
+        assertNotNull(client.create(author).getId());
     }
 
     @Test

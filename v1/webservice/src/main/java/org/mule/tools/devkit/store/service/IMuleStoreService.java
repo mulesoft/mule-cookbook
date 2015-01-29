@@ -18,6 +18,7 @@ package org.mule.tools.devkit.store.service;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
+
 import org.mule.tools.devkit.store.model.Entity;
 
 import java.util.List;
@@ -28,18 +29,25 @@ import java.util.List;
 @WebService
 public interface IMuleStoreService {
 
-	Entity add(@WebParam(name = "entity") Entity entity) throws InvalidEntityException, SessionExpiredException;
-	Entity update(@WebParam(name = "entity")Entity entity) throws InvalidEntityException,NoSuchEntityException,SessionExpiredException;
-	Entity get(@WebParam(name = "id") int entityId) throws NoSuchEntityException,SessionExpiredException;
-	void delete(@WebParam(name = "id") int entityId) throws NoSuchEntityException,SessionExpiredException;
+    Entity create(@WebParam(name = "entity") Entity entity) throws InvalidEntityException, SessionExpiredException;
 
-	List<Entity> addList(@WebParam(name = "entities") List<Entity> entities) throws InvalidEntityException,SessionExpiredException;
-	List<Entity> updateList(@WebParam(name = "entities") List<Entity> entities) throws InvalidEntityException,NoSuchEntityException,SessionExpiredException;
-	List<Entity> getList(@WebParam(name = "entityIds") List<Integer> entityIds) throws NoSuchEntityException,SessionExpiredException;
-	void deleteList(@WebParam(name = "entityIds") List<Integer> entityIds) throws NoSuchEntityException,SessionExpiredException;
+    Entity update(@WebParam(name = "entity") Entity entity) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
 
-	List<Entity> searchWithQuery(@WebParam(name="query") String query,@WebParam(name = "page") Integer page,@WebParam(name = "pageSize") Integer pageSize) throws NoSuchEntityException,SessionExpiredException;
+    Entity get(@WebParam(name = "id") int entityId) throws NoSuchEntityException, SessionExpiredException;
 
-	List<Entity> getRecentlyAdded() throws SessionExpiredException;
+    void delete(@WebParam(name = "id") int entityId) throws NoSuchEntityException, SessionExpiredException;
+
+    List<Entity> addList(@WebParam(name = "entities") List<Entity> entities) throws InvalidEntityException, SessionExpiredException;
+
+    List<Entity> updateList(@WebParam(name = "entities") List<Entity> entities) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
+
+    List<Entity> getList(@WebParam(name = "entityIds") List<Integer> entityIds) throws NoSuchEntityException, SessionExpiredException;
+
+    void deleteList(@WebParam(name = "entityIds") List<Integer> entityIds) throws NoSuchEntityException, SessionExpiredException;
+
+    List<Entity> searchWithQuery(@WebParam(name = "query") String query, @WebParam(name = "page") Integer page, @WebParam(name = "pageSize") Integer pageSize)
+            throws NoSuchEntityException, SessionExpiredException;
+
+    List<Entity> getRecentlyAdded() throws SessionExpiredException;
 
 }
