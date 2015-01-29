@@ -10,7 +10,7 @@
     <artifactId>mule-store-v2</artifactId>
     <packaging>pom</packaging>
 
-    
+
     <modules>
         <module>model</module>
         <module>webservice</module>

@@ -41,7 +41,6 @@ public class CustomEntity extends Entity implements Serializable {
         this.isCustom = isCustom;
     }
 
-
     public String getTypeId() {
         return typeId;
     }

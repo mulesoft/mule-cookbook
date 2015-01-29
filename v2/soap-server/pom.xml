@@ -11,7 +11,7 @@
     <artifactId>soap-server</artifactId>
     <packaging>jar</packaging>
 
-    
+
     <build>
         <plugins>
             <plugin>

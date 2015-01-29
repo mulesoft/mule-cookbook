@@ -12,6 +12,15 @@ public class Book extends Entity implements Serializable {
     private String description;
     private Genre genre;
     private int authorId;
+    private float price;
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
 
     public String getIsbn() {
         return isbn;

@@ -6,9 +6,12 @@ import javax.xml.ws.WebFault;
 
 /**
  * Created by Mulesoft.
+ *
+ * Thrown when retrieving or updating entities with a none existing Id.
+ *
  */
-@WebFault(name="NoSuchEntity")
-@XmlAccessorType( XmlAccessType.FIELD )
+@WebFault(name = "NoSuchEntity")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class NoSuchEntityException extends RuntimeException {
 
 }
