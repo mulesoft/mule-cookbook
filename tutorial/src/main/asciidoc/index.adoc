@@ -91,7 +91,40 @@ include::service-description.adoc[]
 
 == Building a @Connector
 
-<Create a connector using the wizard and explain the code generated with screenshots showing code mapped to UI mapped to XML in the Mule app. Do something similar to Current doc> 
+Before start consuming our {tutorial} service, lets start by doing a Hello World Connector, and understanding the generated code.
+
+Click *File* > *New*, then select *Anypoint Connector Project* or simple do a right click of the package explorer and select *New* > *Anypoint Connector Project*:
+
+image::new-connector-1.png[width="700"]
+
+Just put the name of your connector and click on finish:
+
+image::new-connector-2.png[width="700"]
+
+This generates a project containing the structure with all the required elements such as images, sample docs, and some basic tests for your connector.
+
+image::new-connector-3.png[width="900"]
+
+To enable the DevKit view select from the top bar *Window* > *Show view* > *Other* , and look for DevKit on the list to enable it.
+
+image::enable-view.png[width="300", height="400"]
+
+=== Understanding the a Connector structure
+
+Your Connector basically consists of a set of http://www.mulesoft.org/documentation/display/current/Message+Processors[message processors] and configurable elements users populate in order to consume the API your connector was developed for.
+
+
+After you install your connector by right-clicking the connector and clicking *Anypoint Connector* > *Install or Update*, completing the prompts, and restarting Studio, you will be able to properly open the Mule application that is being used in the connector test that was generated for your connector.
+
+Lets check the structure of this dummy connector:
+
+In this image you will be able to see how most of the code is mapped into UI elements.
+
+image::split-1-high.png[caption="Figure 1: ", title="View Structure and UI", alt="Image1", width="300", height="200", link="images/split-1-high.png"]
+
+In this one, you can check how the code matches to XML and other UI elements.
+
+image::split-2-high.png[caption="Figure 2: ", title="View configuration and XML", alt="Image2", width="300", height="200", link="images/split-2-high.png"]
 
 === Connecting to my service
 
@@ -121,11 +154,62 @@ Use v1 to show in studio how the Test Connection works
 
 ==== @Optional
 
-Show how to create an optional configurable field 
+Optional parameters or configurables, as the name states, are elements that are not required, and there for, there is no need for users to specify a value.
+
+Configurable fields can be specified inside @Connector or Connection Strategies Classes, or as parameters of @Processor methods inside a @Connector.
+
+[source,java]
+----
+import org.mule.api.annotations.Configurable;
+import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.param.Optional;
+
+//Inside the @Connector class
+
+/**
+ * Optional Field documentation
+ */
+@Configurable
+@Optional
+private String  optionalField;
+//Getter and Setter of the field are required
+
+/**
+ * Optional parameter
+ */
+public String sayHi(String firstName,@Optional String lastName ) {
+    return "Hi "+firstName+" "+((lastName==null) ? "":lastName);
+}
+----
 
 ==== @Default
 
-Show how to create a configurable field with a Default 
+When you want an optional parameter or configurable you can avoid the use of @Optional and just use the @Default annotation.
+[source,java]
+----
+import org.mule.api.annotations.Configurable;
+import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.param.Default;
+
+//Inside the @Connector class
+
+/**
+ *  Field with Default
+ */
+@Configurable
+@Default("Hi")
+private String  greeting;
+//Getter and Setter of the field are required
+
+/**
+ * Default parameter
+ */
+public String sayHi(String firstName,@Default("Unknown") String lastName ) {
+    return greeting+" "+firstName+" "+lastName;
+}
+----
+
+Another very important use of the @Default annotation is when building a connector that has DataSense.
 
 === Adding operations to my @Connector (@Processor)
 
