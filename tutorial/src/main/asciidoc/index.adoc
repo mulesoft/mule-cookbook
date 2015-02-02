@@ -1,6 +1,6 @@
 :imagesdir: ./images
 
-:tutorial: Mule Store
+:tutorial: Mule CookBook
 
 = Anypoint Studio Devkit
 :TOC: right
