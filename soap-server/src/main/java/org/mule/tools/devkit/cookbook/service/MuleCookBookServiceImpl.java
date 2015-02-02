@@ -19,25 +19,18 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
 
     private static final Logger LOG = Logger.getLogger(MuleCookBookServiceImpl.class.getName());
 
-    Integer currentIndex = 0;
-    Integer exceptionRatio = 3;
-    Integer callsCount = 0;
-    private Map<Integer, CookBookEntity> entities = new HashMap<>();
+    private Integer currentIndex = 0;
+    private Integer exceptionRatio = 3;
+
+    private IMuleCookBookService serviceDAL;
 
     @Override public List<Recipe> getRecentlyAdded() {
-        LOG.info("Executing operation getRecentlyAdded");
-        Collection<CookBookEntity> values = entities.values();
-        return CollectionUtils.arrayToList(values.toArray());
+        return serviceDAL.getRecentlyAdded();
     }
 
     @Override public CookBookEntity get(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException, SessionExpiredException {
         checkExpiredSessionCondition();
-
-        if (!entities.containsKey(id)) {
-
-            throw new NoSuchEntityException();
-        }
-        return entities.get(id);
+        return serviceDAL.get(id);
     }
 
     @Override public List<CookBookEntity> searchWithQuery(@WebParam(name = "query", targetNamespace = "") String query, @WebParam(name = "page", targetNamespace = "") Integer page,
@@ -45,93 +38,72 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
 
         LOG.info("Executing operation searchWithQuery");
         checkExpiredSessionCondition();
-        try {
-            return CollectionUtils.arrayToList(entities.values().toArray());
-        } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
+        return serviceDAL.searchWithQuery(query,page,pageSize);
     }
 
     @Override public CookBookEntity update(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws InvalidEntityException, NoSuchEntityException,
             SessionExpiredException {
         checkExpiredSessionCondition();
-        if (!entities.containsKey(entity.getId())) {
-            throw new NoSuchEntityException();
-        }
-        entities.put(entity.getId(), entity);
-        return entity;
+        return serviceDAL.update(entity);
     }
 
     @Override public List<CookBookEntity> addList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities) throws InvalidEntityException,
             SessionExpiredException {
         checkExpiredSessionCondition();
-        for (CookBookEntity entity : entities) {
-            create(entity);
-        }
-        return entities;
+        return serviceDAL.addList(entities);
     }
 
     @Override public List<CookBookEntity> getList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds) throws NoSuchEntityException,
             SessionExpiredException {
         checkExpiredSessionCondition();
-        List<CookBookEntity> returnValue = new ArrayList<>();
-        for (Integer id : entityIds) {
-            returnValue.add(get(id));
-        }
-        return returnValue;
+        return serviceDAL.getList(entityIds);
     }
 
     @Override public void delete(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException, SessionExpiredException {
         checkExpiredSessionCondition();
-        if (!entities.containsKey(id)) {
-            throw new NoSuchEntityException();
-        }
-        entities.remove(id);
+        serviceDAL.delete(id);
     }
 
     @Override public List<CookBookEntity> updateList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities)
             throws InvalidEntityException, NoSuchEntityException, SessionExpiredException {
         checkExpiredSessionCondition();
-        for (CookBookEntity entity : entities) {
-            update(entity);
-        }
-        return entities;
+        return serviceDAL.updateList(entities);
     }
 
-    @Override public Recipe updateQuantities(@WebParam(name = "arg0", targetNamespace = "") Recipe arg0)
+    @Override public Recipe updateQuantities(@WebParam(name = "recipe", targetNamespace = "") Recipe recipe)
             throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
-        return null;
+        return serviceDAL.updateQuantities(recipe);
     }
 
     @Override public void deleteList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds) throws NoSuchEntityException, SessionExpiredException {
         checkExpiredSessionCondition();
-        for (Integer id : entityIds) {
-            delete(id);
-        }
+        serviceDAL.deleteList(entityIds);
     }
 
     @Override public CookBookEntity create(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws InvalidEntityException, SessionExpiredException {
         checkExpiredSessionCondition();
-        if (entity.getId() != null) {
-            InvalidEntity invalid = new InvalidEntity();
-            throw new InvalidEntityException("Cannot specify Id at creation.", invalid);
-        }
-        if (entity instanceof Ingredient) {
-            Ingredient book = (Ingredient) entity;
-        }
-        if (entity instanceof Recipe) {
-            Recipe author = (Recipe) entity;
-
-        }
-        entity.setId(++currentIndex);
-        entities.put(entity.getId(), entity);
-        return entity;
+        return serviceDAL.create(entity);
     }
 
     private void checkExpiredSessionCondition() throws SessionExpiredException {
         if (((currentIndex+1) % exceptionRatio) == 0) {
             throw new SessionExpiredException();
         }
+    }
+
+    public IMuleCookBookService getServiceDAL() {
+        return serviceDAL;
+    }
+
+    public void setServiceDAL(IMuleCookBookService serviceDAL) {
+        this.serviceDAL = serviceDAL;
+    }
+
+    public Integer getExceptionRatio() {
+        return exceptionRatio;
+    }
+
+    public void setExceptionRatio(Integer exceptionRatio) {
+        this.exceptionRatio = exceptionRatio;
     }
 }
