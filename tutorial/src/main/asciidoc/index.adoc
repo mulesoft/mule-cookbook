@@ -105,7 +105,7 @@ This generates a project containing the structure with all the required elements
 
 image::new-connector-3.png[width="900"]
 
-To enable the DevKit view select from the top bar *Window* > *Show view* > *Other* , and look for DevKit on the list to enable it.
+To enable the DevKit view select from the top bar *Window* > *Show view* > *Other* , and look for DevKit on the list.
 
 image::enable-view.png[width="300", height="400"]
 
@@ -134,9 +134,23 @@ To solve this, the DevKit provides a pair of annotations that allows developer t
 
 By marking a field with @org.mule.api.annotations.ConnectionStrategy the DevKit will make sure that you have an initialized object set when the Mule app is running.
 
-If there is no need for authentication and/or connection management you can have a class marked with @org.mule.api.annotations.components.Configuration.
+If there is no need for authentication and/or connection management but you need to configure some things, you can have a class marked with @org.mule.api.annotations.components.Configuration.
 
 If you actually need an authentication there are several annotations that will help you achieve the desired behaviour as we will see in this tutorial.
+
+To go deeper into this feature, check the http://www.mulesoft.org/documentation/display/current/Authentication[current documentation].
+
+Let start coding and create a connector that allows us to get the recently added elements.
+
+Since the {tutorial} service description says we don't need any kind of authentication to consume this information, this is the best operation we can use to start learning how to build our @Connector.
+
+==== I don't need a connection
+
+As we showed in the connector shown at the previous section, if you don' need a connection, you can use the @Configuration annotation.
+
+In our mule store service, according to the documentation, we don't need to authenticate in order to get a list of the most recently added elements.
+
+So let' start creating
 
 ==== Using connection Management
 
@@ -318,6 +332,6 @@ Show how to change the display name of the @Connector
 
 ==== Using @Placement
 
-==== Understanding @RefOnly
+=== Understanding @RefOnly
 
 Explain the annotation and show how to use it and the impact on the UI this has.
