@@ -38,13 +38,13 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="id" type="xs:int"/>
       <xs:element minOccurs="0" name="lastModified" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="ingredient">
     <xs:complexContent>
       <xs:extension base="tns:cookBookEntity">
         <xs:sequence>
-          <xs:element minOccurs="0" name="name" type="xs:string"/>
           <xs:element name="quantity" type="xs:double"/>
           <xs:element minOccurs="0" name="unit" type="tns:unitType"/>
         </xs:sequence>
@@ -58,7 +58,6 @@
           <xs:element minOccurs="0" name="cookTime" type="xs:double"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="directions" nillable="true" type="xs:string"/>
           <xs:element maxOccurs="unbounded" minOccurs="0" name="ingredients" nillable="true" type="tns:ingredient"/>
-          <xs:element minOccurs="0" name="name" type="xs:string"/>
           <xs:element minOccurs="0" name="prepTime" type="xs:double"/>
         </xs:sequence>
       </xs:extension>

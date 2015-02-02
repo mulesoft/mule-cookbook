@@ -1,5 +1,9 @@
 package org.mule.tools.devkit.cookbook.service;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.mule.tools.devkit.cookbook.internal.service.CookBookDefaultBackEndImp;
+
 import static org.junit.Assert.assertNotSame;
 
 /**
@@ -7,36 +11,26 @@ import static org.junit.Assert.assertNotSame;
  */
 public class MuleStoreServerTest {
 
-    IMuleCookBookService server;
-/*    @Before
+    MuleCookBookServiceImpl server;
+    @Before
     public void setup(){
         server = new MuleCookBookServiceImpl();
+        server.setServiceDAL(new CookBookDefaultBackEndImp());
+
     }
 
     @Test
     public void testCreate() throws SessionExpiredException, InvalidEntityException {
-        Entity book = new Book();
-        Book created= (Book) server.create(book);
+        CookBookEntity ingredient = new Ingredient();
+        CookBookEntity created= server.create(ingredient);
         assertNotSame(created.getId(), 0);
     }
 
     @Test(expected = InvalidEntityException.class)
     public void testCreateInvalidWithId() throws SessionExpiredException, InvalidEntityException {
-        Book book = new Book();
+        CookBookEntity book = new Ingredient();
         book.setId(1);
         server.create(book);
     }
 
-    @Test(expected = InvalidEntityException.class)
-    public void testCreateInvalidAuthorNoName() throws SessionExpiredException, InvalidEntityException {
-        Author author= new Author();
-        server.create(author);
-    }
-
-    @Test(expected = SessionExpiredException.class)
-    public void testSessionExpired() throws SessionExpiredException, InvalidEntityException {
-        server.getRecentlyAdded();
-        server.getRecentlyAdded();
-        server.getRecentlyAdded();
-    }*/
 }

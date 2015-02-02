@@ -11,22 +11,20 @@ import static org.junit.Assert.assertSame;
  * Created by Mulesoft.
  */
 public class CRUDTestCases {
-    /*IMuleCookBookService server;
-    Book created;
+    IMuleCookBookService server;
+    Ingredient created;
     @Before
     public void setup() throws SessionExpiredException, InvalidEntityException {
         server = new MuleCookBookServiceImpl();
-        Book book = new Book();
-        book.setGenre(Genre.HISTORY);
-        book.setDescription("A Book");
-        book.setPrice(5);
+        Ingredient book = new Ingredient();
+        book.setName("Foo");
 
-        created = (Book) server.create(book);
+        created = (Ingredient) server.create(book);
     }
 
     @Test
     public void testGet() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException {
-        Book retrieved = (Book) server.get(created.getId());
+        Ingredient retrieved = (Ingredient) server.get(created.getId());
         assertSame(created, retrieved);
     }
 
@@ -37,16 +35,16 @@ public class CRUDTestCases {
 
     @Test
     public void testUpdate() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException {
-        String isbn = "SSSDDDSSSDD";
-        created.setIsbn(isbn);
+        String name = "SSSDDDSSSDD";
+        created.setName(name);
         server.update(created);
-        Book retrieved = (Book)server.get(created.getId());
-        assertEquals(retrieved.getIsbn(), isbn);
+        Ingredient retrieved = (Ingredient)server.get(created.getId());
+        assertEquals(retrieved.getName(), name);
     }
 
     @Test(expected = NoSuchEntityException.class)
     public void testDelete() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException {
         server.delete(created.getId());
         server.get(created.getId());
-    }*/
+    }
 }
