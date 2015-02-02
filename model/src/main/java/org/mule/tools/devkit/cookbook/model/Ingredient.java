@@ -7,17 +7,8 @@ import java.util.Date;
  */
 public class Ingredient extends CookBookEntity {
 
-    private String name;
     private double quantity;
     private UnitType unit;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public double getQuantity() {
         return quantity;

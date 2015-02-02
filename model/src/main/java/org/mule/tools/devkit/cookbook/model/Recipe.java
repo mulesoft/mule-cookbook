@@ -6,19 +6,11 @@ import java.util.List;
  * Created by Mulesoft.
  */
 public class Recipe extends CookBookEntity{
-    private String name;
+
     private List<Ingredient> ingredients;
     private Double prepTime;
     private Double cookTime;
     private List<String> directions;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<Ingredient> getIngredients() {
         return ingredients;
