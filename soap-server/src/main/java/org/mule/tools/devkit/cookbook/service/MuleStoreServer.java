@@ -1,6 +1,8 @@
 
 package org.mule.tools.devkit.cookbook.service;
 
+import org.mule.tools.devkit.cookbook.internal.service.CookBookDefaultBackEndImp;
+
 import javax.xml.ws.Endpoint;
 
 /**
@@ -14,7 +16,8 @@ public class MuleStoreServer {
 
     protected MuleStoreServer() throws Exception {
         System.out.println("Starting Server");
-        Object implementor = new MuleCookBookServiceImpl();
+        MuleCookBookServiceImpl implementor = new MuleCookBookServiceImpl();
+        implementor.setServiceDAL(new CookBookDefaultBackEndImp());
         String address = "http://localhost:9090/IMuleStoreServicePort";
         Endpoint.publish(address, implementor);
     }

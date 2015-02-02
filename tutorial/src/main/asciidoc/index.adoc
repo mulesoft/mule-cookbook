@@ -1,6 +1,6 @@
 :imagesdir: ./images
 
-:tutorial: Mule CookBook
+:tutorial: Mule Cook Book
 
 = Anypoint Studio Devkit
 :TOC: right
@@ -38,7 +38,7 @@ You can develop a connector using Windows, Mac, or Linux.
 * Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[maven configuration] in Anypoint Studio.
 * Install Anypoint DevKit plugin.
 * Install a http://git-scm.com/downloads[GitHub] client.
-* Clone https://github.com/mulesoft/mule-store[tutorial] repository into your local machine.
+* Clone https://github.com/mulesoft/mule-cookbook[tutorial] repository into your local machine.
 
 WARNING: JRE is not suited for development, you need to have a JDK installed.
 
@@ -148,7 +148,7 @@ Since the {tutorial} service description says we don't need any kind of authenti
 
 As we showed in the connector shown at the previous section, if you don' need a connection, you can use the @Configuration annotation.
 
-In our mule store service, according to the documentation, we don't need to authenticate in order to get a list of the most recently added elements.
+In our {tutorial} service, according to the documentation, we don't need to authenticate in order to get a list of the most recently added elements.
 
 So let' start creating
 

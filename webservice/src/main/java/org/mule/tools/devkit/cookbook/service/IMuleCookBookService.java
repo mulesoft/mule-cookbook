@@ -63,6 +63,6 @@ public interface IMuleCookBookService {
     List<Recipe> getRecentlyAdded();
 
     @WSDLDocumentation("Updates the quantities of a specific list.")
-    Recipe updateQuantities(Recipe recipe) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
+    Recipe updateQuantities(@WebParam(name = "recipe") Recipe recipe) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
 
 }

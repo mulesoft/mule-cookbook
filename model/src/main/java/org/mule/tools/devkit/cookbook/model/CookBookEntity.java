@@ -1,6 +1,7 @@
 package org.mule.tools.devkit.cookbook.model;
 
 import javax.xml.bind.annotation.XmlSeeAlso;
+import java.util.Date;
 
 /**
  * Created by Mulesoft.
@@ -9,6 +10,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 public abstract class CookBookEntity {
 
     private Integer id;
+    private Date lastModified;
 
     public Integer getId() {
         return id;
@@ -16,5 +18,13 @@ public abstract class CookBookEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
     }
 }

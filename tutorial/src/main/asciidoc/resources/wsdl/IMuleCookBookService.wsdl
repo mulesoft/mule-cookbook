@@ -37,12 +37,17 @@
   <xs:complexType abstract="true" name="cookBookEntity">
     <xs:sequence>
       <xs:element minOccurs="0" name="id" type="xs:int"/>
+      <xs:element minOccurs="0" name="lastModified" type="xs:dateTime"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="ingredient">
     <xs:complexContent>
       <xs:extension base="tns:cookBookEntity">
-        <xs:sequence/>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="quantity" type="xs:double"/>
+          <xs:element minOccurs="0" name="unit" type="tns:unitType"/>
+        </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -109,7 +114,7 @@
   </xs:complexType>
   <xs:complexType name="updateQuantities">
     <xs:sequence>
-      <xs:element minOccurs="0" name="arg0" type="tns:recipe"/>
+      <xs:element minOccurs="0" name="recipe" type="tns:recipe"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="updateQuantitiesResponse">
@@ -155,6 +160,18 @@
       <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:recipe"/>
     </xs:sequence>
   </xs:complexType>
+  <xs:simpleType name="unitType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CUPS"/>
+      <xs:enumeration value="GRAMS"/>
+      <xs:enumeration value="KILOGRAMS"/>
+      <xs:enumeration value="LITERS"/>
+      <xs:enumeration value="MILLILITERS"/>
+      <xs:enumeration value="POUNDS"/>
+      <xs:enumeration value="SPOONS"/>
+      <xs:enumeration value="UNIT"/>
+    </xs:restriction>
+  </xs:simpleType>
   <xs:element name="NoSuchEntity" type="tns:NoSuchEntity"/>
   <xs:complexType name="NoSuchEntity">
     <xs:sequence/>
