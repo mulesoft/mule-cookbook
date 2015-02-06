@@ -2,8 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>mule-cookbook</artifactId>
-        <groupId>org.mule.tools.devkit.cookbook</groupId>
+        <groupId>com.cookbook.tutorial</groupId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../mule-cookbook-parent/pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -84,11 +85,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.mule.tools.devkit.cookbook</groupId>
-            <artifactId>webservice</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
             <version>${cxf.version}</version>
@@ -98,6 +94,18 @@
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
             <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <!-- For Testing -->
+        <dependency>
+            <artifactId>soap-server</artifactId>
+            <groupId>com.cookbook.tutorial</groupId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

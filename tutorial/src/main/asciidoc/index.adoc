@@ -132,7 +132,7 @@ When consuming a service there you may need to configure different values in ord
 
 To solve this, the DevKit provides a pair of annotations that allows developer to modularize in one class the behaviour exposed to the users (using the @Connector annotation) and in a different one the code related to the the connection.
 
-By marking a field with @org.mule.api.annotations.ConnectionStrategy the DevKit will make sure that you have an initialized object set when the Mule app is running.
+By marking a field with @org.mule.api.annotations.ConnectionStrategy the DevKit will make sure that you have an initialized object set when the Mule app is running and a request is made to your connector.
 
 If there is no need for authentication and/or connection management but you need to configure some things, you can have a class marked with @org.mule.api.annotations.components.Configuration.
 
@@ -142,33 +142,60 @@ To go deeper into this feature, check the http://www.mulesoft.org/documentation/
 
 Let start coding and create a connector that allows us to get the recently added elements.
 
-Since the {tutorial} service description says we don't need any kind of authentication to consume this information, this is the best operation we can use to start learning how to build our @Connector.
+Since the {tutorial} service description says we don't need any kind of authentication to consume the recently added recipies, this is the best operation we can use to start learning how to build our @Connector.
 
-==== I don't need a connection
+Create a new Anypoint Connector Project with the following configuration and don't forget to uncheck the default generation:
 
-As we showed in the connector shown at the previous section, if you don' need a connection, you can use the @Configuration annotation.
+image:new1.png[width="700"]
 
-In our {tutorial} service, according to the documentation, we don't need to authenticate in order to get a list of the most recently added elements.
+After that lets add our client dependency so that we can use it in our connector.
 
-So let' start creating
+In your pom.xml add:
+
+[source,xml]
+----
+	<dependencies>
+		<dependency>
+			<groupId>org.mule.tools.devkit.cookbook</groupId>
+			<version>1.0.0</version>
+			<artifactId>sdk-client</artifactId>
+		</dependency>
+	</dependencies>
+----
+
+==== I don't need a authentication
+
+Here even if we don't need to authenticate against our sandbox, we still need to initialize the client before consuming the service.
+
+Anypoint Connectors can be fully aware of http://http://www.mulesoft.org/documentation-3.2/display/32X/Taking+Advantage+of+Mule+Lifecycle[Mule's lifecycle] without implementing any Mule specific interface. There is one method annotation for each of the four phases of Mule lifecycle. If a method is annotated with one of these annotations it will be invoked during the Mule lifecycle phase that annotation represents.
+
+We are going to use the @Start to initialize our client.
 
 ==== Using connection Management
 
 Use v1 to show how connection management works 
 
+===== Testing Connection is Working
+
+Use v1 to show in studio how the Test Connection works
+
 ==== Using OAuthV2
 
-Use v1 to show how to implement OAuthV2 in your connector 
-
-==== Testing Connection is Working
-
-Use v1 to show in studio how the Test Connection works 
+Use v1 to show how to implement OAuthV2 in your connector
 
 === Adding configurable fields
 
+Adding configurable fields is also easy with the plugin since there are a couple of templates ready for you to use.
+
+Just type "conf" at the editor of your @Connector or your connection strategy and use Ctrl + Space bar to display the templates.
+
+In our case, lets at a configurable field in our @Configuration component with a default value for the endpoint our client will connect to.
+
+This way we will allow users to connector to different sandboxes.
+
 ==== @Optional
 
-Optional parameters or configurables, as the name states, are elements that are not required, and there for, there is no need for users to specify a value.
+Optional parameters or configurable ones, as the name states, are elements that are not required, and there for, there is no need for users to specify a value.
 
 Configurable fields can be specified inside @Connector or Connection Strategies Classes, or as parameters of @Processor methods inside a @Connector.
 
@@ -226,6 +253,20 @@ public String sayHi(String firstName,@Default("Unknown") String lastName ) {
 Another very important use of the @Default annotation is when building a connector that has DataSense.
 
 === Adding operations to my @Connector (@Processor)
+
+To add a processor simply type "proc" at the editor and use Ctrl + Space bar to display the templates and pick the simple processor.
+
+image::processor1.png[width="900"]
+
+Lets change it to reflect the getRecentlyAdded method signature, and there we have..our first connector, ready to be tested.
+
+==== Adding samples to your connector
+
+Let now add the example for it.
+
+First create the file pointed by the *{@sample ...}*
+
+Open the file and type "<" at the editor and use Ctrl + Space bar to display the templates and pick the one that best suite our operation.
 
 === Testing your @Processor
 
@@ -305,6 +346,7 @@ Transformers convert message payloads to formats expected by their destinations.
 
 Annotating a method with @Transformer signals the Mule DevKit to export this method functionality as a transformer. Transformers need to be declared in classes annotated with @Module or @Connector and many transformers can be declared in the one class. It is possible to declare transformers, message processors and message sources in the same class.
 The @Transformer annotated method must follow certain rules:
+
 * It must be static
 * It must be public
 * It must not return void
@@ -316,7 +358,7 @@ The @Transformer annotated method must follow certain rules:
 From String Json representation to Entity
 
 ==== Using the transformer in a Mule app
-Show how it is used with autodiscovery
+Show how it is used with auto discovery
 
 Show how it is used explicitly
 

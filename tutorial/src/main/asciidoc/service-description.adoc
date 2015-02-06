@@ -4,7 +4,7 @@
 
 The {tutorial} is software that helps users organize their recipies, so that they can always find how to cook the things they like.
 
-=== API
+=== API Description
 
 When the first version was released, the API allowed users to use the CRUD operations for single and multiple elements
 
@@ -35,17 +35,13 @@ For Single and multiple elements
 
 |===
 
-===== Authentication
+==== Authentication
 
 * Custom with username and password
 
 * OAuthV2
 
 === WSDL API
-
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-  Button with data-target
-</button>
 
 [role="collapse"]
 [role="well]
