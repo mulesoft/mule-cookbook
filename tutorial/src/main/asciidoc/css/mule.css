@@ -7127,6 +7127,32 @@ table > tbody > tr.reset-border > td {
 .mulesoft-datepicker i.glyphicon.glyphicon-chevron-right:before {
   content: "\f102";
 }
+h1 {
+  font-size: 40px;
+  padding-top: 15px;
+  padding-bottom: 5px;
+  color: #006892;
+  margin-top: 50px;
+}
+h2 {
+  font-size: 30px;
+  padding-top: 20px;
+  color: #414042;
+}
+h3 {
+  font-size: 25px;
+  padding-top: 20px;
+  color: #646569;
+}
+h4 {
+  font-size: 20px;
+  padding-top: 20px;
+  color: #646569;
+}
+h5 {
+  font-size: 16px;
+  color: #97999b;
+}
 img {
   display: block;
   margin-left: 50px;
@@ -7269,12 +7295,6 @@ table.tableblock .table {
 #content {
   margin-left: 280px;
   padding: 20px;
-}
-#content > .sect1 > h2 {
-  color: #006892;
-  font-size: xx-large;
-  padding-top: 20px;
-  padding-bottom: 10px;
 }
 pre {
   margin: 10px 30px 10px 10px;

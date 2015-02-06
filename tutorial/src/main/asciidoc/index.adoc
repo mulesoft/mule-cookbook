@@ -2,8 +2,9 @@
 
 :tutorial: Mule Cook Book
 
-= Anypoint Studio Devkit
 :TOC: right
+
+= Anypoint Studio Devkit
 
 = Tutorial
 
