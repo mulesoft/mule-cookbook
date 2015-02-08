@@ -110,6 +110,14 @@ To enable the DevKit view select from the top bar *Window* > *Show view* > *Othe
 
 image::enable-view.png[width="300", height="400"]
 
+=== I have an API to build the @Connector
+
+==== SDK Client
+
+==== SOAP API
+
+==== REST API
+
 === Understanding the a Connector structure
 
 Your Connector basically consists of a set of http://www.mulesoft.org/documentation/display/current/Message+Processors[message processors] and configurable elements users populate in order to consume the API your connector was developed for.
