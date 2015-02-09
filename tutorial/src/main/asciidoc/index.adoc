@@ -55,7 +55,7 @@ image::install-plugin-1.png[]
 
 2. In the Install menu > Work with, click the down arrow and click Anypoint Addons Update Site. Click the checkbox for Anypoint DevKit Plugin, and click Next.
 +
-image::install-plugin-2.png[]
+image::install-plugin-2.png[width="900"]
 
 3. Proceed through all remaining steps in the wizard to install.
 

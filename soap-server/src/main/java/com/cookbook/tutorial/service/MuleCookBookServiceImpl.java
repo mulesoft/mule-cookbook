@@ -1,5 +1,6 @@
 package com.cookbook.tutorial.service;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import java.util.*;
 import java.util.logging.Logger;
@@ -93,18 +94,22 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
         }
     }
 
+    @WebMethod(exclude = true)
     public IMuleCookBookService getServiceDAL() {
         return serviceDAL;
     }
 
+    @WebMethod(exclude = true)
     public void setServiceDAL(IMuleCookBookService serviceDAL) {
         this.serviceDAL = serviceDAL;
     }
 
+    @WebMethod(exclude = true)
     public Integer getExceptionRatio() {
         return exceptionRatio;
     }
 
+    @WebMethod(exclude = true)
     public void setExceptionRatio(Integer exceptionRatio) {
         this.exceptionRatio = exceptionRatio;
     }
