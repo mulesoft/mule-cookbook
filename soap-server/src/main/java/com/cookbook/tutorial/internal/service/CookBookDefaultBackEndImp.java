@@ -1,6 +1,7 @@
 package com.cookbook.tutorial.internal.service;
 
 import com.cookbook.tutorial.service.*;
+import org.apache.cxf.common.util.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import javax.jws.WebParam;
@@ -145,8 +146,31 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
 
     @Override public Description describeEntity(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity)
             throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
-        Description description = getIngredientDescription();
+        Description description = null;
+        if(entity.getId() == null || entity.getId()==0){
+            if( entity instanceof Ingredient){
+                description = getIngredientDescription();
+            }else{
+                description = getRecipeDescription();
+            }
+        } else {
+            description = getIngredientDescription();
+        }
         return description;
+    }
+
+    private Description getRecipeDescription() {
+        Description description = new Description();
+        List<Description> fields = new ArrayList<Description>();
+        description.setName("Recipe");
+        populateCookBookEntityFields(description, fields);
+        addRecipeIngredientFields(fields);
+        description.setInnerFields(fields);
+        return description;
+    }
+
+    private void addRecipeIngredientFields(List<Description> fields) {
+
     }
 
     private Description getIngredientDescription() {
@@ -180,6 +204,11 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         fields.add(field);
     }
 
+    /**
+     * Populate common CookBookEntity fields
+     * @param description The object representing the description of the CookBookEntity
+     * @param fields The list of fields we have to populate.
+     */
     private void populateCookBookEntityFields(Description description, List<Description> fields) {
         description.setDataType(DataType.OBJECT);
         description.setQuerable(true);

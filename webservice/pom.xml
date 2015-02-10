@@ -59,7 +59,7 @@
                 <executions>
                     <execution>
                         <id>generate-test-sources</id>
-                        <phase>generate-sources</phase>
+                        <phase>generate-test-sources</phase>
                         <configuration>
                             <className>com.cookbook.tutorial.service.IMuleCookBookService</className>
                             <genWsdl>true</genWsdl>
