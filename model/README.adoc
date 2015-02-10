@@ -1,3 +1,5 @@
 = Mule CookBook Model
 
 This is a basic model for the http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit[DevKit] Tutorial
+
+The two main entities are Ingredients and Recipes

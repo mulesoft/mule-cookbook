@@ -1,8 +1,12 @@
 :imagesdir: ./images
 
 :tutorial: Mule Cook Book
-
-:TOC: right
+:author: MuleSoft Inc.
+:toc: left
+:icons: font
+:numbered:
+:website: http://mulesoft.org/
+:muleJerveyVersion: 2.11
 
 = Anypoint Studio Devkit
 
@@ -114,9 +118,93 @@ image::enable-view.png[width="300", height="400"]
 
 ==== SDK Client
 
+If you have an SDK all you need to do is to include the maven dependency for your jar.
+
+For example in our case, to consume the SDK for the cookstore we can add the dependency.
+
+[source,xml,indent=0]
+----
+<dependencies>
+  <dependency>
+    <groupId>foo.sdk.group.id</groupId>
+    <artifactId>foo.sdk.artifact.id</artifactId>
+    <version>${sdk.version}</version>
+  </dependency>
+</dependencies>
+----
+
 ==== SOAP API
 
+If you have a wsdl, the easiest way to build a connector is to create a client using cxf http://cxf.apache.org/docs/wsdl-to-java.html[wsdl2java].
+
+You can configure the cxf goal in your pom.xml, very easily. The full documentation can by founded at http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html[cxf site].
+
+For example in your pom.xml you can add this (plus all the dependencies required) :
+[source,xml,indent=0]
+----
+<build>
+  <plugins>
+    <!-- CXF Code generation -->
+    <plugin>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-codegen-plugin</artifactId>
+      <version>${cxf.version}</version>
+      <executions>
+        <execution>
+          <phase>clean</phase> <!-- This is so it work with the Devkit -->
+          <goals>
+            <goal>wsdl2java</goal>
+          </goals>
+          <configuration>
+            <wsdlOptions>
+              <wsdlOption>
+                <wsdl>${basedir}/src/main/resources/wsdl/IMuleCookBookService.wsdl</wsdl>
+                <autoNameResolution>true</autoNameResolution>
+                <extendedSoapHeaders>false</extendedSoapHeaders>
+                <extraargs>
+                  <extraarg>-xjc-Xbg</extraarg>
+                   <extraarg>-xjc-Xcollection-setter-injector</extraarg>
+                  <extraarg>-p</extraarg>
+                  <extraarg>org.mule.modules.wsdl.api</extraarg>
+                </extraargs>
+              </wsdlOption>
+            </wsdlOptions>
+          </configuration>
+         </execution>
+      </executions>
+      <dependencies>
+        <!-- Boolean getters -->
+        <dependency>
+          <groupId>org.apache.cxf.xjcplugins</groupId>
+          <artifactId>cxf-xjc-boolean</artifactId>
+          <version>${cxf.version.boolean}</version>
+        </dependency>
+        <!-- Collection Setters -->
+        <dependency>
+          <groupId>net.java.dev.vcc.thirdparty</groupId>
+          <artifactId>collection-setter-injector</artifactId>
+          <version>0.5.0-1</version>
+        </dependency>
+      </dependencies>
+    </plugin>
+  </plugins>
+</build>
+----
+
+If you use the DevKit plugin it will generate everything for you, you just need to specify the wsdl location.
+
 ==== REST API
+In this case, you have to write your client by hand. We recommend using Jersey {muleJerveyVersion} since it is the one provided by mule.
+[source,xml,indent=0]
+----
+<dependencies>
+  <dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-client</artifactId>
+    <version>{muleJerveyVersion}</version>
+  </dependency>
+</dependencies>
+----
 
 === Understanding the a Connector structure
 
@@ -161,15 +249,15 @@ After that lets add our client dependency so that we can use it in our connector
 
 In your pom.xml add:
 
-[source,xml]
+[source,xml,indent=0]
 ----
-	<dependencies>
-		<dependency>
-			<groupId>org.mule.tools.devkit.cookbook</groupId>
-			<version>1.0.0</version>
-			<artifactId>sdk-client</artifactId>
-		</dependency>
-	</dependencies>
+<dependencies>
+  <dependency>
+    <groupId>org.mule.tools.devkit.cookbook</groupId>
+    <version>1.0.0</version>
+    <artifactId>sdk-client</artifactId>
+  </dependency>
+</dependencies>
 ----
 
 ==== I don't need a authentication
@@ -182,13 +270,19 @@ We are going to use the @Start to initialize our client.
 
 ==== Using connection Management
 
-Use v1 to show how connection management works 
+TODO
+
+Use v1 to show how connection management works
 
 ===== Testing Connection is Working
+
+TODO
 
 Use v1 to show in studio how the Test Connection works
 
 ==== Using OAuthV2
+
+TODO
 
 Use v1 to show how to implement OAuthV2 in your connector
 
@@ -275,38 +369,61 @@ Let now add the example for it.
 
 First create the file pointed by the *{@sample ...}*
 
+TODO
+
 Open the file and type "<" at the editor and use Ctrl + Space bar to display the templates and pick the one that best suite our operation.
 
 === Testing your @Processor
 
-Explain how to use our testing framework 
+TODO
+
+Explain how to use our testing framework
 
 == Improving error Handling
 
 === Exception Handling (@Handler)
-Use v1 with the @Handler to improve the errors returned to the user 
+
+TODO
+
+Use v1 with the @Handler to improve the errors returned to the user
 
 === How to handle session expiration (@ReconnectOn)
-Use v1 with the @ReconnectOn to show users how to create a @Processor capable of triggering reconnections 
+
+TODO
+
+Use v1 with the @ReconnectOn to show users how to create a @Processor capable of triggering reconnections
 
 include::datasense.adoc[]
 
 == Adding Pagination 
+
+TODO
+
 A quick example of Pagination with the query operation
 
 === Testing it
+
+TODO
 
 == Adding Batch 
 
 === What is it?
 
+TODO
+
 === Implement it in your connector
+
+TODO
 
 Add batch to the operations that handle list of elements
 
 === Testing it
 
+TODO
+
 == Installing my @Connector 
+
+TODO
 
 Show how to install it using the plugin.
 Show how to install it without it.
@@ -348,7 +465,11 @@ Show how to use it in an app. Video of user drag and dropping into the canvas an
 
 ==== Test my @Source
 
+TODO
+
 === Adding @Transformer
+
+TODO
 
 ==== What is a @Transformer
 Transformers convert message payloads to formats expected by their destinations. Mule ESB provides many standard transformers, which you configure using predefined elements and attributes in your Mule XML configuration file but sometimes is useful to build custom transformers.
@@ -364,18 +485,30 @@ The @Transformer annotated method must follow certain rules:
 * It must be inside a class annotated with @Connector
 
 ==== Creating a transformer 
+
+TODO
+
 From String Json representation to Entity
 
 ==== Using the transformer in a Mule app
+
+TODO
+
 Show how it is used with auto discovery
 
 Show how it is used explicitly
 
 ==== Test my @Transformer
 
+TODO
+
 === Improve UI Layout
 
+TODO
+
 ==== Using friendlyName
+
+TODO
 
 Show how to change the display name of the @Connector
 
