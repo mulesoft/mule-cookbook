@@ -1,5 +1,6 @@
 package com.cookbook.tutorial.service;
 
+import com.cookbook.tutorial.internal.service.CookBookDefaultBackEndImp;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,16 +11,17 @@ import static org.junit.Assert.assertSame;
 /**
  * Created by Mulesoft.
  */
-public class CRUDTestCases {
-    IMuleCookBookService server;
+public class CRUDTest {
+    MuleCookBookServiceImpl server;
     Ingredient created;
     @Before
     public void setup() throws SessionExpiredException, InvalidEntityException {
         server = new MuleCookBookServiceImpl();
-        Ingredient book = new Ingredient();
-        book.setName("Foo");
+        server.setServiceDAL(new CookBookDefaultBackEndImp());
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName("Foo");
 
-        created = (Ingredient) server.create(book);
+        created = (Ingredient) server.create(ingredient);
     }
 
     @Test

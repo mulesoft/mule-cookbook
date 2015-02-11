@@ -151,26 +151,85 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
             if( entity instanceof Ingredient){
                 description = getIngredientDescription();
             }else{
-                description = getRecipeDescription();
+                description = getRecipeDescription(entity.getId());
             }
         } else {
-            description = getIngredientDescription();
+            if( entity instanceof Ingredient){
+                throw new InvalidEntityException("You cannot describe specific ingredients");
+            }else{
+                description = getRecipeDescription(entity.getId());
+            }
         }
         return description;
     }
 
-    private Description getRecipeDescription() {
+    private Description getRecipeDescription(Integer id) throws SessionExpiredException, NoSuchEntityException {
         Description description = new Description();
         List<Description> fields = new ArrayList<Description>();
         description.setName("Recipe");
         populateCookBookEntityFields(description, fields);
-        addRecipeIngredientFields(fields);
+        addRecipeIngredientFields(fields,id);
         description.setInnerFields(fields);
         return description;
     }
 
-    private void addRecipeIngredientFields(List<Description> fields) {
+    private void addRecipeIngredientFields(List<Description> fields, Integer id) throws SessionExpiredException, NoSuchEntityException {
+        /*
+        private List<Ingredient> ingredients;
+        private Double prepTime;
+        private Double cookTime;
+        private List<String> directions;
+        */
+        Description field;
+        /*
+        private double quantity;
+        private UnitType unit;
+        */
+        field = new Description();
+        field.setName("ingredients");
+        field.setDataType(DataType.LIST);
+        field.setQuerable(true);
+        field.setSortable(true);
+        field.setInnerType("Ingredient");
+        fields.add(field);
+        if(id!=null && id!=0){
+            loadRecipeFields(field,id);
+        }
 
+        field = new Description();
+        field.setName("prepTime");
+        field.setDataType(DataType.DOUBLE);
+        field.setQuerable(true);
+        field.setSortable(true);
+        fields.add(field);
+
+        field = new Description();
+        field.setName("cookTime");
+        field.setDataType(DataType.DOUBLE);
+        field.setQuerable(true);
+        field.setSortable(true);
+        fields.add(field);
+
+        field = new Description();
+        field.setName("directions");
+        field.setDataType(DataType.LIST);
+        field.setQuerable(false);
+        field.setSortable(false);
+        field.setInnerType("String");
+        fields.add(field);
+    }
+
+    private void loadRecipeFields(Description field, Integer id) throws SessionExpiredException, NoSuchEntityException {
+        Recipe recipe= (Recipe) this.get(id);
+        List<Description> innerFields = new ArrayList<Description>(recipe.getIngredients().size());
+        for(Ingredient ing : recipe.getIngredients()){
+            Description description = getIngredientDescription();
+            description.setName(ing.getName());
+            description.setQuerable(false);
+            description.setSortable(false);
+            innerFields.add(description);
+        }
+        field.setInnerFields(innerFields);
     }
 
     private Description getIngredientDescription() {
@@ -206,6 +265,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
 
     /**
      * Populate common CookBookEntity fields
+     *
      * @param description The object representing the description of the CookBookEntity
      * @param fields The list of fields we have to populate.
      */
@@ -231,15 +291,15 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         field = new Description();
         field.setName("created");
         field.setDataType(DataType.DATE);
-        field.setQuerable(true);
-        field.setSortable(true);
+        field.setQuerable(false);
+        field.setSortable(false);
         fields.add(field);
 
         field = new Description();
         field.setName("lastModified");
         field.setDataType(DataType.DATE);
-        field.setQuerable(true);
-        field.setSortable(true);
+        field.setQuerable(false);
+        field.setSortable(false);
         fields.add(field);
 
         field = new Description();
