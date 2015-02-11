@@ -1,5 +1,7 @@
 package com.cookbook.tutorial.internal.service;
 
+import com.cookbook.tutorial.internal.dsql.CookBookQuery;
+import com.cookbook.tutorial.internal.dsql.Dsql;
 import com.cookbook.tutorial.internal.dsql.DsqlParser;
 import com.cookbook.tutorial.service.*;
 import org.apache.cxf.common.util.StringUtils;
@@ -35,7 +37,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
 
             Recipe recipe = new Recipe();
             recipe.setName("Apple Pie");
-            List<Ingredient> ingredients = new ArrayList<Ingredient>();
+            List<Ingredient> ingredients = new ArrayList<>();
             ingredients.add(ingredient);
             recipe.setIngredients(ingredients);
             this.create(recipe);
@@ -133,9 +135,9 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
             DsqlParser parser = Parboiled.createParser(DsqlParser.class);
             ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(query);
             if(result.hasErrors()){
-
                 throw new NoSuchEntityException(result.parseErrors.get(0).getErrorMessage());
             }
+            CookBookQuery cookBookQuery = Dsql.newInstance(query);
             return CollectionUtils.arrayToList(entities.values().toArray());
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
@@ -145,7 +147,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
 
     @Override public List<Recipe> getRecentlyAdded() {
         Collection<CookBookEntity> values = entities.values();
-        List<Recipe> recipies = new ArrayList<Recipe>();
+        List<Recipe> recipies = new ArrayList<>();
         for(CookBookEntity entity : values){
             if(entity instanceof Recipe){
                 recipies.add((Recipe)entity);
@@ -175,7 +177,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
 
     private Description getRecipeDescription(Integer id) throws SessionExpiredException, NoSuchEntityException {
         Description description = new Description();
-        List<Description> fields = new ArrayList<Description>();
+        List<Description> fields = new ArrayList<>();
         description.setName("Recipe");
         populateCookBookEntityFields(description, fields);
         addRecipeIngredientFields(fields,id);
@@ -231,7 +233,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
 
     private void loadRecipeFields(Description field, Integer id) throws SessionExpiredException, NoSuchEntityException {
         Recipe recipe= (Recipe) this.get(id);
-        List<Description> innerFields = new ArrayList<Description>(recipe.getIngredients().size());
+        List<Description> innerFields = new ArrayList<>(recipe.getIngredients().size());
         for(Ingredient ing : recipe.getIngredients()){
             Description description = getIngredientDescription();
             description.setName(ing.getName());
@@ -244,7 +246,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
 
     private Description getIngredientDescription() {
         Description description = new Description();
-        List<Description> fields = new ArrayList<Description>();
+        List<Description> fields = new ArrayList<>();
         description.setName("Ingredient");
         populateCookBookEntityFields(description, fields);
         addSpecificIngredientFields(fields);
