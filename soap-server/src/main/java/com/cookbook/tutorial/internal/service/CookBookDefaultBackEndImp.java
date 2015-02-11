@@ -1,7 +1,11 @@
 package com.cookbook.tutorial.internal.service;
 
+import com.cookbook.tutorial.internal.dsql.DsqlParser;
 import com.cookbook.tutorial.service.*;
 import org.apache.cxf.common.util.StringUtils;
+import org.parboiled.Parboiled;
+import org.parboiled.parserunners.ReportingParseRunner;
+import org.parboiled.support.ParsingResult;
 import org.springframework.util.CollectionUtils;
 
 import javax.jws.WebParam;
@@ -126,6 +130,12 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
     @Override public List<CookBookEntity> searchWithQuery(@WebParam(name = "query", targetNamespace = "") String query, @WebParam(name = "page", targetNamespace = "") Integer page,
             @WebParam(name = "pageSize", targetNamespace = "") Integer pageSize) throws NoSuchEntityException, SessionExpiredException {
         try {
+            DsqlParser parser = Parboiled.createParser(DsqlParser.class);
+            ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(query);
+            if(result.hasErrors()){
+
+                throw new NoSuchEntityException(result.parseErrors.get(0).getErrorMessage());
+            }
             return CollectionUtils.arrayToList(entities.values().toArray());
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();
