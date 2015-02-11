@@ -8,7 +8,7 @@ import org.parboiled.annotations.BuildParseTree;
  * Created by Mulesoft.
  */
 @BuildParseTree
-public class DsqlParser extends BaseParser<Object> {
+public class DsqlParser extends BaseParser<Object>{
 
     public Rule Statement(){
         return Sequence(
@@ -90,4 +90,5 @@ public class DsqlParser extends BaseParser<Object> {
     public Rule Spacing(){
         return ZeroOrMore(Ch(' '));
     }
+
 }

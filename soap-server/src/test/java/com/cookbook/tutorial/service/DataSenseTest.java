@@ -22,7 +22,7 @@ public class DataSenseTest {
         server.setServiceDAL(new CookBookDefaultBackEndImp());
         Recipe recipe = new Recipe();
         recipe.setName("FooRecipe");
-        List<Ingredient> ingredients = new ArrayList<Ingredient>();
+        List<Ingredient> ingredients = new ArrayList<>();
         Ingredient firsItem = new Ingredient();
         firsItem.setId(2);
         firsItem.setName("Orange");
