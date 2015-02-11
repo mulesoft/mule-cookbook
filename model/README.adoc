@@ -45,7 +45,7 @@ Description *- “1“ Description : fields
 Description *- “1“ DataType : dataType
 }
 class Description {
-private String name
+-String name
 -int entityId
 -DataType dataType
 -boolean isQuerable
