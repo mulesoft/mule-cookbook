@@ -83,6 +83,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.parboiled</groupId>
+            <artifactId>parboiled-java</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
             <version>${cxf.version}</version>
