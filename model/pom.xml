@@ -12,7 +12,91 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.url>${basedir}/site/apidocs/index.html</project.url>
     </properties>
+    <profiles>
+        <profile>
+            <id>javadoc</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>de.saumya.mojo</groupId>
+                        <artifactId>gem-maven-plugin</artifactId>
+                        <version>1.0.5</version>
+                        <configuration>
+                            <!-- align JRuby version with AsciidoctorJ to avoid redundant downloading -->
+                            <jrubyVersion>1.7.9</jrubyVersion>
+                            <gemHome>${project.build.directory}/gems</gemHome>
+                            <gemPath>${project.build.directory}/gems</gemPath>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>initialize</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <doclet>org.asciidoctor.Asciidoclet</doclet>
+                            <docletArtifact>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoclet</artifactId>
+                                <version>1.5.1</version>
+                            </docletArtifact>
+                            <overview>README.adoc</overview>
+                            <additionalparam>
+                                --base-dir ${project.basedir}
+                                --attribute "name=${project.name}"
+                                --attribute "version=${project.version}"
+                                --attribute "title-link=http://example.com[${project.name} ${project.version}]"
+                                --require asciidoctor-diagram
+                                --gem-path "${project.build.directory}/gems-provided"
+                                --attribute data-uri
+                            </additionalparam>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <repositories>
+                <repository>
+                    <id>rubygems-proxy-releases</id>
+                    <name>RubyGems.org Proxy (Releases)</name>
+                    <url>http://rubygems-proxy.torquebox.org/releases</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <dependencies>
+                <dependency>
+                    <groupId>rubygems</groupId>
+                    <artifactId>asciidoctor-diagram</artifactId>
+                    <version>1.2.1</version>
+                    <type>gem</type>
+                    <scope>provided</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>rubygems</groupId>
+                            <artifactId>asciidoctor</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.cxf</groupId>

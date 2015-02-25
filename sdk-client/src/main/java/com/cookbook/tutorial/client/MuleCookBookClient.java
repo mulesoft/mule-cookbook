@@ -12,7 +12,7 @@ import java.util.List;
 public class MuleCookBookClient {
 
     private IMuleCookBookService port;
-
+    private String token;
     public MuleCookBookClient() {
 
         IMuleCookBookServiceService ss = new IMuleCookBookServiceService();
@@ -28,50 +28,74 @@ public class MuleCookBookClient {
                 (BindingProvider.ENDPOINT_ADDRESS_PROPERTY), address);
     }
 
+    public void login(String username,String password) throws InvalidCredentialsException {
+        token = port.login(username,password);
+    }
+
     public List<Recipe> getRecentlyAdded() {
         return port.getRecentlyAdded();
     }
 
-    public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException {
-        return port.get(id);
+    public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException {
+        Get request = new Get();
+        request.setId(id);
+        return port.get(request, token).getReturn();
     }
 
     public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws NoSuchEntityException,
-            SessionExpiredException {
-        return port.searchWithQuery(query, page, pageSize);
+            SessionExpiredException, InvalidTokenException {
+        SearchWithQuery request = new SearchWithQuery();
+        request.setPage(page);
+        request.setPageSize(pageSize);
+        request.setQuery(query);
+        return port.searchWithQuery(request,token).getReturn();
     }
 
     public CookBookEntity update(CookBookEntity entity) throws NoSuchEntityException,
-            InvalidEntityException, SessionExpiredException {
-        return port.update(entity);
+            InvalidEntityException, SessionExpiredException, InvalidTokenException {
+        Update request = new Update();
+        request.setEntity(entity);
+        return port.update(request,token).getReturn();
     }
 
     public List<CookBookEntity> addList(List<CookBookEntity> entities) throws InvalidEntityException,
-            SessionExpiredException {
-        return port.addList(entities);
+            SessionExpiredException, InvalidTokenException {
+        AddList request = new AddList();
+        request.setEntities(entities);
+        return port.addList(request,token).getReturn();
     }
 
     public List<CookBookEntity> getList(List<Integer> entityIds) throws NoSuchEntityException,
-            SessionExpiredException {
-        return port.getList(entityIds);
+            SessionExpiredException, InvalidTokenException {
+        GetList getList = new GetList();
+        getList.setEntityIds(entityIds);
+        return port.getList(getList,token).getReturn();
     }
 
-    public void delete(int id) throws NoSuchEntityException, SessionExpiredException {
-        port.delete(id);
+    public void delete(int id) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException {
+        Delete delete=new Delete();
+        delete.setId(id);
+        port.delete(delete,token);
     }
 
     public List<CookBookEntity> updateList(List<CookBookEntity> entities) throws NoSuchEntityException,
-            InvalidEntityException, SessionExpiredException {
-        return port.updateList(entities);
+            InvalidEntityException, SessionExpiredException, InvalidTokenException {
+        UpdateList request = new UpdateList();
+        request.setEntities(entities);
+        return port.updateList(request,token).getReturn();
     }
 
     public void deleteList(List<Integer> entityIds) throws NoSuchEntityException,
-            SessionExpiredException {
-        port.deleteList(entityIds);
+            SessionExpiredException, InvalidTokenException {
+        DeleteList request = new DeleteList();
+        request.setEntityIds(entityIds);
+        port.deleteList(request,token);
     }
 
     public CookBookEntity create(CookBookEntity entity) throws InvalidEntityException,
-            SessionExpiredException {
-        return port.create(entity);
+            SessionExpiredException, InvalidTokenException {
+        Create request = new Create();
+        request.setEntity(entity);
+        return port.create(request,token).getReturn();
     }
 }

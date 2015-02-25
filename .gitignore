@@ -5,6 +5,7 @@
 *.iml
 *.ipr
 *.iws
+*.cache
 /target
 .DS_Store*
 .idea

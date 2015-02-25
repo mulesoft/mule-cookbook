@@ -19,7 +19,7 @@ import java.util.*;
  * This is a dummy implementation, none persistent. Will be valid until the server stops running.
  *
  */
-public class CookBookDefaultBackEndImp implements IMuleCookBookService {
+public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
     private Integer currentIndex = 0;
 
@@ -42,8 +42,6 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
             recipe.setIngredients(ingredients);
             this.create(recipe);
 
-        } catch (SessionExpiredException e) {
-            e.printStackTrace();
         } catch (InvalidEntityException e) {
             e.printStackTrace();
         }
@@ -52,7 +50,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
     private Map<Integer, CookBookEntity> entities = new HashMap<>();
 
     @Override public List<CookBookEntity> getList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds)
-            throws NoSuchEntityException, SessionExpiredException {
+            throws NoSuchEntityException{
         List<CookBookEntity> returnValue = new ArrayList<>();
         for (Integer id : entityIds) {
             returnValue.add(get(id));
@@ -60,14 +58,14 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         return returnValue;
     }
 
-    @Override public void delete(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException, SessionExpiredException {
+    @Override public void delete(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException {
         if (!entities.containsKey(id)) {
             throw new NoSuchEntityException();
         }
         entities.remove(id);
     }
 
-    @Override public CookBookEntity create(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws SessionExpiredException, InvalidEntityException {
+    @Override public CookBookEntity create(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws InvalidEntityException {
         if (entity.getId() != null) {
             InvalidEntity invalid = new InvalidEntity();
             throw new InvalidEntityException("Cannot specify Id at creation.", invalid);
@@ -85,7 +83,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
     }
 
     @Override public CookBookEntity update(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity)
-            throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
+            throws NoSuchEntityException, InvalidEntityException {
         if (!entities.containsKey(entity.getId())) {
             throw new NoSuchEntityException();
         }
@@ -93,7 +91,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         return entity;
     }
 
-    @Override public CookBookEntity get(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException, SessionExpiredException {
+    @Override public CookBookEntity get(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException {
 
         if (!entities.containsKey(id)) {
 
@@ -103,7 +101,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
     }
 
     @Override public List<CookBookEntity> updateList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities)
-            throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
+            throws NoSuchEntityException, InvalidEntityException {
         for (CookBookEntity entity : entities) {
             update(entity);
         }
@@ -115,14 +113,14 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         return null;
     }
 
-    @Override public void deleteList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds) throws NoSuchEntityException, SessionExpiredException {
+    @Override public void deleteList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds) throws NoSuchEntityException {
         for (Integer id : entityIds) {
             delete(id);
         }
     }
 
     @Override public List<CookBookEntity> addList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities)
-            throws SessionExpiredException, InvalidEntityException {
+            throws InvalidEntityException {
         for (CookBookEntity entity : entities) {
             create(entity);
         }
@@ -130,7 +128,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
     }
 
     @Override public List<CookBookEntity> searchWithQuery(@WebParam(name = "query", targetNamespace = "") String query, @WebParam(name = "page", targetNamespace = "") Integer page,
-            @WebParam(name = "pageSize", targetNamespace = "") Integer pageSize) throws NoSuchEntityException, SessionExpiredException {
+            @WebParam(name = "pageSize", targetNamespace = "") Integer pageSize) throws NoSuchEntityException {
         try {
             DsqlParser parser = Parboiled.createParser(DsqlParser.class);
             ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(query);
@@ -157,7 +155,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
     }
 
     @Override public Description describeEntity(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity)
-            throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
+            throws NoSuchEntityException, InvalidEntityException {
         Description description = null;
         if(entity.getId() == null || entity.getId()==0){
             if( entity instanceof Ingredient){
@@ -175,7 +173,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         return description;
     }
 
-    private Description getRecipeDescription(Integer id) throws SessionExpiredException, NoSuchEntityException {
+    private Description getRecipeDescription(Integer id) throws NoSuchEntityException {
         Description description = new Description();
         List<Description> fields = new ArrayList<>();
         description.setName("Recipe");
@@ -185,18 +183,10 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         return description;
     }
 
-    private void addRecipeIngredientFields(List<Description> fields, Integer id) throws SessionExpiredException, NoSuchEntityException {
-        /*
-        private List<Ingredient> ingredients;
-        private Double prepTime;
-        private Double cookTime;
-        private List<String> directions;
-        */
+    private void addRecipeIngredientFields(List<Description> fields, Integer id) throws NoSuchEntityException {
+
         Description field;
-        /*
-        private double quantity;
-        private UnitType unit;
-        */
+
         field = new Description();
         field.setName("ingredients");
         field.setDataType(DataType.LIST);
@@ -231,7 +221,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         fields.add(field);
     }
 
-    private void loadRecipeFields(Description field, Integer id) throws SessionExpiredException, NoSuchEntityException {
+    private void loadRecipeFields(Description field, Integer id) throws NoSuchEntityException {
         Recipe recipe= (Recipe) this.get(id);
         List<Description> innerFields = new ArrayList<>(recipe.getIngredients().size());
         for(Ingredient ing : recipe.getIngredients()){
@@ -287,12 +277,7 @@ public class CookBookDefaultBackEndImp implements IMuleCookBookService {
         description.setSortable(false);
 
         Description field = null;
-        /*
-        private Integer id;
-        private Date created;
-        private Date lastModified;
-        private String name;
-         */
+
         field = new Description();
         field.setName("id");
         field.setDataType(DataType.INTEGER);
