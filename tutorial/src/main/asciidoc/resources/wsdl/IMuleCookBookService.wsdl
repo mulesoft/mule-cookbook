@@ -70,6 +70,11 @@
       <xs:element minOccurs="0" name="return" type="tns:cookBookEntity"/>
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="faultBean">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="entity" type="tns:cookBookEntity"/>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="getList">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="entityIds" type="xs:int"/>
@@ -228,28 +233,11 @@
       <xs:enumeration value="UNIT_TYPE"/>
     </xs:restriction>
   </xs:simpleType>
-  <xs:element name="InvalidToken" type="tns:InvalidToken"/>
-  <xs:complexType name="InvalidToken">
-    <xs:sequence/>
-  </xs:complexType>
-  <xs:element name="SessionExpired" type="tns:SessionExpired"/>
-  <xs:complexType name="SessionExpired">
-    <xs:sequence/>
-  </xs:complexType>
-  <xs:element name="InvalidEntity" type="tns:InvalidEntity"/>
-  <xs:complexType name="InvalidEntity">
-    <xs:sequence>
-      <xs:element name="entity" nillable="true" type="tns:cookBookEntity"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="NoSuchEntity" type="tns:NoSuchEntity"/>
-  <xs:complexType name="NoSuchEntity">
-    <xs:sequence/>
-  </xs:complexType>
-  <xs:element name="InvalidCredentials" type="tns:InvalidCredentials"/>
-  <xs:complexType name="InvalidCredentials">
-    <xs:sequence/>
-  </xs:complexType>
+  <xs:element name="InvalidToken" nillable="true" type="tns:faultBean"/>
+  <xs:element name="SessionExpired" nillable="true" type="tns:faultBean"/>
+  <xs:element name="InvalidEntity" nillable="true" type="tns:faultBean"/>
+  <xs:element name="NoSuchEntity" nillable="true" type="tns:faultBean"/>
+  <xs:element name="InvalidCredentials" nillable="true" type="tns:faultBean"/>
   <xs:element name="token" nillable="true" type="xs:string"/>
 </xs:schema>
   </wsdl:types>

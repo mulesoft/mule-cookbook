@@ -3,6 +3,7 @@ package com.cookbook.tutorial.client;
 import com.cookbook.tutorial.service.*;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
+import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingProvider;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MuleCookBookClient {
     }
 
     public void login(String username,String password) throws InvalidCredentialsException {
-        token = port.login(username,password);
+        token = port.login(username, password);
     }
 
     public List<Recipe> getRecentlyAdded() {
