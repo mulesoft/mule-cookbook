@@ -176,7 +176,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
     }
 
     private void verifyToken(String token) throws InvalidTokenException {
-        if(token.equals(DEFAULT_TOKEN)){
+        if(!token.equals(DEFAULT_TOKEN)){
             throw new InvalidTokenException();
         }
     }

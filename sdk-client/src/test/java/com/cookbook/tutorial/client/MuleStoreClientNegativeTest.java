@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Created by Mulesoft.
  */
-public class MuleStoreClientTest {
+public class MuleStoreClientNegativeTest {
 
     MuleCookBookClient client;
     IMuleCookBookService server;
@@ -21,20 +21,16 @@ public class MuleStoreClientTest {
         System.out.println("Starting Server");
         MuleCookBookServiceImpl implementor = new MuleCookBookServiceImpl();
         implementor.setServiceDAL(new CookBookDefaultBackEndImp());
-        String address = "http://localhost:9091/cook-book";
+        String address = "http://localhost:9092/cook-book";
         Endpoint.publish(address, implementor);
         server = implementor;
-        //client = new MuleCookBookClient();
-        client = new MuleCookBookClient("http://localhost:9091/cook-book");
-        client.login("admin","admin");
+        client = new MuleCookBookClient("http://localhost:9092/cook-book");
+
     }
 
-    @Test
-    public void create() throws InvalidEntityException, SessionExpiredException, InvalidTokenException {
-        Ingredient Ingredient = new Ingredient();
-
-
-        assertNotNull(client.create(Ingredient).getId());
+    @Test(expected = InvalidCredentialsException.class)
+    public void create() throws InvalidCredentialsException {
+        client.login("asd", "asd");
     }
 
 }

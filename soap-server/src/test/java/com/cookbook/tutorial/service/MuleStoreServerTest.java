@@ -39,4 +39,8 @@ public class MuleStoreServerTest {
         server.create(create,token);
     }
 
+    @Test(expected = InvalidCredentialsException.class)
+    public void testInvalidCredentials() throws InvalidCredentialsException {
+        server.login("foo", "foo");
+    }
 }

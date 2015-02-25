@@ -67,8 +67,9 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
     @Override public CookBookEntity create(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws InvalidEntityException {
         if (entity.getId() != null) {
-            InvalidEntity invalid = new InvalidEntity();
-            throw new InvalidEntityException("Cannot specify Id at creation.", invalid);
+            FaultBean bean = new FaultBean();
+            bean.setEntity(entity);
+            throw new InvalidEntityException("Cannot specify Id at creation.", bean);
         }
         if (entity instanceof Ingredient) {
             Ingredient ingredient = (Ingredient) entity;
