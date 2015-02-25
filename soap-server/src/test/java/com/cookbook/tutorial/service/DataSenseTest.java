@@ -16,10 +16,12 @@ import static org.junit.Assert.*;
 public class DataSenseTest {
     MuleCookBookServiceImpl server;
     Recipe created;
+    String token;
     @Before
-    public void setup() throws SessionExpiredException, InvalidEntityException {
+    public void setup() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException, InvalidCredentialsException {
         server = new MuleCookBookServiceImpl();
         server.setServiceDAL(new CookBookDefaultBackEndImp());
+        token=server.login("admin","admin");
         Recipe recipe = new Recipe();
         recipe.setName("FooRecipe");
         List<Ingredient> ingredients = new ArrayList<>();
@@ -33,12 +35,19 @@ public class DataSenseTest {
         secondItem.setName("Cream");
         ingredients.add(secondItem);
         recipe.setIngredients(ingredients);
-        created = (Recipe) server.create(recipe);
+
+        Create request = new Create();
+        request.setEntity(recipe);
+        created = (Recipe) server.create(request,token).getReturn();
     }
 
     @Test
-    public void testDescribeIngredient() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException {
-        Description description = server.describeEntity(new Ingredient());
+    public void testDescribeIngredient() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+
+        DescribeEntity request = new DescribeEntity();
+        request.setEntity(new Ingredient());
+        Description description = server.describeEntity(request,token).getReturn();
+
         assertEquals(description.dataType,DataType.OBJECT);
         assertEquals(6,description.getInnerFields().size());
         assertTrue(description.getQuerable());
@@ -54,8 +63,10 @@ public class DataSenseTest {
     }
 
     @Test
-    public void testDescribeRecipe() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException {
-        Description description = server.describeEntity(new Recipe());
+    public void testDescribeRecipe() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+        DescribeEntity request = new DescribeEntity();
+        request.setEntity(new Recipe());
+        Description description = server.describeEntity(request,token).getReturn();
         assertEquals(description.dataType,DataType.OBJECT);
         assertEquals(8,description.getInnerFields().size());
         assertTrue(description.getQuerable());
@@ -84,18 +95,22 @@ public class DataSenseTest {
     }
 
     @Test(expected = InvalidEntityException.class)
-    public void getSpecificIngredientDescription() throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
+    public void getSpecificIngredientDescription() throws NoSuchEntityException, SessionExpiredException, InvalidEntityException, InvalidTokenException {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(7);
-        server.describeEntity(ingredient);
+        DescribeEntity request = new DescribeEntity();
+        request.setEntity(ingredient);
+        server.describeEntity(request,token);
     }
 
 
     @Test
-    public void getSpecificRecipeDescription() throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
+    public void getSpecificRecipeDescription() throws NoSuchEntityException, SessionExpiredException, InvalidEntityException, InvalidTokenException {
         Recipe recipe = new Recipe();
         recipe.setId(created.getId());
-        Description description=server.describeEntity(recipe);
+        DescribeEntity request = new DescribeEntity();
+        request.setEntity(recipe);
+        Description description=server.describeEntity(request,token).getReturn();
         Description ingredients = description.getInnerFields().get(4);
         List<Description> items =ingredients.getInnerFields();
         assertEquals(2, items.size());

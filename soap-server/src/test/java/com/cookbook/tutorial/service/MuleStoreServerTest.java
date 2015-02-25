@@ -12,25 +12,31 @@ import static org.junit.Assert.assertNotSame;
 public class MuleStoreServerTest {
 
     MuleCookBookServiceImpl server;
+    String token;
     @Before
-    public void setup(){
+    public void setup() throws InvalidCredentialsException {
+
         server = new MuleCookBookServiceImpl();
         server.setServiceDAL(new CookBookDefaultBackEndImp());
-
+        token=server.login("admin","admin");
     }
 
     @Test
-    public void testCreate() throws SessionExpiredException, InvalidEntityException {
+    public void testCreate() throws SessionExpiredException, InvalidEntityException, InvalidTokenException {
         CookBookEntity ingredient = new Ingredient();
-        CookBookEntity created= server.create(ingredient);
+        Create create = new Create();
+        create.setEntity(ingredient);
+        CookBookEntity created= server.create(create,token).getReturn();
         assertNotSame(created.getId(), 0);
     }
 
     @Test(expected = InvalidEntityException.class)
-    public void testCreateInvalidWithId() throws SessionExpiredException, InvalidEntityException {
-        CookBookEntity book = new Ingredient();
-        book.setId(1);
-        server.create(book);
+    public void testCreateInvalidWithId() throws SessionExpiredException, InvalidEntityException, InvalidTokenException {
+        CookBookEntity ingredient = new Ingredient();
+        ingredient.setId(1);
+        Create create=new Create();
+        create.setEntity(ingredient);
+        server.create(create,token);
     }
 
 }

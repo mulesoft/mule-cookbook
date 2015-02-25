@@ -2,7 +2,7 @@
 
 == {tutorial} Service Description
 
-The {tutorial} is software that helps users organize their recipies, so that they can always find how to cook the things they like.
+The {tutorial} is software that helps users organize their recipes, so that they can always find how to cook the things they like.
 
 === API Description
 
@@ -43,23 +43,12 @@ For Single and multiple elements
 
 === WSDL API
 
-[role="collapse"]
-[role="well]
-[source,xml]
-----
-
-include::{resourcesDir}/wsdl/IMuleCookBookService.wsdl[]
-
-----
+Download the link:{resourcesDir}/wsdl/IMuleCookBookService.wsdl[WSDL file] to see the full description.
 
 === REST API
 
-[source,yaml]
-----
+Download the link:{resourcesDir}/api.raml[RAML file] to see the full description.
 
-include::api.raml[]
-
-----
 === SDK API
 
 

@@ -26,10 +26,11 @@ public class MuleStoreClientTest {
         server = implementor;
         //client = new MuleCookBookClient();
         client = new MuleCookBookClient("http://localhost:9090/cook-book");
+        client.login("admin","admin");
     }
 
     @Test
-    public void create() throws InvalidEntityException, SessionExpiredException {
+    public void create() throws InvalidEntityException, SessionExpiredException, InvalidTokenException {
         Ingredient Ingredient = new Ingredient();
 
         assertNotNull(client.create(Ingredient).getId());

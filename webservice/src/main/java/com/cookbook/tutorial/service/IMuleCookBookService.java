@@ -33,38 +33,55 @@ import java.util.List;
 public interface IMuleCookBookService {
 
     @WSDLDocumentation("Create an ingredient or recipe.")
-    CookBookEntity create(@WebParam(name = "entity") CookBookEntity entity) throws InvalidEntityException, SessionExpiredException;
+    CookBookEntity create(@WebParam(name = "entity") CookBookEntity entity,
+            @WebParam(name = "token",header = true) String token) throws InvalidEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Updates an ingredient or recipe.")
-    CookBookEntity update(@WebParam(name = "entity") CookBookEntity entity) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
+    CookBookEntity update(@WebParam(name = "entity") CookBookEntity entity,
+            @WebParam(name = "token",header = true) String token) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Retrieves an ingredient or recipe.")
-    CookBookEntity get(@WebParam(name = "id") int entityId) throws NoSuchEntityException, SessionExpiredException;
+    CookBookEntity get(@WebParam(name = "id") int entityId,
+            @WebParam(name = "token",header = true) String token) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Deletes an ingredient or recipe.")
-    void delete(@WebParam(name = "id") int entityId) throws NoSuchEntityException, SessionExpiredException;
+    void delete(@WebParam(name = "id") int entityId,
+            @WebParam(name = "token",header = true) String token) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Creates a list of ingredient or recipe.")
-    List<CookBookEntity> addList(@WebParam(name = "entities") List<CookBookEntity> entities) throws InvalidEntityException, SessionExpiredException;
+    List<CookBookEntity> addList(@WebParam(name = "entities") List<CookBookEntity> entities,
+            @WebParam(name = "token",header = true) String token) throws InvalidEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Updates a list of ingredient or recipe.")
-    List<CookBookEntity> updateList(@WebParam(name = "entities") List<CookBookEntity> entities) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
+    List<CookBookEntity> updateList(@WebParam(name = "entities") List<CookBookEntity> entities,
+            @WebParam(name = "token",header = true) String token) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Retrieves a list of ingredient or recipe.")
-    List<CookBookEntity> getList(@WebParam(name = "entityIds") List<Integer> entityIds) throws NoSuchEntityException, SessionExpiredException;
+    List<CookBookEntity> getList(@WebParam(name = "entityIds") List<Integer> entityIds,
+            @WebParam(name = "token",header = true) String token) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Deletes a list of ingredient or recipe.")
-    void deleteList(@WebParam(name = "entityIds") List<Integer> entityIds) throws NoSuchEntityException, SessionExpiredException;
+    void deleteList(@WebParam(name = "entityIds") List<Integer> entityIds,@WebParam(name = "token",header = true) String token) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Searchs a list of ingredient or recipe matching a specific criteria.")
-    List<CookBookEntity> searchWithQuery(@WebParam(name = "query") String query, @WebParam(name = "page") Integer page, @WebParam(name = "pageSize") Integer pageSize)
-            throws NoSuchEntityException, SessionExpiredException;
+    List<CookBookEntity> searchWithQuery(@WebParam(name = "query") String query, @WebParam(name = "page") Integer page, @WebParam(name = "pageSize") Integer pageSize,
+            @WebParam(name = "token",header = true) String token)
+            throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
     @WSDLDocumentation("Retrieves a list of the recently added recipies.")
     List<Recipe> getRecentlyAdded();
 
     @WSDLDocumentation("Updates the quantities of a specific list.")
-    Recipe updateQuantities(@WebParam(name = "recipe") Recipe recipe) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
+    Recipe updateQuantities(@WebParam(name = "recipe") Recipe recipe,
+            @WebParam(name = "token",header = true) String token) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
-    @WSDLDocumentation("Describes an entity given the Id and entity Type.") Description describeEntity(@WebParam(name = "entity") CookBookEntity entity) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException;
+    @WSDLDocumentation("Describes an entity given the Id and entity Type.")
+    Description describeEntity(@WebParam(name = "entity") CookBookEntity entity,
+            @WebParam(name = "token",header = true) String token) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;
+
+    @WSDLDocumentation("Logs into system, and returns a token to be used in future requests.")
+    String login(@WebParam(name = "accountId") String accountId,@WebParam(name = "password") String password) throws InvalidCredentialsException;
+
+    @WSDLDocumentation("Logs out.")
+    void logout(@WebParam(name = "token") String token) throws InvalidTokenException;
 }
