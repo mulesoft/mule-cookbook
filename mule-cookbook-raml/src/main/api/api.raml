@@ -18,12 +18,17 @@ traits:
       page:
         required: false
         description: Current Page
+- secured:
+    headers:
+      token:
+        description: Send this header with the secret token
+        example: 71543fa6a11044b0a9f3a8354ddcb00e
 resourceTypes:
 - entity:
     description: Collection of available <<resourcePathName>> in Jukebox.
     get:
       description: Get a list of <<resourcePathName>>.
-      is: [searchable]
+      is: [searchable,secured]
       responses:
         200:
           body:
@@ -32,6 +37,7 @@ resourceTypes:
                 <<exampleCollection>>
     post:
       description: Creates a <<resourcePathName|!singularize>>.
+      is: [secured]
       responses:
         200:
           body:
@@ -45,6 +51,7 @@ resourceTypes:
         Get the <<resourcePathName|!singularize>>
         with <<resourcePathName|!singularize>>Id =
         {<<resourcePathName|!singularize>>Id}
+      is: [searchable,secured]
       responses:
         200:
           body:
@@ -54,6 +61,7 @@ resourceTypes:
     put:
       description: | 
         Add a new <<resourcePathName|!singularize>>
+      is: [secured]
       body:
         application/json:
           example: |
@@ -67,6 +75,7 @@ resourceTypes:
     delete:
       description: |
         Deletes a <<resourcePathName|!singularize>>.
+      is: [secured]
       responses:
         200:
            body:
@@ -75,6 +84,13 @@ resourceTypes:
                 {"message": "<<resourcePathName|!singularize>> not found" }
 - bulk-api:
     description: Handle multiple <<entityType>> in a single request
+    get:
+      description: Deletes a list of <<entityType>>
+      is: [secured]
+      responses:
+        200:
+          body:
+            application/json:
     post:
       description: Creates a list of <<entityType>>
       responses:
@@ -83,12 +99,14 @@ resourceTypes:
             application/json:
     put:
       description: Updates a list of <<entityType>>
+      is: [secured]
       responses:
         200:
           body:
             application/json:
     delete:
       description: Deletes a list of <<entityType>>
+      is: [secured]
       responses:
         200:
           body:

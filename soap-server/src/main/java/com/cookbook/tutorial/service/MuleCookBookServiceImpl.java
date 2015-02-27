@@ -2,6 +2,7 @@ package com.cookbook.tutorial.service;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.soap.SOAPBinding;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -13,10 +14,10 @@ import java.util.logging.Logger;
         portName = "IMuleCookBookServicePort",
         targetNamespace = "http://service.tutorial.cookbook.com/",
         wsdlLocation = "wsdl/IMuleCookBookService.wsdl")
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 public class MuleCookBookServiceImpl implements IMuleCookBookService {
 
     private static final Logger logger = Logger.getLogger(MuleCookBookServiceImpl.class.getName());
-    private static final String DEFAULT_TOKEN = "ASD9807123#123POI";
 
     private Integer currentIndex = 0;
     private Integer exceptionRatio = 3;
@@ -85,7 +86,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidCredentialsException {
         //Only work for admin admin
         if("admin".equals(accountId) && "admin".equals(password)){
-            return DEFAULT_TOKEN;
+            return Constants.DEFAULT_TOKEN;
         }
         throw new InvalidCredentialsException();
     }
@@ -176,10 +177,11 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
     }
 
     private void verifyToken(String token) throws InvalidTokenException {
-        if(!token.equals(DEFAULT_TOKEN)){
+        if(!token.equals(Constants.DEFAULT_TOKEN)){
             throw new InvalidTokenException();
         }
     }
+
     @WebMethod(exclude = true)
     public IDAOCookBookService getServiceDAL() {
         return serviceDAL;

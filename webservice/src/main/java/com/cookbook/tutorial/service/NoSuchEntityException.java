@@ -19,6 +19,10 @@ public class NoSuchEntityException extends RuntimeException {
 
     private FaultBean faultBean;
 
+    public NoSuchEntityException(){
+
+    }
+
     public NoSuchEntityException(String message, FaultBean faultBean, Throwable cause) {
         super(message, cause);
         this.faultBean = faultBean;

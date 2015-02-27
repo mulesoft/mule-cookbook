@@ -223,6 +223,11 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         fields.add(field);
         if(id!=null && id!=0){
             loadRecipeFields(field,id);
+        }else{
+            Description ingredient = getIngredientDescription();
+            List<Description> innerFields = new ArrayList<>(1);
+            innerFields.add(ingredient);
+            field.setInnerFields(innerFields);
         }
 
         field = new Description();

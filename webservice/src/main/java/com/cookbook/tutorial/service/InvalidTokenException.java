@@ -16,6 +16,10 @@ public class InvalidTokenException extends RuntimeException {
 
     private FaultBean faultBean;
 
+    public InvalidTokenException(){
+
+    }
+
     public InvalidTokenException(String message, FaultBean faultBean, Throwable cause) {
         super(message, cause);
         this.faultBean = faultBean;

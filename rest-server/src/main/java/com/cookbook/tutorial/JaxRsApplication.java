@@ -14,6 +14,7 @@ public class JaxRsApplication extends Application {
         HashSet<Class<?>> c = new HashSet<Class<?>>();
         c.add(IngredientResource.class);
         c.add(RecipeResource.class);
+        c.add(AuthorizeResource.class);
         classes = Collections.unmodifiableSet(c);
     }
     @Override
