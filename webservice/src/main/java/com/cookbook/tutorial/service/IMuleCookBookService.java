@@ -17,7 +17,9 @@
 package com.cookbook.tutorial.service;
 
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 import com.cookbook.tutorial.customization.Description;
 import org.apache.cxf.annotations.WSDLDocumentation;
@@ -30,6 +32,7 @@ import java.util.List;
  * Created by Mulesoft.
  */
 @WebService
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface IMuleCookBookService {
 
     @WSDLDocumentation("Create an ingredient or recipe.")

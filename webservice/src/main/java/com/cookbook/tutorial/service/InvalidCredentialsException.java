@@ -16,6 +16,10 @@ public class InvalidCredentialsException extends Exception {
 
     private FaultBean faultBean;
 
+    public InvalidCredentialsException(){
+
+    }
+
     public InvalidCredentialsException(String message, FaultBean faultBean, Throwable cause) {
         super(message, cause);
         this.faultBean = faultBean;

@@ -39,6 +39,10 @@ public class InvalidEntityException extends RuntimeException {
 
     private FaultBean faultBean;
 
+    public InvalidEntityException(){
+
+    }
+
     public InvalidEntityException(String message, FaultBean faultBean, Throwable cause) {
         super(message, cause);
         this.faultBean = faultBean;

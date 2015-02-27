@@ -14,20 +14,23 @@ import javax.xml.ws.Endpoint;
  
 public class MuleStoreServer {
 
+    private static final String address = "http://localhost:9090/cook-book";
+
     protected MuleStoreServer() throws Exception {
         System.out.println("Starting Server");
         MuleCookBookServiceImpl implementor = new MuleCookBookServiceImpl();
         implementor.setServiceDAL(new CookBookDefaultBackEndImp());
-        String address = "http://localhost:9090/cook-book";
+
         Endpoint.publish(address, implementor);
     }
 
     public static void main(String args[]) throws Exception {
         new MuleStoreServer();
-        System.out.println("Server ready..."); 
-        
-        Thread.sleep(6 * 60 * 1000);
-        System.out.println("Server exiting");
+        System.out.println("Application started.\n" +
+                "Try accessing " + address + "?wsdl in the browser.\n" +
+                "Hit enter to stop the application...");
+        System.in.read();
+        System.out.println("Server terminated");
         System.exit(0);
     }
 }
