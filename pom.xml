@@ -12,9 +12,10 @@
         <module>model</module>
         <module>webservice</module>
         <module>soap-server</module>
-        <module>mule-store-server</module>
+        <module>mule-cookbook-server</module>
         <module>sdk-client</module>
-    <module>tutorial</module>
-  </modules>
+        <module>rest-server</module>
+        <module>tutorial</module>
+    </modules>
 
 </project>

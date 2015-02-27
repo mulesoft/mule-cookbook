@@ -18,23 +18,28 @@ public class Dsql implements CookBookQuery{
     public static Dsql newInstance(String query){
         return new Dsql(query);
     }
+
     private Dsql(String query){
         matcher=queryPattern.matcher(query);
     }
 
-    @Override public boolean getAllFields() {
+    @Override
+    public boolean getAllFields() {
         return matcher.group(1).equals("ALL");
     }
 
-    @Override public List<String> getFields() {
+    @Override
+    public List<String> getFields() {
         return CollectionUtils.arrayToList(matcher.group(1).split(","));
     }
 
-    @Override public String getEntity() {
+    @Override
+    public String getEntity() {
         return matcher.group(2);
     }
 
-    @Override public List<String> getCriteria() {
+    @Override
+    public List<String> getCriteria() {
         if(matcher.groupCount()>2){
             return CollectionUtils.arrayToList(matcher.group(4).split(","));
         }

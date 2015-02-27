@@ -34,7 +34,7 @@ public class DsqlParser extends BaseParser<Object>{
     }
 
     public Rule Entities(){
-        return FirstOf(String("INGREDIENT"),String("RECIPE"));
+        return FirstOf(String(Constants.INGREDIENT),String(Constants.RECIPE));
     }
 
     public Rule Clause(){
