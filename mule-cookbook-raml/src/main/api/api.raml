@@ -3,8 +3,8 @@ title: Mule Store
 version: 1.0.0
 baseUri: http://server/api/{version}
 schemas:
-- book: !include mule-store-book.schema
-- author: !include mule-store-author.schema
+- ingredient: !include mule-ingredient.schema
+- recipe: !include mule-recipe.schema
 traits:
 - searchable:
     queryParameters:
@@ -28,7 +28,8 @@ resourceTypes:
         200:
           body:
             application/json:
-              example: !include <<exampleCollection>>
+              example: |
+                <<exampleCollection>>
     post:
       description: Creates a <<resourcePathName|!singularize>>.
       responses:
@@ -48,7 +49,8 @@ resourceTypes:
         200:
           body:
             application/json:
-              example: !include <<exampleItem>>
+              example: |
+                <<exampleItem>>
     put:
       description: | 
         Add a new <<resourcePathName|!singularize>>
@@ -74,58 +76,46 @@ resourceTypes:
 - bulk-api:
     description: Handle multiple <<entityType>> in a single request
     post:
-      description: Creates a list of books
+      description: Creates a list of <<entityType>>
       responses:
         200:
           body:
             application/json:
-              example: !include mule-store-book-collection.sample
     put:
-      description: Updates a list of book
+      description: Updates a list of <<entityType>>
       responses:
         200:
           body:
             application/json:
-              example: !include mule-store-book-collection.sample
     delete:
-      description: Deletes a list of books
+      description: Deletes a list of <<entityType>>
       responses:
         200:
           body:
             application/json:
-              example: !include mule-store-book-collection.sample
-/authors:
+/ingredient:
   type:
     entity:
-      exampleCollection: !include mule-store-book-collection.sample
-      exampleItem: !include mule-store-book.sample
+      exampleCollection: !include mule-ingredient-collection.sample
+      exampleItem: !include mule-ingredient.sample
   /{id}:
     type:
       entity-item: 
-        exampleItem: !include mule-store-book.sample
+        exampleItem: !include mule-ingredient.sample
   /bulk:
     type:
       bulk-api: 
-        entityType: authors
-/books:
+        entityType: ingredient
+/recipe:
   type:
     entity:
-      exampleCollection: !include mule-store-book-collection.sample
-      exampleItem: !include mule-store-book.sample
+      exampleCollection: !include mule-ingredient-collection.sample
+      exampleItem: !include mule-ingredient.sample
   /{id}:
     type:
       entity-item: 
-        exampleItem: !include mule-store-book.sample
+        exampleItem: !include mule-ingredient.sample
   /bulk:
     type:
       bulk-api: 
-        entityType: books
-/sales:
-  type:
-    entity:
-      exampleCollection: !include mule-store-book-collection.sample
-      exampleItem: !include mule-store-book.sample
-  /{id}:
-    type:
-      entity-item: 
-        exampleItem: mule-store-book.sample
+        entityType: recipe

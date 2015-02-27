@@ -1,5 +1,6 @@
 package com.cookbook.tutorial.internal.service;
 
+import com.cookbook.tutorial.internal.dsql.Constants;
 import com.cookbook.tutorial.internal.dsql.CookBookQuery;
 import com.cookbook.tutorial.internal.dsql.Dsql;
 import com.cookbook.tutorial.internal.dsql.DsqlParser;
@@ -11,6 +12,8 @@ import org.parboiled.support.ParsingResult;
 import org.springframework.util.CollectionUtils;
 
 import javax.jws.WebParam;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import java.util.*;
 
 /**
@@ -33,16 +36,29 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
             Ingredient ingredient =  new Ingredient();
             ingredient.setName("Apple");
             ingredient.setUnit(UnitType.UNIT);
+            GregorianCalendar c = new GregorianCalendar();
+            c.setTime(new Date());
+            ingredient.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
             this.create(ingredient);
 
             Recipe recipe = new Recipe();
-            recipe.setName("Apple Pie");
+            recipe.setName("Baked Apples");
+            recipe.setCookTime(20.0);
+            recipe.setPrepTime(30.0);
+            List<String> directions= new ArrayList<>();
+            directions.add("Cut the Apples");
+            directions.add("Put them in the oven");
+            directions.add("Remove from the oven after 20.0 minutes");
+            recipe.setDirections(directions);
             List<Ingredient> ingredients = new ArrayList<>();
             ingredients.add(ingredient);
             recipe.setIngredients(ingredients);
+            recipe.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
             this.create(recipe);
 
         } catch (InvalidEntityException e) {
+            e.printStackTrace();
+        } catch (DatatypeConfigurationException e) {
             e.printStackTrace();
         }
     }
@@ -128,7 +144,8 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         return entities;
     }
 
-    @Override public List<CookBookEntity> searchWithQuery(@WebParam(name = "query", targetNamespace = "") String query, @WebParam(name = "page", targetNamespace = "") Integer page,
+    @Override
+    public List<CookBookEntity> searchWithQuery(@WebParam(name = "query", targetNamespace = "") String query, @WebParam(name = "page", targetNamespace = "") Integer page,
             @WebParam(name = "pageSize", targetNamespace = "") Integer pageSize) throws NoSuchEntityException {
         try {
             DsqlParser parser = Parboiled.createParser(DsqlParser.class);
@@ -136,7 +153,16 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
             if(result.hasErrors()){
                 throw new NoSuchEntityException(result.parseErrors.get(0).getErrorMessage());
             }
+            List<CookBookEntity> searchResult = new ArrayList<>();
             CookBookQuery cookBookQuery = Dsql.newInstance(query);
+            if(cookBookQuery.getEntity().equals(Constants.INGREDIENT)){
+                for(CookBookEntity entity : entities.values()){
+                    if(entity instanceof Ingredient){
+                        searchResult.add(entity);
+                    }
+                }
+                return searchResult;
+            }
             return CollectionUtils.arrayToList(entities.values().toArray());
         } catch (java.lang.Exception ex) {
             ex.printStackTrace();

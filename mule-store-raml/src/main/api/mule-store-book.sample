@@ -1,8 +1,0 @@
-{
-  "id" : 1,
-  "isbn" : "IS908234-SADSD",
-  "description" : "This book shows how to create a RAML API",
-  "title" : "My First RAML API",
-  "authorId" : 0,
-  "genre" : "GUIDE"
-}
