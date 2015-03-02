@@ -35,7 +35,7 @@ public class Main {
         System.out.println("\"Hello World\" Jersey Example Application");
         HttpServer server = startServer();
         System.out.println("Application started.\n" +
-                "Try accessing " + getBaseURI() + "helloworld in the browser.\n" +
+                "Try accessing " + getBaseURI() + "ingredient in the browser.\n" +
                 "Hit enter to stop the application...");
         System.in.read();
         server.stop(0);
