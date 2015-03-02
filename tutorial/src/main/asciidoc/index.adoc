@@ -217,9 +217,13 @@ Lets check the structure of this dummy connector:
 
 In this image you will be able to see how most of the code is mapped into UI elements.
 
+TODO: Use 2 images of screenshots with the default layout
+
 image::split-1-high.png[caption="Figure 1: ", title="View Structure and UI", alt="Image1", width="300", height="200", link="images/split-1-high.png"]
 
 In this one, you can check how the code matches to XML and other UI elements.
+
+TODO: Use 2 images of screenshots with the default layout
 
 image::split-2-high.png[caption="Figure 2: ", title="View configuration and XML", alt="Image2", width="300", height="200", link="images/split-2-high.png"]
 
@@ -254,8 +258,8 @@ In your pom.xml add:
 <dependencies>
   <dependency>
     <groupId>org.mule.tools.devkit.cookbook</groupId>
-    <version>1.0.0</version>
     <artifactId>sdk-client</artifactId>
+    <version>1.0.0</version>
   </dependency>
 </dependencies>
 ----
@@ -264,9 +268,21 @@ In your pom.xml add:
 
 Here even if we don't need to authenticate against our sandbox, we still need to initialize the client before consuming the service.
 
-Anypoint Connectors can be fully aware of http://http://www.mulesoft.org/documentation-3.2/display/32X/Taking+Advantage+of+Mule+Lifecycle[Mule's lifecycle] without implementing any Mule specific interface. There is one method annotation for each of the four phases of Mule lifecycle. If a method is annotated with one of these annotations it will be invoked during the Mule lifecycle phase that annotation represents.
+Anypoint Connectors can be fully aware of http://www.mulesoft.org/documentation/display/34X/Integrating+Connectors+with+the+Mule+Lifecycle[Mule's lifecycle] without implementing any Mule specific interface. There is one method annotation for each of the four phases of Mule lifecycle. If a method is annotated with one of these annotations it will be invoked during the Mule lifecycle phase that annotation represents.
 
 We are going to use the @Start to initialize our client.
+
+[source,java]
+----
+    private MuleCookBookClient client;
+
+    @Start
+    public void initialize(){
+    	client = new MuleCookBookClient(connectionStrategy.getAddress());
+    }
+----
+
+If you want, you can continue and directly implement your connector with connection management, if not, just go to the add your first <<configurable,configurable>>.
 
 ==== Using connection Management
 
@@ -285,16 +301,22 @@ Use v1 to show in studio how the Test Connection works
 TODO
 
 Use v1 to show how to implement OAuthV2 in your connector
-
+[[configurable]]
 === Adding configurable fields
 
 Adding configurable fields is also easy with the plugin since there are a couple of templates ready for you to use.
 
 Just type "conf" at the editor of your @Connector or your connection strategy and use Ctrl + Space bar to display the templates.
 
+image::config1.png[width="900"]
+
 In our case, lets at a configurable field in our @Configuration component with a default value for the endpoint our client will connect to.
 
-This way we will allow users to connector to different sandboxes.
+This way we will allow users to connect to different sandboxes.
+
+image::config2.png[width="900"]
+
+We are now ready to add our first processor. If you want a little more details about configurable fields, continue reading. If not, lets just go to add our <<processor,processor>>.
 
 ==== @Optional
 
@@ -354,7 +376,7 @@ public String sayHi(String firstName,@Default("Unknown") String lastName ) {
 ----
 
 Another very important use of the @Default annotation is when building a connector that has DataSense.
-
+[[processor]]
 === Adding operations to my @Connector (@Processor)
 
 To add a processor simply type "proc" at the editor and use Ctrl + Space bar to display the templates and pick the simple processor.
@@ -363,21 +385,57 @@ image::processor1.png[width="900"]
 
 Lets change it to reflect the getRecentlyAdded method signature, and there we have..our first connector, ready to be tested.
 
+image::processor2.png[width="900"]
+
 ==== Adding samples to your connector
 
-Let now add the example for it.
+Lets now add the example for it.
 
 First create the file pointed by the *{@sample ...}*
 
-TODO
+NOTE: When you add an example, the name provided here is the name that narrows the example in the file. Inside of it you have to put an example of the @Processor.
 
-Open the file and type "<" at the editor and use Ctrl + Space bar to display the templates and pick the one that best suite our operation.
+If you have the the Javadoc check enabled, DevKit plugin will mark the missing example as an error and provide a quick fix for us to easily add the example.
+
+Otherwise, open the file and type "<" at the editor and use Ctrl + Space bar to display the templates and pick the one that best suite our operation.
+
+image::sample1.png[width="900"]
+
+Our example in this case looks like this:
+
+[source,xml,indent=0]
+----
+<!-- BEGIN_INCLUDE(cook-book:getRecentlyAdded) -->
+	<cook-book:get-recently-added/>
+<!-- END_INCLUDE(cook-book:getRecentlyAdded) -->
+----
 
 === Testing your @Processor
 
-TODO
+In order to test our @Processor, lets start by generating the required files for us to test the operation, as if it was being used inside a mule application.
 
-Explain how to use our testing framework
+Right click the root of your project and select *Anypoint Connector > Generate Tests*.
+
+Select the operation you want to use to generate the test, and all the files you want to create.
+
+After the generation ends, just modify the test to make the corresponding setup and assertions.
+
+image::generate-tests1.png[width="900"]
+
+Start the server, and run your test now.
+
+It is all green!
+
+image::generate-tests2.png[width="900"]
+
+So..what just happened?
+
+* We run a mule app that contains one simple flow with the xml that represents our operation.
+* A connector instance was created and using our configuration, it connected to the server.
+* The operation was executed and the payload now is the result of that operation
+* We retrieve the payload, cast it to what we know the result is and started making the relevant assertions.
+
+To go deeper into our testing best practices please read the full http://www.mulesoft.org/documentation/display/current/Developing+DevKit+Connector+Tests[testing documentation].
 
 == Improving error Handling
 
@@ -435,6 +493,10 @@ By simple putting a breakpoint on your source code of the connector, you will be
 If your connector is a Community connector the source code will be shipped automatically in the installed connector. 
 If your connector is an Enterprise, you will need to manually attach the source code of your jar.
 WARNING: In order to correctly debug your code, take into account that the Mule app you are running is using the latest installed version, so if you did some changes, and you want to debug the Mule app, you need to install the connector again.
+
+Debugging your connector when running your test, is as simple as debugging any java class.
+
+You just need to put a break point on your connector
 
 === Documenting my @Connector
 Show how to document your connector and the samples. < Current Doc >
