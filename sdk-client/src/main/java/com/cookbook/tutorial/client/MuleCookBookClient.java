@@ -3,14 +3,13 @@ package com.cookbook.tutorial.client;
 import com.cookbook.tutorial.service.*;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 
-import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingProvider;
 import java.util.List;
 
 /**
  * Created by Mulesoft.
  */
-public class MuleCookBookClient {
+public class MuleCookBookClient implements IMuleCookBookClient{
 
     private IMuleCookBookService port;
     private String token;
