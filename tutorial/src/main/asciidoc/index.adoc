@@ -1,5 +1,5 @@
 :imagesdir: ./images
-
+:resourcesDir: resources
 :tutorial: Mule Cook Book
 :author: MuleSoft Inc.
 :toc: left
@@ -210,20 +210,19 @@ In this case, you have to write your client by hand. We recommend using Jersey {
 
 Your Connector basically consists of a set of http://www.mulesoft.org/documentation/display/current/Message+Processors[message processors] and configurable elements users populate in order to consume the API your connector was developed for.
 
-
 After you install your connector by right-clicking the connector and clicking *Anypoint Connector* > *Install or Update*, completing the prompts, and restarting Studio, you will be able to properly open the Mule application that is being used in the connector test that was generated for your connector.
 
 Lets check the structure of this dummy connector:
 
 In this image you will be able to see how most of the code is mapped into UI elements.
 
-TODO: Use 2 images of screenshots with the default layout
+// TODO: Use 2 images of screenshots with the default layout
 
 image::split-1-high.png[caption="Figure 1: ", title="View Structure and UI", alt="Image1", width="300", height="200", link="images/split-1-high.png"]
 
 In this one, you can check how the code matches to XML and other UI elements.
 
-TODO: Use 2 images of screenshots with the default layout
+// TODO: Use 2 images of screenshots with the default layout
 
 image::split-2-high.png[caption="Figure 2: ", title="View configuration and XML", alt="Image2", width="300", height="200", link="images/split-2-high.png"]
 
@@ -274,13 +273,9 @@ We are going to use the @Start to initialize our client.
 
 [source,java]
 ----
-    private MuleCookBookClient client;
-
-    @Start
-    public void initialize(){
-    	client = new MuleCookBookClient(connectionStrategy.getAddress());
-    }
+include::{resourcesDir}/java/v1/CookBookConnector.java[lines=30..35]
 ----
+Check the full link:{resourcesDir}/java/v1/CookBookConnector.java[source code].
 
 If you want, you can continue and directly implement your connector with connection management, if not, just go to the add your first <<configurable,configurable>>.
 
@@ -305,14 +300,18 @@ We need to implement 4 methods:
 * *@ValidateConnection:* This method should check your connection is alive.
 * *@ConnectionIdentifier:* This method just return a dummy value currently.
 
-
 After our @Connector looks like this:
 
-//TODO: Include test @Connector v2
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v2/CookBookConnector.java[]
+----
 
 And our @ConnectionStrategy like this:
-
-//TODO: Include test @ConnectionManagement v2
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v2/ConnectorConnectionStrategy.java[]
+----
 
 But if we try to run our tests, now we will see that the test while fail with a SAXParseException. because we need to add username and password to our configuration now.
 
@@ -326,11 +325,11 @@ In our mule app, we just need to add a configuration that has bad credentials.
 
 The we just execute the test and make the assertions.
 
-//TODO: Include test code
+image::connectivityTest.png[width="900"]
 
 ==== Using OAuthV2
 
-TODO
+// TODO Sample with OAuthV2
 
 Use v1 to show how to implement OAuthV2 in your connector
 [[configurable]]
@@ -485,35 +484,13 @@ Use v1 with the @ReconnectOn to show users how to create a @Processor capable of
 
 include::datasense.adoc[]
 
-== Adding Pagination 
+include::pagination.adoc[]
 
-TODO
+include::batch.adoc[]
 
-A quick example of Pagination with the query operation
+== Installing my @Connector
 
-=== Testing it
-
-TODO
-
-== Adding Batch 
-
-=== What is it?
-
-TODO
-
-=== Implement it in your connector
-
-TODO
-
-Add batch to the operations that handle list of elements
-
-=== Testing it
-
-TODO
-
-== Installing my @Connector 
-
-TODO
+// TODO
 
 Show how to install it using the plugin.
 Show how to install it without it.
@@ -524,6 +501,7 @@ After successfully installing your connector, you can start using your connector
 By simple putting a breakpoint on your source code of the connector, you will be able to debug it.
 If your connector is a Community connector the source code will be shipped automatically in the installed connector. 
 If your connector is an Enterprise, you will need to manually attach the source code of your jar.
+
 WARNING: In order to correctly debug your code, take into account that the Mule app you are running is using the latest installed version, so if you did some changes, and you want to debug the Mule app, you need to install the connector again.
 
 Debugging your connector when running your test, is as simple as debugging any java class.
@@ -534,7 +512,9 @@ You just need to put a break point on your connector
 Show how to document your connector and the samples. < Current Doc >
 
 === Sharing my @Connector
+
 Connector, as a component that can be installed in Anypoint Studio, is an Update Site.
+
 Update Sites are used to organize and export features so they can be installed into Eclipse applications.
 
 When the site is built, the included features (along with all plug-ins part of those features) will be exported into an installable form. The exported plug-ins and features will be put into two folders "plug-ins" and "features". Two other files, "content.xml" and "artifacts.xml" will also be generated and contain metadata for the exported files that make installing easier. These files, along with "site.xml", collectively form an Eclipse update site. To make the update site available to others you must make all these files available in a shared directory or web site.
@@ -559,50 +539,17 @@ Show how to use it in an app. Video of user drag and dropping into the canvas an
 
 ==== Test my @Source
 
-TODO
+// TODO
 
-=== Adding @Transformer
-
-TODO
-
-==== What is a @Transformer
-Transformers convert message payloads to formats expected by their destinations. Mule ESB provides many standard transformers, which you configure using predefined elements and attributes in your Mule XML configuration file but sometimes is useful to build custom transformers.
-
-Annotating a method with @Transformer signals the Mule DevKit to export this method functionality as a transformer. Transformers need to be declared in classes annotated with @Module or @Connector and many transformers can be declared in the one class. It is possible to declare transformers, message processors and message sources in the same class.
-The @Transformer annotated method must follow certain rules:
-
-* It must be static
-* It must be public
-* It must not return void
-* It must not return java.lang.Object
-* It must receive exactly one argument
-* It must be inside a class annotated with @Connector
-
-==== Creating a transformer 
-
-TODO
-
-From String Json representation to Entity
-
-==== Using the transformer in a Mule app
-
-TODO
-
-Show how it is used with auto discovery
-
-Show how it is used explicitly
-
-==== Test my @Transformer
-
-TODO
+include::transformer.adoc[]
 
 === Improve UI Layout
 
-TODO
+// TODO
 
 ==== Using friendlyName
 
-TODO
+// TODO
 
 Show how to change the display name of the @Connector
 

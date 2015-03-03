@@ -1,0 +1,16 @@
+== Adding Batch
+
+=== What is it?
+
+TODO
+
+=== Implement it in your connector
+
+TODO
+
+Add batch to the operations that handle list of elements
+
+=== Testing it
+
+TODO
+

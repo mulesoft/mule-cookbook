@@ -1,4 +1,4 @@
-:mule: Mule Store
+:mule: Mule Cook Book
 
 == Adding DataSense
 

@@ -1,59 +1,3 @@
-:resourcesDir: resources
-
-== {tutorial} Service Description
-
-The {tutorial} is software that helps users organize their recipes, so that they can always find how to cook the things they like.
-
-=== API Description
-
-When the first version was released, the API allowed users to use the CRUD operations for single and multiple elements
-
-[cols="2*", options="header"]
-|===
-|Entities
-|Operations
-
-|
-- Ingredient
-
-- Recipe
-
-|
-- Create
-
-- Retrieve
-
-- Update
-
-- Delete
-
-For Single and multiple elements
-
-- Get Recently Added
-
-- Update quantities in a recipe
-
-|===
-
-==== Authentication
-
-* Custom with username and password
-
-* OAuthV2
-
-=== WSDL API
-
-Download the link:{resourcesDir}/wsdl/IMuleCookBookService.wsdl[WSDL file] to see the full description.
-
-=== REST API
-
-Download the link:{resourcesDir}/api.raml[RAML file] to see the full description.
-
-=== SDK API
-
-
-[source,java]
-----
 package com.cookbook.tutorial.client;
 
 import com.cookbook.tutorial.service.*;
@@ -94,6 +38,3 @@ public interface IMuleCookBookClient {
     public CookBookEntity create(CookBookEntity entity) throws InvalidEntityException,
             SessionExpiredException, InvalidTokenException;
 }
-
-
-----
