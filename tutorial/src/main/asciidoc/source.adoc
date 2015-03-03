@@ -1,0 +1,15 @@
+=== Adding @Source
+
+==== What is a @Source
+In some cases it is necessary to create Message Sources instead of Message Processors.
+
+Basically, a Message Source receives or generates new messages to be processed by Mule.
+One of the use cases of Message Sources is implementing Streaming APIs. The @Source annotation marks a method inside a @Connector annotated class as callable from a Mule flow and capable of generating Mule events. Each marked method will have a Message Source generated. The method must receive a SourceCallback as one of its arguments that represents the next message processor in the chain. It does not matter the order in which this parameter appears as long it is present in the method signature.
+
+==== Create a @Source
+Create a @Source that consumes the Get Recently Updated on the Connector
+Show how to use it in an app. Video of user drag and dropping into the canvas and configuring it.
+
+==== Test my @Source
+
+// TODO

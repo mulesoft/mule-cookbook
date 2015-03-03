@@ -472,15 +472,15 @@ To go deeper into our testing best practices please read the full http://www.mul
 
 === Exception Handling (@Handler)
 
-TODO
+The http://www.mulesoft.org/documentation/display/current/Annotation+Reference#AnnotationReference-handleran[@Handler] feature, is a very useful feature when you want to avoid duplicated code when handling exceptions, and also so that your connector code is clean.
 
-Use v1 with the @Handler to improve the errors returned to the user
+
 
 === How to handle session expiration (@ReconnectOn)
 
-TODO
+There is no need for users to add custom code on their mule apps in order to handle session expirations. DevKit provides a mechanism to do this in a clean way.
 
-Use v1 with the @ReconnectOn to show users how to create a @Processor capable of triggering reconnections
+You just need to annotated your @Proceesor method with the @ReconnectOn exception,
 
 include::datasense.adoc[]
 
@@ -491,7 +491,6 @@ include::batch.adoc[]
 == Installing my @Connector
 
 // TODO
-
 Show how to install it using the plugin.
 Show how to install it without it.
 
@@ -525,21 +524,7 @@ You can use the Anypoint DevKit plugin to either install the connector on your c
 
 == Other Features
 
-=== Adding @Source
-
-==== What is a @Source
-In some cases it is necessary to create Message Sources instead of Message Processors. 
-
-Basically, a Message Source receives or generates new messages to be processed by Mule.
-One of the use cases of Message Sources is implementing Streaming APIs. The @Source annotation marks a method inside a @Connector annotated class as callable from a Mule flow and capable of generating Mule events. Each marked method will have a Message Source generated. The method must receive a SourceCallback as one of its arguments that represents the next message processor in the chain. It does not matter the order in which this parameter appears as long it is present in the method signature.
-
-==== Create a @Source 
-Create a @Source that consumes the Get Recently Updated on the Connector
-Show how to use it in an app. Video of user drag and dropping into the canvas and configuring it.
-
-==== Test my @Source
-
-// TODO
+include::source.adoc[]
 
 include::transformer.adoc[]
 
