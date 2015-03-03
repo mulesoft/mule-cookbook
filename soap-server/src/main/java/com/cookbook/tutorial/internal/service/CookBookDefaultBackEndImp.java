@@ -87,13 +87,6 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
             bean.setEntity(entity);
             throw new InvalidEntityException("Cannot specify Id at creation.", bean);
         }
-        if (entity instanceof Ingredient) {
-            Ingredient ingredient = (Ingredient) entity;
-        }
-        if (entity instanceof Recipe) {
-            Recipe recipe = (Recipe) entity;
-
-        }
         entity.setId(++currentIndex);
         entities.put(entity.getId(), entity);
         return entity;
