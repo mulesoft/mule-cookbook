@@ -2,6 +2,8 @@ package com.cookbook.tutorial.client;
 
 import com.cookbook.tutorial.service.*;
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.ws.BindingProvider;
 import java.util.List;
@@ -9,10 +11,12 @@ import java.util.List;
 /**
  * Created by Mulesoft.
  */
-public class MuleCookBookClient implements IMuleCookBookClient{
+public class MuleCookBookClient implements IMuleCookBookClient {
 
+    private static final Logger logger = LoggerFactory.getLogger(MuleCookBookClient.class);
     private IMuleCookBookService port;
     private String token;
+
     public MuleCookBookClient() {
 
         IMuleCookBookServiceService ss = new IMuleCookBookServiceService();
@@ -28,7 +32,7 @@ public class MuleCookBookClient implements IMuleCookBookClient{
                 (BindingProvider.ENDPOINT_ADDRESS_PROPERTY), address);
     }
 
-    public void login(String username,String password) throws InvalidCredentialsException {
+    public void login(String username, String password) throws InvalidCredentialsException {
         token = port.login(username, password);
     }
 
@@ -36,66 +40,112 @@ public class MuleCookBookClient implements IMuleCookBookClient{
         return port.getRecentlyAdded();
     }
 
-    public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException {
+    public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException {
         Get request = new Get();
         request.setId(id);
-        return port.get(request, token).getReturn();
+        try {
+            return port.get(request, token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws NoSuchEntityException,
-            SessionExpiredException, InvalidTokenException {
+            SessionExpiredException {
         SearchWithQuery request = new SearchWithQuery();
         request.setPage(page);
         request.setPageSize(pageSize);
         request.setQuery(query);
-        return port.searchWithQuery(request,token).getReturn();
+        try {
+            return port.searchWithQuery(request, token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public CookBookEntity update(CookBookEntity entity) throws NoSuchEntityException,
-            InvalidEntityException, SessionExpiredException, InvalidTokenException {
+            InvalidEntityException, SessionExpiredException {
         Update request = new Update();
         request.setEntity(entity);
-        return port.update(request,token).getReturn();
+        try {
+            return port.update(request, token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public List<CookBookEntity> addList(List<CookBookEntity> entities) throws InvalidEntityException,
-            SessionExpiredException, InvalidTokenException {
+            SessionExpiredException {
         AddList request = new AddList();
         request.setEntities(entities);
-        return port.addList(request,token).getReturn();
+        try {
+            return port.addList(request, token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public List<CookBookEntity> getList(List<Integer> entityIds) throws NoSuchEntityException,
-            SessionExpiredException, InvalidTokenException {
+            SessionExpiredException {
         GetList getList = new GetList();
         getList.setEntityIds(entityIds);
-        return port.getList(getList,token).getReturn();
+        try {
+            return port.getList(getList, token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 
-    public void delete(int id) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException {
-        Delete delete=new Delete();
+    public void delete(int id) throws NoSuchEntityException, SessionExpiredException {
+        Delete delete = new Delete();
         delete.setId(id);
-        port.delete(delete,token);
+        try {
+            port.delete(delete, token);
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public List<CookBookEntity> updateList(List<CookBookEntity> entities) throws NoSuchEntityException,
-            InvalidEntityException, SessionExpiredException, InvalidTokenException {
+            InvalidEntityException, SessionExpiredException {
         UpdateList request = new UpdateList();
         request.setEntities(entities);
-        return port.updateList(request,token).getReturn();
+        try {
+            return port.updateList(request, token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void deleteList(List<Integer> entityIds) throws NoSuchEntityException,
-            SessionExpiredException, InvalidTokenException {
+            SessionExpiredException {
         DeleteList request = new DeleteList();
         request.setEntityIds(entityIds);
-        port.deleteList(request,token);
+        try {
+            port.deleteList(request, token);
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 
     public CookBookEntity create(CookBookEntity entity) throws InvalidEntityException,
-            SessionExpiredException, InvalidTokenException {
+            SessionExpiredException {
         Create request = new Create();
         request.setEntity(entity);
-        return port.create(request,token).getReturn();
+        try {
+            return port.create(request, token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
     }
 }
