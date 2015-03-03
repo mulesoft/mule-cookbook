@@ -10,7 +10,6 @@ import java.util.List;
 import org.mule.api.annotations.ConnectionStrategy;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.lifecycle.Start;
 import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
 
 import com.cookbook.tutorial.client.MuleCookBookClient;
@@ -21,30 +20,26 @@ import com.cookbook.tutorial.service.Recipe;
  *
  * @author MuleSoft, Inc.
  */
-@Connector(name="cook-book", friendlyName="CookBook")
+@Connector(name = "cook-book", friendlyName = "CookBook")
 public class CookBookConnector {
+
+    private MuleCookBookClient client;
 
     @ConnectionStrategy
     ConnectorConnectionStrategy connectionStrategy;
-
-    private MuleCookBookClient client;
     
-    @Start
-    public void initialize(){
-    	client = new MuleCookBookClient(connectionStrategy.getAddress());
+    /**
+     * Get a list of the most recently added recipes
+     *
+     * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:getRecentlyAdded}
+     * 
+     * @return List of recently added recipes.
+     *
+     */
+    @Processor
+    public List<Recipe> getRecentlyAdded() {
+        return client.getRecentlyAdded();
     }
-    
-	/**
-	 * Returns the list of recently added recipes
-	 *
-	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:getRecentlyAdded}
-	 * 
-	 * @return A list of the recently added recipes
-	 */
-	@Processor
-	public List<Recipe> getRecentlyAdded() {
-		return client.getRecentlyAdded();
-	}
 
     public ConnectorConnectionStrategy getConnectionStrategy() {
         return connectionStrategy;
@@ -52,6 +47,7 @@ public class CookBookConnector {
 
     public void setConnectionStrategy(ConnectorConnectionStrategy connectionStrategy) {
         this.connectionStrategy = connectionStrategy;
+        client = connectionStrategy.getClient();
     }
 
 }

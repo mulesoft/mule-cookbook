@@ -286,15 +286,47 @@ If you want, you can continue and directly implement your connector with connect
 
 ==== Using connection Management
 
-TODO
+Unlike the getRecentlyAdded call that doesn't need for us to be authenticated, all other operation requires that we sent a token on each request.
 
-Use v1 to show how connection management works
+The client we are using provides a login call that will initialize the token and use it in subsequent requests.
+
+But now also, we have to take into account that our session could expire, and we will need to make a login request again.
+
+DevKit provides a different set of annotations that will help us keep our code clean, and handle the connection in a different class delegating responsibilities.
+
+We are going to implement a @ConnectionManagement.
+
+Instead of using the @Start annotation as we did before, we will move the initialization to this @ConnectionManagement.
+
+We need to implement 4 methods:
+
+* *@Connect:* Here you need to initialize the client, and also if you don't have a login, you should make a call to the API to verify
+* *@Disconnect:* Release any connection if required.
+* *@ValidateConnection:* This method should check your connection is alive.
+* *@ConnectionIdentifier:* This method just return a dummy value currently.
+
+
+After our @Connector looks like this:
+
+//TODO: Include test @Connector v2
+
+And our @ConnectionStrategy like this:
+
+//TODO: Include test @ConnectionManagement v2
+
+But if we try to run our tests, now we will see that the test while fail with a SAXParseException. because we need to add username and password to our configuration now.
 
 ===== Testing Connection is Working
 
-TODO
+Testing our connection management needs for us to do some low level coding, but is it still clear how to do it.
 
-Use v1 to show in studio how the Test Connection works
+We will use the mule context and the registry to get our hands in our config elements, wrapper in a Testable Object, so that we can run our @Connect method.
+
+In our mule app, we just need to add a configuration that has bad credentials.
+
+The we just execute the test and make the assertions.
+
+//TODO: Include test code
 
 ==== Using OAuthV2
 

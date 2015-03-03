@@ -1,0 +1,3 @@
+<!-- BEGIN_INCLUDE(cook-book:getRecentlyAdded) -->
+	<cook-book:get-recently-added/>
+<!-- END_INCLUDE(cook-book:getRecentlyAdded) -->
