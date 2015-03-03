@@ -13,28 +13,28 @@ public interface IMuleCookBookClient {
 
     public List<Recipe> getRecentlyAdded();
 
-    public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
+    public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException;
 
     public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws NoSuchEntityException,
-            SessionExpiredException, InvalidTokenException;
+            SessionExpiredException;
 
     public CookBookEntity update(CookBookEntity entity) throws NoSuchEntityException,
-            InvalidEntityException, SessionExpiredException, InvalidTokenException;
+            InvalidEntityException, SessionExpiredException;
 
     public List<CookBookEntity> addList(List<CookBookEntity> entities) throws InvalidEntityException,
-            SessionExpiredException, InvalidTokenException;
+            SessionExpiredException;
 
     public List<CookBookEntity> getList(List<Integer> entityIds) throws NoSuchEntityException,
-            SessionExpiredException, InvalidTokenException;
+            SessionExpiredException;
 
-    public void delete(int id) throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
+    public void delete(int id) throws NoSuchEntityException, SessionExpiredException;
 
     public List<CookBookEntity> updateList(List<CookBookEntity> entities) throws NoSuchEntityException,
-            InvalidEntityException, SessionExpiredException, InvalidTokenException;
+            InvalidEntityException, SessionExpiredException;
 
     public void deleteList(List<Integer> entityIds) throws NoSuchEntityException,
-            SessionExpiredException, InvalidTokenException;
+            SessionExpiredException;
 
     public CookBookEntity create(CookBookEntity entity) throws InvalidEntityException,
-            SessionExpiredException, InvalidTokenException;
+            SessionExpiredException;
 }
