@@ -1,0 +1,19 @@
+= Prerequisites
+
+To develop a connector you should have a working knowledge of Mule, Anypoint Studio, and Java development in general, specifically the use of Java annotations.
+
+DevKit's functionality is exposed to connector developers through http://docs.oracle.com/javase/tutorial/java/annotations/[Java annotations] that generate code and files to interact with Mule, and Anypoint Studio. The generated code provides the interface between the connector and Mule that would otherwise require each connector developer to include extensive boilerplate code, as well as the code and files required to interact with your connector in Anypoint Studio.
+
+You can develop a connector using Windows, Mac, or Linux.
+
+== Setup environment
+
+* Download and install http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html[Java 1.7 JDK].
+* Download and install http://maven.apache.org/download.cgi[Maven].
+* Download http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
+* Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[maven configuration] in Anypoint Studio.
+* Install Anypoint DevKit plugin.
+* Install a http://git-scm.com/downloads[GitHub] client.
+* Clone https://github.com/mulesoft/mule-cookbook[tutorial] repository into your local machine.
+
+WARNING: JRE is not suited for development, you need to have a JDK installed.

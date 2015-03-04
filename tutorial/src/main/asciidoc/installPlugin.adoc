@@ -1,0 +1,21 @@
+== Install Anypoint Devkit Plugin
+
+Installing the DevKit plugin is as easy as installing any eclipse plugin.
+
+The update site URL is already shipped in the update site list.
+
+1. From the Help menu in *Anypoint Studio*, click *Install New Software*.
++
+image::install-plugin-1.png[]
+
+2. In the Install menu > Work with, click the down arrow and click Anypoint Addons Update Site. Click the checkbox for Anypoint DevKit Plugin, and click Next.
++
+image::install-plugin-2.png[width="900"]
+
+3. Proceed through all remaining steps in the wizard to install.
+
+4. Restart Studio.
+
+NOTE: If the Anypoint Addons Update Site is not available in the dropdown list, click Add and copy this URL to the repository Location: http://studio.mulesoft.org/r4/addons/beta
+
+NOTE: This url is not an url you can explore, it is an update site that you can add in you Anypoint Studio.

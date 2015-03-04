@@ -1,0 +1,12 @@
+=== Debugging your @Connector
+
+After successfully installing your connector, you can start using your connector in a Mule App.
+By simple putting a breakpoint on your source code of the connector, you will be able to debug it.
+If your connector is a Community connector the source code will be shipped automatically in the installed connector.
+If your connector is an Enterprise, you will need to manually attach the source code of your jar.
+
+WARNING: In order to correctly debug your code, take into account that the Mule app you are running is using the latest installed version, so if you did some changes, and you want to debug the Mule app, you need to install the connector again.
+
+Debugging your connector when running your test, is as simple as debugging any java class.
+
+You just need to put a break point on your connector

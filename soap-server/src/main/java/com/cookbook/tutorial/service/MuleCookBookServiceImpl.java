@@ -171,9 +171,11 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
     }
 
     private void checkExpiredSessionCondition() throws SessionExpiredException {
-        if (((currentIndex+1) % exceptionRatio) == 0) {
+        currentIndex++;
+        if (((currentIndex) % exceptionRatio) == 0) {
             throw new SessionExpiredException();
         }
+
     }
 
     private void verifyToken(String token) throws InvalidTokenException {
