@@ -10,13 +10,67 @@ If coded correctly, user will be able to take advantage of the messages metadata
 
 Is feature that displays the metadata of the entities included in the service in a friendly manner. Although this feature is optional, Mule strongly recommends that you use DataSense in your connector much easier to use for end users.
 
+Full documentation is available http://www.mulesoft.org/documentation/display/current/Adding+DataSense[here].
+
 === How to implement it
 
 ==== My model is static
 
-Lets take a look at the v1 of the {mule} entities.
+When we say that a model is static, it mean that the entities are fixed and know and cannot change in anyway. The fields it supports are fixed.
 
-We only have Author, Book and Sale entities.
+Lets analyze the entities in {mule} service. We just have 2 simple entities, Recipe and Ingredient that extends from CookBookEntity.
+
+Now, lets take a look at how our createIngredient operation looks inside Anypoint Studio. And how it interacts with other components.
+
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v3/CookBookConnector.java[lines=66..70]
+----
+
+We defined the operation so that it receives an Ingredient, and it return the Ingredient with the extra fields populated form the server.
+
+If we check the input metadata, we can see that the expected output is a Pojo, with the expected fields our Ingredient has:
+
+image::datasense.png[width="900"]
+
+If we verify the output metadata, it is also the expected one.
+
+image::datasense2.png[width="900"]
+
+So now, if we drag and drop a datamapper either behind or after our connector, we will see that datamapper automatically picks the input or output.
+
+image::datamapper-input1.png[title="Datamapper Receiving Connector Output ", width="900"]
+
+image::datamapper-output1.png[title="Datamapper Setting Connector Input",width="900"]
+
+Because DevKit auto generates static meta data, your connector know how propagate meta data information.
+
+But we don't have just Ingredients, we also have Recipes, but we don't want to have one method for each entity we have in our model.
+
+So lets make some modifications so that we just work with the CookBookEntity class.
+
+Here we have our new create operation.
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v4/CookBookConnector.java[lines=67..72]
+----
+Because of some devkit limitations regarding how to handle Abstract classes, we need to specify that the input can only be specified as a reference.
+
+But lets see how this affects the UI and user experience.
+
+Studio, can no longer determine input or output type:
+
+image::ref-only-input.png[title="Connector Input with @RefOnly",width="900"]
+
+image::ref-only-output.png[title="Connector Output with Abstract Class",width="900"]
+
+And even in datamapper is not automatically populated, with the type:
+
+image::ref-only-datamapper.png[title="Datamapper with connector with @RefOnly parameter",width="900"]
+
+We are forced to manually configure the input:
+
+image::manual-datamapper.png[title="Selecting the pojo manually",width="900"]
 
 ==== My model is dynamic
 

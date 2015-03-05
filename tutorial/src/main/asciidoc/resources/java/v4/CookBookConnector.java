@@ -13,14 +13,15 @@ import org.mule.api.annotations.Processor;
 import org.mule.api.annotations.ReconnectOn;
 import org.mule.api.annotations.lifecycle.OnException;
 import org.mule.api.annotations.param.Default;
+import org.mule.api.annotations.param.RefOnly;
 import org.mule.modules.cookbook.handler.CookBookHandler;
 import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
 
 import com.cookbook.tutorial.client.MuleCookBookClient;
+import com.cookbook.tutorial.service.CookBookEntity;
 import com.cookbook.tutorial.service.InvalidEntityException;
 import com.cookbook.tutorial.service.InvalidTokenException;
 import com.cookbook.tutorial.service.NoSuchEntityException;
-import com.cookbook.tutorial.service.Ingredient;
 import com.cookbook.tutorial.service.Recipe;
 import com.cookbook.tutorial.service.SessionExpiredException;
 
@@ -47,16 +48,15 @@ public class CookBookConnector {
      */
     @Processor
     public List<Recipe> getRecentlyAdded() {
-        return client.getRecentlyAdded();
+        return getClient().getRecentlyAdded();
     }
-
     
 	/**
-	 * Description for createIngredient
+	 * Description for create
 	 *
-	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:createIngredient}
+	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:create}
 	 *
-	 * @param Ingredient Ingredient to be created
+	 * @param entity Ingredient to be created
 	 * @return return Ingredient with Id from the system.
 	 * 
 	 * @throws InvalidTokenException 
@@ -65,58 +65,64 @@ public class CookBookConnector {
 	 */
 	@Processor
 	@OnException (handler=CookBookHandler.class)
-	public Ingredient createIngredient(@Default("#[payload]") Ingredient Ingredient) throws InvalidEntityException, SessionExpiredException {
-		return (Ingredient) client.create(Ingredient);
-	}
-
-	/**
-	 * Description for createIngredient
-	 *
-	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:createIngredient}
-	 *
-	 * @param Ingredient Ingredient to be retrieved
-	 * @return return Ingredient with Id from the system.
-	 *
-	 * @throws SessionExpiredException
-	 * @throws InvalidEntityException
-	 * @throws NoSuchEntityException
-	 */
-	@Processor
 	@ReconnectOn(exceptions = { SessionExpiredException.class })
-	public Ingredient retriveIngredient(@Default("1") int id) throws SessionExpiredException, NoSuchEntityException {
-		return (Ingredient) client.get(id);
+	public CookBookEntity create(@Default("#[payload]") @RefOnly CookBookEntity entity) throws InvalidEntityException, SessionExpiredException {
+		return getClient().create(entity);
 	}
 
 	/**
-	 * Description for createIngredient
+	 * Description for update
 	 *
-	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:createIngredient}
+	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:update}
 	 *
-	 * @param ingredient Ingredient to be created
+	 * @param entity Ingredient to be updated
 	 * @return return Ingredient with Id from the system.
-	 *
-	 * @throws InvalidTokenException
-	 * @throws SessionExpiredException
-	 * @throws InvalidEntityException
-	 * @throws NoSuchEntityException
+	 * 
+	 * @throws SessionExpiredException 
+	 * @throws InvalidEntityException 
+	 * @throws NoSuchEntityException 
 	 */
 	@Processor
-	public Ingredient updateIngredient(@Default("#[payload]") Ingredient ingredient) throws InvalidEntityException, SessionExpiredException, NoSuchEntityException {
-		return (Ingredient) client.update(ingredient);
-	}
-
-	/**
-	 * Delete a cook book entity with the provided Id.
-	 *
-	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:delete}
-	 *
-	 * @throws InvalidTokenException
-	 * @throws SessionExpiredException
-	 * @throws NoSuchEntityException
-	 */
-	@Processor
+	@OnException (handler=CookBookHandler.class)
 	@ReconnectOn(exceptions = { SessionExpiredException.class })
-	public void delete(@Default("1") int id) throws NoSuchEntityException, SessionExpiredException {
+	public CookBookEntity update(@Default("#[payload]") @RefOnly CookBookEntity entity) throws InvalidEntityException, SessionExpiredException, NoSuchEntityException {
+		return getClient().update(entity);
+	}
+	
+	/**
+	 * Description for get
+	 *
+	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:get}
+	 *
+	 * @param id Id of the entity to retrieve
+	 * @return return Ingredient with Id from the system.
+	 * 
+	 * @throws SessionExpiredException 
+	 * @throws InvalidEntityException 
+	 * @throws NoSuchEntityException 
+	 */
+	@Processor
+	@OnException (handler=CookBookHandler.class)
+	@ReconnectOn(exceptions = { SessionExpiredException.class })
+	public CookBookEntity get(@Default("1") Integer id) throws InvalidEntityException, SessionExpiredException, NoSuchEntityException {
+		return getClient().get(id);
+	}
+	
+	/**
+	 * Description for get
+	 *
+	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:get}
+	 *
+	 * @param id Id of the entity to retrieve
+	 * @return return Ingredient with Id from the system.
+	 * 
+	 * @throws SessionExpiredException 
+	 * @throws NoSuchEntityException 
+	 */
+	@Processor
+	@OnException (handler=CookBookHandler.class)
+	@ReconnectOn(exceptions = { SessionExpiredException.class })
+	public void delete(@Default("1") Integer id) throws NoSuchEntityException, SessionExpiredException {
 		client.delete(id);
 	}
 	
@@ -126,7 +132,9 @@ public class CookBookConnector {
 
     public void setConnectionStrategy(ConnectorConnectionStrategy connectionStrategy) {
         this.connectionStrategy = connectionStrategy;
-        client = connectionStrategy.getClient();
     }
 
+    private MuleCookBookClient getClient(){
+    	return connectionStrategy.getClient();
+    }
 }

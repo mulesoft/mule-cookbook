@@ -7,6 +7,7 @@
 :numbered:
 :website: http://mulesoft.org/
 :muleJerveyVersion: 2.11
+:toclevels: 1
 
 = Anypoint Studio Devkit
 
@@ -282,7 +283,7 @@ image::connectivityTest.png[width="900"]
 
 ==== Using OAuthV2
 
-// TODO Sample with OAuthV2
+// TODO: Sample with OAuthV2
 
 Use v1 to show how to implement OAuthV2 in your connector
 [[configurable]]
