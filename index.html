@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.2">
+<meta name="author" content="MuleSoft Inc.">
+<title>Anypoint Studio Devkit</title>
+<link rel="stylesheet" href="/Users/pablocabrera/dev/mule-store/tutorial/src/main/asciidoc/css/mule.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</head>
+<body class="article toc2 toc-left">
+<div id="header">
+<h1>Anypoint Studio Devkit</h1>
+<div class="details">
+<span id="author" class="author">MuleSoft Inc.</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel0">
+<li><a href="#_tutorial">Tutorial</a>
+<ul class="sectlevel1">
+<li><a href="#_what_is_devkit">1. What is DevKit</a></li>
+<li><a href="#_when_to_use_it">2. When to use it</a></li>
+</ul>
+</li>
+<li><a href="#_prerequisites">Prerequisites</a>
+<ul class="sectlevel1">
+<li><a href="#_setup_environment">1. Setup environment</a></li>
+<li><a href="#_install_anypoint_devkit_plugin">2. Install Anypoint Devkit Plugin</a></li>
+</ul>
+</li>
+<li><a href="#_build_your_connector">Build Your Connector</a>
+<ul class="sectlevel1">
+<li><a href="#_what_is_a_connector">1. What is a @Connector</a></li>
+<li><a href="#_features_to_cover_in_tutorial">2. Features to cover in tutorial</a></li>
+<li><a href="#_mule_cook_book_service_description">3. Mule Cook Book Service Description</a></li>
+<li><a href="#_building_a_connector">4. Building a @Connector</a></li>
+<li><a href="#_improving_error_handling">5. Improving error Handling</a></li>
+<li><a href="#_adding_datasense">6. Adding DataSense</a></li>
+<li><a href="#_adding_pagination">7. Adding Pagination</a></li>
+<li><a href="#_adding_batch">8. Adding Batch</a></li>
+<li><a href="#_installing_my_connector">9. Installing my @Connector</a></li>
+<li><a href="#_debugging_your_connector">10. Debugging your @Connector</a></li>
+<li><a href="#_documenting_my_connector">11. Documenting my @Connector</a></li>
+<li><a href="#_sharing_my_connector">12. Sharing my @Connector</a></li>
+<li><a href="#_other_features">13. Other Features</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<h1 id="_tutorial" class="sect0">Tutorial</h1>
+<div class="sect1">
+<h2 id="_what_is_devkit">1. What is DevKit</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit">DevKit</a> is an important part of the Anypoint Platform. It is a maven based tool that allows developers to build reusable components that not only can be run as part of a Mule application, but also can easily be configured/consumed from <a href="http://www.mulesoft.com/platform/mule-studio">Anypoint Studio</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_when_to_use_it">2. When to use it</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are several scenarios in which you may want to build your own connector. Yours might fall under one or more of this scenarios:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You need to consume an API in one or more applications and you want to make sure everyone uses the same component.</p>
+</li>
+<li>
+<p>You have an API and want to add strategic value to your business by providing a connector and telling the world "I am part of Mule Platform".</p>
+</li>
+<li>
+<p>You want to facilitate integration with SaaS and on-premise Web services, applications, and data sources.</p>
+</li>
+<li>
+<p>The API we are consuming supports Pagination, Batch and/or has a SQL capability.</p>
+</li>
+<li>
+<p>The API we are consuming has different entity types and/or their structure can change.</p>
+</li>
+<li>
+<p>I want to extend Mule core.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<h1 id="_prerequisites" class="sect0">Prerequisites</h1>
+<div class="paragraph">
+<p>To develop a connector you should have a working knowledge of Mule, Anypoint Studio, and Java development in general, specifically the use of Java annotations.</p>
+</div>
+<div class="paragraph">
+<p>DevKit&#8217;s functionality is exposed to connector developers through <a href="http://docs.oracle.com/javase/tutorial/java/annotations/">Java annotations</a> that generate code and files to interact with Mule, and Anypoint Studio. The generated code provides the interface between the connector and Mule that would otherwise require each connector developer to include extensive boilerplate code, as well as the code and files required to interact with your connector in Anypoint Studio.</p>
+</div>
+<div class="paragraph">
+<p>You can develop a connector using Windows, Mac, or Linux.</p>
+</div>
+<div class="sect1">
+<h2 id="_setup_environment">1. Setup environment</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Download and install <a href="http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html">Java 1.7 JDK</a>.</p>
+</li>
+<li>
+<p>Download and install <a href="http://maven.apache.org/download.cgi">Maven</a>.</p>
+</li>
+<li>
+<p>Download <a href="http://www.mulesoft.com/platform/mule-studio">Anypoint Studio</a>.</p>
+</li>
+<li>
+<p>Check <a href="http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio">maven configuration</a> in Anypoint Studio.</p>
+</li>
+<li>
+<p>Install Anypoint DevKit plugin.</p>
+</li>
+<li>
+<p>Install a <a href="http://git-scm.com/downloads">GitHub</a> client.</p>
+</li>
+<li>
+<p>Clone <a href="https://github.com/mulesoft/mule-cookbook">tutorial</a> repository into your local machine.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+JRE is not suited for development, you need to have a JDK installed.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_install_anypoint_devkit_plugin">2. Install Anypoint Devkit Plugin</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Installing the DevKit plugin is as easy as installing any eclipse plugin.</p>
+</div>
+<div class="paragraph">
+<p>The update site URL is already shipped in the update site list.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>From the Help menu in <strong>Anypoint Studio</strong>, click <strong>Install New Software</strong>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/install-plugin-1.png" alt="install plugin 1">
+</div>
+</div>
+</li>
+<li>
+<p>In the Install menu &gt; Work with, click the down arrow and click Anypoint Addons Update Site. Click the checkbox for Anypoint DevKit Plugin, and click Next.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/install-plugin-2.png" alt="install plugin 2" width="900">
+</div>
+</div>
+</li>
+<li>
+<p>Proceed through all remaining steps in the wizard to install.</p>
+</li>
+<li>
+<p>Restart Studio.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the Anypoint Addons Update Site is not available in the dropdown list, click Add and copy this URL to the repository Location: <a href="http://studio.mulesoft.org/r4/addons/beta" class="bare">http://studio.mulesoft.org/r4/addons/beta</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This url is not an url you can explore, it is an update site that you can add in you Anypoint Studio.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<h1 id="_build_your_connector" class="sect0">Build Your Connector</h1>
+<div class="sect1">
+<h2 id="_what_is_a_connector">1. What is a @Connector</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A @Connector is a reusable component that knows how to interact with Mule, and with Anypoint Studio.</p>
+</div>
+<div class="paragraph">
+<p>From the developer point of view, it abstracts them from Mule interfaces required run in the platform, and the generation of the UI.</p>
+</div>
+<div class="paragraph">
+<p>For the users, it abstracts them from the complexity of initializing any required element (connecting to a sandbox for example). A well developed connector makes your Mule apps much more simple by handling internally things like pagination, session expirations or input and output meta data.</p>
+</div>
+<div class="paragraph">
+<p>For a quick overview of the Anypoint Studio DevKit Plugin and how to create a basic Connector check the documentation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_features_to_cover_in_tutorial">2. Features to cover in tutorial</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this tutorial we are going to  incrementally show you how to add value and simplify the connectors users interaction in Mule with the different features provided by DevKit.
+We are going to start by generating a simple @Connector for a web service.</p>
+</div>
+<div class="paragraph">
+<p>After that we will show you how to add configurable field (@Configurable) that will be used in our @Processor, and how to test it.
+Then we are going to show you how to enrich the errors returned by an API and how to make sure your users don&#8217;t need to handle session expirations.</p>
+</div>
+<div class="paragraph">
+<p>As we understand more about the API being consumed, we will show you why we need to add DataSense to your connector and how it improves user experience.
+Having DataSense also allow you to use our DataSense Query Language (DSQL).</p>
+</div>
+<div class="paragraph">
+<p>Other important feature that most APIs support is the Pagination of results, as well as the Batch processing</p>
+</div>
+<div class="paragraph">
+<p>For a full list of Supported annotations check our current documentation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_mule_cook_book_service_description">3. Mule Cook Book Service Description</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Mule Cook Book is software that helps users organize their recipes, so that they can always find how to cook the things they like.</p>
+</div>
+<div class="sect2">
+<h3 id="_api_description">3.1. API Description</h3>
+<div class="paragraph">
+<p>When the first version was released, the API allowed users to use the CRUD operations for single and multiple elements</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Entities</th>
+<th class="tableblock halign-left valign-top">Operations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Ingredient
+</p><p class="tableblock">- Recipe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Create
+</p><p class="tableblock">- Retrieve
+</p><p class="tableblock">- Update
+</p><p class="tableblock">- Delete
+</p><p class="tableblock">For Single and multiple elements
+</p><p class="tableblock">- Get Recently Added
+</p><p class="tableblock">- Update quantities in a recipe</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect3">
+<h4 id="_authentication">3.1.1. Authentication</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Custom with username and password</p>
+</li>
+<li>
+<p>OAuthV2</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_wsdl_api">3.2. WSDL API</h3>
+<div class="paragraph">
+<p>Download the <a href="resources/wsdl/IMuleCookBookService.wsdl">WSDL file</a> to see the full description.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rest_api">3.3. REST API</h3>
+<div class="paragraph">
+<p>Download the <a href="resources/api.raml">RAML file</a> to see the full description.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sdk_api">3.4. SDK API</h3>
+<div class="paragraph">
+<p>Download the <a href="resources/java/IMuleCookBookClient.java">IMuleCookBookClient.java file</a> to see the full description.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_a_connector">4. Building a @Connector</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before start consuming our Mule Cook Book service, lets start by doing a Hello World Connector, and understanding the generated code.</p>
+</div>
+<div class="paragraph">
+<p>Click <strong>File</strong> &gt; <strong>New</strong>, then select <strong>Anypoint Connector Project</strong> or simple do a right click of the package explorer and select <strong>New</strong> &gt; <strong>Anypoint Connector Project</strong>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/new-connector-1.png" alt="new connector 1" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>Just put the name of your connector and click on finish:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/new-connector-2.png" alt="new connector 2" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>This generates a project containing the structure with all the required elements such as images, sample docs, and some basic tests for your connector.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/new-connector-3.png" alt="new connector 3" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>To enable the DevKit view select from the top bar <strong>Window</strong> &gt; <strong>Show view</strong> &gt; <strong>Other</strong> , and look for DevKit on the list.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/enable-view.png" alt="enable view" width="300" height="400">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_i_have_an_api_to_build_the_connector">4.1. I have an API to build the @Connector</h3>
+<div class="sect3">
+<h4 id="_sdk_client">4.1.1. SDK Client</h4>
+<div class="paragraph">
+<p>If you have an SDK all you need to do is to include the maven dependency for your jar.</p>
+</div>
+<div class="paragraph">
+<p>For example in our case, to consume the SDK for the cookstore we can add the dependency.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;foo.sdk.group.id&lt;/groupId&gt;
+    &lt;artifactId&gt;foo.sdk.artifact.id&lt;/artifactId&gt;
+    &lt;version&gt;${sdk.version}&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_soap_api">4.1.2. SOAP API</h4>
+<div class="paragraph">
+<p>If you have a wsdl, the easiest way to build a connector is to create a client using cxf <a href="http://cxf.apache.org/docs/wsdl-to-java.html">wsdl2java</a>.</p>
+</div>
+<div class="paragraph">
+<p>You can configure the cxf goal in your pom.xml, very easily. The full documentation can by founded at <a href="http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html">cxf site</a>.</p>
+</div>
+<div class="paragraph">
+<p>For example in your pom.xml you can add this (plus all the dependencies required) :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;build&gt;
+  &lt;plugins&gt;
+    &lt;!-- CXF Code generation --&gt;
+    &lt;plugin&gt;
+      &lt;groupId&gt;org.apache.cxf&lt;/groupId&gt;
+      &lt;artifactId&gt;cxf-codegen-plugin&lt;/artifactId&gt;
+      &lt;version&gt;${cxf.version}&lt;/version&gt;
+      &lt;executions&gt;
+        &lt;execution&gt;
+          &lt;phase&gt;clean&lt;/phase&gt; &lt;!-- This is so it work with the Devkit --&gt;
+          &lt;goals&gt;
+            &lt;goal&gt;wsdl2java&lt;/goal&gt;
+          &lt;/goals&gt;
+          &lt;configuration&gt;
+            &lt;wsdlOptions&gt;
+              &lt;wsdlOption&gt;
+                &lt;wsdl&gt;${basedir}/src/main/resources/wsdl/IMuleCookBookService.wsdl&lt;/wsdl&gt;
+                &lt;autoNameResolution&gt;true&lt;/autoNameResolution&gt;
+                &lt;extendedSoapHeaders&gt;false&lt;/extendedSoapHeaders&gt;
+                &lt;extraargs&gt;
+                  &lt;extraarg&gt;-xjc-Xbg&lt;/extraarg&gt;
+                   &lt;extraarg&gt;-xjc-Xcollection-setter-injector&lt;/extraarg&gt;
+                  &lt;extraarg&gt;-p&lt;/extraarg&gt;
+                  &lt;extraarg&gt;org.mule.modules.wsdl.api&lt;/extraarg&gt;
+                &lt;/extraargs&gt;
+              &lt;/wsdlOption&gt;
+            &lt;/wsdlOptions&gt;
+          &lt;/configuration&gt;
+         &lt;/execution&gt;
+      &lt;/executions&gt;
+      &lt;dependencies&gt;
+        &lt;!-- Boolean getters --&gt;
+        &lt;dependency&gt;
+          &lt;groupId&gt;org.apache.cxf.xjcplugins&lt;/groupId&gt;
+          &lt;artifactId&gt;cxf-xjc-boolean&lt;/artifactId&gt;
+          &lt;version&gt;${cxf.version.boolean}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Collection Setters --&gt;
+        &lt;dependency&gt;
+          &lt;groupId&gt;net.java.dev.vcc.thirdparty&lt;/groupId&gt;
+          &lt;artifactId&gt;collection-setter-injector&lt;/artifactId&gt;
+          &lt;version&gt;0.5.0-1&lt;/version&gt;
+        &lt;/dependency&gt;
+      &lt;/dependencies&gt;
+    &lt;/plugin&gt;
+  &lt;/plugins&gt;
+&lt;/build&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you use the DevKit plugin it will generate everything for you, you just need to specify the wsdl location.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_rest_api_2">4.1.3. REST API</h4>
+<div class="paragraph">
+<p>In this case, you have to write your client by hand. We recommend using Jersey 2.11 since it is the one provided by mule.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-client&lt;/artifactId&gt;
+    &lt;version&gt;{muleJerveyVersion}&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_understanding_the_a_connector_structure">4.2. Understanding the a Connector structure</h3>
+<div class="paragraph">
+<p>Your Connector basically consists of a set of <a href="http://www.mulesoft.org/documentation/display/current/Message+Processors">message processors</a> and configurable elements users populate in order to consume the API your connector was developed for.</p>
+</div>
+<div class="paragraph">
+<p>After you install your connector by right-clicking the connector and clicking <strong>Anypoint Connector</strong> &gt; <strong>Install or Update</strong>, completing the prompts, and restarting Studio, you will be able to properly open the Mule application that is being used in the connector test that was generated for your connector.</p>
+</div>
+<div class="paragraph">
+<p>Lets check the structure of this dummy connector:</p>
+</div>
+<div class="paragraph">
+<p>In this image you will be able to see how most of the code is mapped into UI elements.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="images/split-1-high.png"><img src="images/split-1-high.png" alt="Image1" width="300" height="200"></a>
+</div>
+<div class="title">Figure 1: View Structure and UI</div>
+</div>
+<div class="paragraph">
+<p>In this one, you can check how the code matches to XML and other UI elements.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<a class="image" href="images/split-2-high.png"><img src="images/split-2-high.png" alt="Image2" width="300" height="200"></a>
+</div>
+<div class="title">Figure 2: View configuration and XML</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_connecting_to_my_service">4.3. Connecting to my service</h3>
+<div class="paragraph">
+<p>When consuming a service there you may need to configure different values in order to establish a connection.</p>
+</div>
+<div class="paragraph">
+<p>To solve this, the DevKit provides a pair of annotations that allows developer to modularize in one class the behaviour exposed to the users (using the @Connector annotation) and in a different one the code related to the the connection.</p>
+</div>
+<div class="paragraph">
+<p>By marking a field with @org.mule.api.annotations.ConnectionStrategy the DevKit will make sure that you have an initialized object set when the Mule app is running and a request is made to your connector.</p>
+</div>
+<div class="paragraph">
+<p>If there is no need for authentication and/or connection management but you need to configure some things, you can have a class marked with @org.mule.api.annotations.components.Configuration.</p>
+</div>
+<div class="paragraph">
+<p>If you actually need an authentication there are several annotations that will help you achieve the desired behaviour as we will see in this tutorial.</p>
+</div>
+<div class="paragraph">
+<p>To go deeper into this feature, check the <a href="http://www.mulesoft.org/documentation/display/current/Authentication">current documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>Let start coding and create a connector that allows us to get the recently added elements.</p>
+</div>
+<div class="paragraph">
+<p>Since the Mule Cook Book service description says we don&#8217;t need any kind of authentication to consume the recently added recipies, this is the best operation we can use to start learning how to build our @Connector.</p>
+</div>
+<div class="paragraph">
+<p>Create a new Anypoint Connector Project with the following configuration and don&#8217;t forget to uncheck the default generation:</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/new1.png" alt="new1" width="700"></span></p>
+</div>
+<div class="paragraph">
+<p>After that lets add our client dependency so that we can use it in our connector.</p>
+</div>
+<div class="paragraph">
+<p>In your pom.xml add:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.mule.tools.devkit.cookbook&lt;/groupId&gt;
+    &lt;artifactId&gt;sdk-client&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_i_don_t_need_a_authentication">4.3.1. I don&#8217;t need a authentication</h4>
+<div class="paragraph">
+<p>Here even if we don&#8217;t need to authenticate against our sandbox, we still need to initialize the client before consuming the service.</p>
+</div>
+<div class="paragraph">
+<p>Anypoint Connectors can be fully aware of <a href="http://www.mulesoft.org/documentation/display/34X/Integrating+Connectors+with+the+Mule+Lifecycle">Mule&#8217;s lifecycle</a> without implementing any Mule specific interface. There is one method annotation for each of the four phases of Mule lifecycle. If a method is annotated with one of these annotations it will be invoked during the Mule lifecycle phase that annotation represents.</p>
+</div>
+<div class="paragraph">
+<p>We are going to use the @Start to initialize our client.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">    private MuleCookBookClient client;
+
+    @Start
+    public void initialize(){
+    	client = new MuleCookBookClient(connectionStrategy.getAddress());
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the full <a href="resources/java/v1/CookBookConnector.java">source code</a>.</p>
+</div>
+<div class="paragraph">
+<p>If you want, you can continue and directly implement your connector with connection management, if not, just go to the add your first <a href="#configurable">configurable</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_connection_management">4.3.2. Using connection Management</h4>
+<div class="paragraph">
+<p>Unlike the getRecentlyAdded call that doesn&#8217;t need for us to be authenticated, all other operation requires that we sent a token on each request.</p>
+</div>
+<div class="paragraph">
+<p>The client we are using provides a login call that will initialize the token and use it in subsequent requests.</p>
+</div>
+<div class="paragraph">
+<p>But now also, we have to take into account that our session could expire, and we will need to make a login request again.</p>
+</div>
+<div class="paragraph">
+<p>DevKit provides a different set of annotations that will help us keep our code clean, and handle the connection in a different class delegating responsibilities.</p>
+</div>
+<div class="paragraph">
+<p>We are going to implement a @ConnectionManagement.</p>
+</div>
+<div class="paragraph">
+<p>Instead of using the @Start annotation as we did before, we will move the initialization to this @ConnectionManagement.</p>
+</div>
+<div class="paragraph">
+<p>We need to implement 4 methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>@Connect:</strong> Here you need to initialize the client, and also if you don&#8217;t have a login, you should make a call to the API to verify</p>
+</li>
+<li>
+<p><strong>@Disconnect:</strong> Release any connection if required.</p>
+</li>
+<li>
+<p><strong>@ValidateConnection:</strong> This method should check your connection is alive.</p>
+</li>
+<li>
+<p><strong>@ConnectionIdentifier:</strong> This method just return a dummy value currently.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>After our @Connector looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">/**
+ * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license,
+ * a copy of which has been included with this distribution in the LICENSE.md file.
+ */
+
+package org.mule.modules.cookbook;
+
+import java.util.List;
+
+import org.mule.api.annotations.ConnectionStrategy;
+import org.mule.api.annotations.Connector;
+import org.mule.api.annotations.Processor;
+import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
+
+import com.cookbook.tutorial.client.MuleCookBookClient;
+import com.cookbook.tutorial.service.Recipe;
+
+/**
+ * Anypoint Connector
+ *
+ * @author MuleSoft, Inc.
+ */
+@Connector(name = "cook-book", friendlyName = "CookBook")
+public class CookBookConnector {
+
+    private MuleCookBookClient client;
+
+    @ConnectionStrategy
+    ConnectorConnectionStrategy connectionStrategy;
+
+    /**
+     * Get a list of the most recently added recipes
+     *
+     * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:getRecentlyAdded}
+     *
+     * @return List of recently added recipes.
+     *
+     */
+    @Processor
+    public List&lt;Recipe&gt; getRecentlyAdded() {
+        return client.getRecentlyAdded();
+    }
+
+    public ConnectorConnectionStrategy getConnectionStrategy() {
+        return connectionStrategy;
+    }
+
+    public void setConnectionStrategy(ConnectorConnectionStrategy connectionStrategy) {
+        this.connectionStrategy = connectionStrategy;
+        client = connectionStrategy.getClient();
+    }
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And our @ConnectionStrategy like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">/**
+ * (c) 2003-2015 MuleSoft, Inc. The software in this package is published under the terms of the CPAL v1.0 license,
+ * a copy of which has been included with this distribution in the LICENSE.md file.
+ */
+
+package org.mule.modules.cookbook.strategy;
+
+import org.mule.api.ConnectionException;
+import org.mule.api.ConnectionExceptionCode;
+import org.mule.api.annotations.Configurable;
+import org.mule.api.annotations.Connect;
+import org.mule.api.annotations.ConnectionIdentifier;
+import org.mule.api.annotations.Disconnect;
+import org.mule.api.annotations.TestConnectivity;
+import org.mule.api.annotations.ValidateConnection;
+import org.mule.api.annotations.components.ConnectionManagement;
+import org.mule.api.annotations.display.Password;
+import org.mule.api.annotations.param.ConnectionKey;
+import org.mule.api.annotations.param.Default;
+
+import com.cookbook.tutorial.client.MuleCookBookClient;
+import com.cookbook.tutorial.service.InvalidCredentialsException;
+
+/**
+ * Configuration type Strategy
+ *
+ * @author MuleSoft, Inc.
+ */
+@ConnectionManagement(configElementName = "config-type", friendlyName = "Connection Managament type strategy")
+public class ConnectorConnectionStrategy {
+
+	private MuleCookBookClient client;
+
+	/**
+	 * URL used to connect to the service
+	 */
+	@Configurable
+	@Default("http://localhost:9090/cook-book")
+	private String endpoint;
+
+	/**
+	 * Connect
+	 *
+	 * @param username
+	 *            A username
+	 * @param password
+	 *            A password
+	 * @throws ConnectionException
+	 */
+	@Connect
+	@TestConnectivity
+	public void connect(@ConnectionKey String username,
+			@Password String password) throws ConnectionException {
+		setClient(new MuleCookBookClient(getEndpoint()));
+		try {
+			getClient().login(username, password);
+		} catch (InvalidCredentialsException e) {
+			throw new ConnectionException(
+					ConnectionExceptionCode.INCORRECT_CREDENTIALS, e.getMessage(),
+					"Invalid credentials");
+		}
+	}
+
+	/**
+	 * Disconnect
+	 */
+	@Disconnect
+	public void disconnect() {
+		setClient(null);
+	}
+
+	/**
+	 * Are we connected
+	 */
+	@ValidateConnection
+	public boolean isConnected() {
+		return getClient() != null;
+	}
+
+	/**
+	 * Are we connected
+	 */
+	@ConnectionIdentifier
+	public String connectionId() {
+		return "001";
+	}
+
+	/**
+	 * Get endpoint
+	 *
+	 * @return endpoint configured by the user.
+	 */
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	/**
+	 * Sets the endpoint
+	 *
+	 * @param endpoint
+	 *            URL client will use to connect.
+	 */
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public MuleCookBookClient getClient() {
+		return client;
+	}
+
+	/**
+	 *
+	 * @param client
+	 */
+	public void setClient(MuleCookBookClient client) {
+		this.client = client;
+	}
+
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But if we try to run our tests, now we will see that the test while fail with a SAXParseException. because we need to add username and password to our configuration now.</p>
+</div>
+<div class="sect4">
+<h5 id="_testing_connection_is_working">Testing Connection is Working</h5>
+<div class="paragraph">
+<p>Testing our connection management needs for us to do some low level coding, but is it still clear how to do it.</p>
+</div>
+<div class="paragraph">
+<p>We will use the mule context and the registry to get our hands in our config elements, wrapper in a Testable Object, so that we can run our @Connect method.</p>
+</div>
+<div class="paragraph">
+<p>In our mule app, we just need to add a configuration that has bad credentials.</p>
+</div>
+<div class="paragraph">
+<p>The we just execute the test and make the assertions.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/connectivityTest.png" alt="connectivityTest" width="900">
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_oauthv2">4.3.3. Using OAuthV2</h4>
+<div class="paragraph">
+<p>Use v1 to show how to implement OAuthV2 in your connector</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configurable">4.4. Adding configurable fields</h3>
+<div class="paragraph">
+<p>Adding configurable fields is also easy with the plugin since there are a couple of templates ready for you to use.</p>
+</div>
+<div class="paragraph">
+<p>Just type "conf" at the editor of your @Connector or your connection strategy and use Ctrl + Space bar to display the templates.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/config1.png" alt="config1" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>In our case, lets at a configurable field in our @Configuration component with a default value for the endpoint our client will connect to.</p>
+</div>
+<div class="paragraph">
+<p>This way we will allow users to connect to different sandboxes.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/config2.png" alt="config2" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>We are now ready to add our first processor. If you want a little more details about configurable fields, continue reading. If not, lets just go to add our <a href="#processor">processor</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="__optional">4.4.1. @Optional</h4>
+<div class="paragraph">
+<p>Optional parameters or configurable ones, as the name states, are elements that are not required, and there for, there is no need for users to specify a value.</p>
+</div>
+<div class="paragraph">
+<p>Configurable fields can be specified inside @Connector or Connection Strategies Classes, or as parameters of @Processor methods inside a @Connector.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">import org.mule.api.annotations.Configurable;
+import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.param.Optional;
+
+//Inside the @Connector class
+
+/**
+ * Optional Field documentation
+ */
+@Configurable
+@Optional
+private String  optionalField;
+//Getter and Setter of the field are required
+
+/**
+ * Optional parameter
+ */
+public String sayHi(String firstName,@Optional String lastName ) {
+    return "Hi "+firstName+" "+((lastName==null) ? "":lastName);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="__default">4.4.2. @Default</h4>
+<div class="paragraph">
+<p>When you want an optional parameter or configurable you can avoid the use of @Optional and just use the @Default annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">import org.mule.api.annotations.Configurable;
+import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.param.Default;
+
+//Inside the @Connector class
+
+/**
+ *  Field with Default
+ */
+@Configurable
+@Default("Hi")
+private String  greeting;
+//Getter and Setter of the field are required
+
+/**
+ * Default parameter
+ */
+public String sayHi(String firstName,@Default("Unknown") String lastName ) {
+    return greeting+" "+firstName+" "+lastName;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another very important use of the @Default annotation is when building a connector that has DataSense.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="processor">4.5. Adding operations to my @Connector (@Processor)</h3>
+<div class="paragraph">
+<p>To add a processor simply type "proc" at the editor and use Ctrl + Space bar to display the templates and pick the simple processor.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/processor1.png" alt="processor1" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>Lets change it to reflect the getRecentlyAdded method signature, and there we have..our first connector, ready to be tested.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/processor2.png" alt="processor2" width="900">
+</div>
+</div>
+<div class="sect3">
+<h4 id="_adding_samples_to_your_connector">4.5.1. Adding samples to your connector</h4>
+<div class="paragraph">
+<p>Lets now add the example for it.</p>
+</div>
+<div class="paragraph">
+<p>First create the file pointed by the <strong>{@sample &#8230;&#8203;}</strong></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+When you add an example, the name provided here is the name that narrows the example in the file. Inside of it you have to put an example of the @Processor.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you have the the Javadoc check enabled, DevKit plugin will mark the missing example as an error and provide a quick fix for us to easily add the example.</p>
+</div>
+<div class="paragraph">
+<p>Otherwise, open the file and type "&lt;" at the editor and use Ctrl + Space bar to display the templates and pick the one that best suite our operation.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/sample1.png" alt="sample1" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>Our example in this case looks like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;!-- BEGIN_INCLUDE(cook-book:getRecentlyAdded) --&gt;
+	&lt;cook-book:get-recently-added/&gt;
+&lt;!-- END_INCLUDE(cook-book:getRecentlyAdded) --&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing_your_processor">4.6. Testing your @Processor</h3>
+<div class="paragraph">
+<p>In order to test our @Processor, lets start by generating the required files for us to test the operation, as if it was being used inside a mule application.</p>
+</div>
+<div class="paragraph">
+<p>Right click the root of your project and select <strong>Anypoint Connector &gt; Generate Tests</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Select the operation you want to use to generate the test, and all the files you want to create.</p>
+</div>
+<div class="paragraph">
+<p>After the generation ends, just modify the test to make the corresponding setup and assertions.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/generate-tests1.png" alt="generate tests1" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>Start the server, and run your test now.</p>
+</div>
+<div class="paragraph">
+<p>It is all green!</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/generate-tests2.png" alt="generate tests2" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>So..what just happened?</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We run a mule app that contains one simple flow with the xml that represents our operation.</p>
+</li>
+<li>
+<p>A connector instance was created and using our configuration, it connected to the server.</p>
+</li>
+<li>
+<p>The operation was executed and the payload now is the result of that operation</p>
+</li>
+<li>
+<p>We retrieve the payload, cast it to what we know the result is and started making the relevant assertions.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To go deeper into our testing best practices please read the full <a href="http://www.mulesoft.org/documentation/display/current/Developing+DevKit+Connector+Tests">testing documentation</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_improving_error_handling">5. Improving error Handling</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_exception_handling_handler">5.1. Exception Handling (@Handler)</h3>
+<div class="paragraph">
+<p>The <a href="http://www.mulesoft.org/documentation/display/current/Annotation+Reference#AnnotationReference-handleran">@Handler</a> feature, is a very useful feature when you want to avoid duplicated code when handling exceptions, and also so that your connector code is clean.</p>
+</div>
+<div class="paragraph">
+<p>When handling messages retrieved from the API, if the message is poor and you know how to improve it, you can us this mechanism, to enrich the error provided to the user.</p>
+</div>
+<div class="paragraph">
+<p>After defining your handler, you can use them either by annotating your class or your processor.</p>
+</div>
+<div class="paragraph">
+<p>Our @Handler Class could be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">package org.mule.modules.cookbook.handler;
+
+import org.mule.api.annotations.Handle;
+import org.mule.api.annotations.components.Handler;
+
+import com.cookbook.tutorial.service.InvalidEntityException;
+
+@Handler
+public class CookBookHandler {
+
+	@Handle
+	public void handleException(Exception ex) throws Exception{
+		if(ex instanceof InvalidEntityException){
+			throw new RuntimeException("You cannot provide an Id when creating a Recipe");
+		}else{
+			throw ex;
+		}
+	}
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And to use it in one processor.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Processor
+@OnException (handler=CookBookHandler.class)
+public Ingredient createIngredient(@Default("#[payload]") Ingredient Ingredient) throws InvalidEntityException, SessionExpiredException {
+    return (Ingredient) client.create(Ingredient);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the full <a href="resources/java/v3/CookBookConnector.java">source code</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_handle_session_expiration_reconnecton">5.2. How to handle session expiration (@ReconnectOn)</h3>
+<div class="paragraph">
+<p>There is no need for users to add custom code on their mule apps in order to handle session expiration. DevKit provides a mechanism to do this in a clean way.</p>
+</div>
+<div class="paragraph">
+<p>You just need to annotated your @Processor method with the @ReconnectOn exception.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Processor
+@ReconnectOn(exceptions = { SessionExpiredException.class })
+public Ingredient retriveIngredient(@Default("1") int id) throws SessionExpiredException, NoSuchEntityException {
+    return (Ingredient) client.get(id);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In our mule app we just need to configure a reconnection strategy and our mule app is ready to to handle session expirations.</p>
+</div>
+<div class="paragraph">
+<p>In the UI you can just configured from the Global Config dialog.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/reconnect.png" alt="reconnect" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>The XML generated will look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;cook-book:config-type doc:name="config" name="config" password="admin" username="admin"&gt;
+    &lt;reconnect/&gt;
+&lt;/cook-book:config-type&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_datasense">6. Adding DataSense</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_it">6.1. What is it?</h3>
+<div class="paragraph">
+<p><a href="http://www.mulesoft.org/documentation/display/current/DataSense">DataSense</a> is a feature used to improve the user experience at design time when creating Mule applications.</p>
+</div>
+<div class="paragraph">
+<p>If coded correctly, user will be able to take advantage of the messages metadata to facilitate application design. With this functionality, Anypoint&#8482; Studio proactively acquires information about data, such as data type and structure, in order to prescribe how to accurately map or use data in your application.</p>
+</div>
+<div class="paragraph">
+<p>Is feature that displays the metadata of the entities included in the service in a friendly manner. Although this feature is optional, Mule strongly recommends that you use DataSense in your connector much easier to use for end users.</p>
+</div>
+<div class="paragraph">
+<p>Full documentation is available <a href="http://www.mulesoft.org/documentation/display/current/Adding+DataSense">here</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_to_implement_it">6.2. How to implement it</h3>
+<div class="sect3">
+<h4 id="_my_model_is_static">6.2.1. My model is static</h4>
+<div class="paragraph">
+<p>When we say that a model is static, it mean that the entities are fixed and know and cannot change in anyway. The fields it supports are fixed.</p>
+</div>
+<div class="paragraph">
+<p>Lets analyze the entities in Mule Cook Book service. We just have 2 simple entities, Recipe and Ingredient that extends from CookBookEntity.</p>
+</div>
+<div class="paragraph">
+<p>Now, lets take a look at how our createIngredient operation looks inside Anypoint Studio. And how it interacts with other components.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Processor
+@OnException (handler=CookBookHandler.class)
+public Ingredient createIngredient(@Default("#[payload]") Ingredient Ingredient) throws InvalidEntityException, SessionExpiredException {
+    return (Ingredient) client.create(Ingredient);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We defined the operation so that it receives an Ingredient, and it return the Ingredient with the extra fields populated form the server.</p>
+</div>
+<div class="paragraph">
+<p>If we check the input metadata, we can see that the expected output is a Pojo, with the expected fields our Ingredient has:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datasense.png" alt="datasense" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>If we verify the output metadata, it is also the expected one.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datasense2.png" alt="datasense2" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>So now, if we drag and drop a datamapper either behind or after our connector, we will see that datamapper automatically picks the input or output.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datamapper-input1.png" alt="datamapper input1" width="900">
+</div>
+<div class="title">Figure 1. Datamapper Receiving Connector Output </div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datamapper-output1.png" alt="datamapper output1" width="900">
+</div>
+<div class="title">Figure 2. Datamapper Setting Connector Input</div>
+</div>
+<div class="paragraph">
+<p>Because DevKit auto generates static meta data, your connector know how propagate meta data information.</p>
+</div>
+<div class="paragraph">
+<p>But we don&#8217;t have just Ingredients, we also have Recipes, but we don&#8217;t want to have one method for each entity we have in our model.</p>
+</div>
+<div class="paragraph">
+<p>So lets make some modifications so that we just work with the CookBookEntity class.</p>
+</div>
+<div class="paragraph">
+<p>Here we have our new create operation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@OnException (handler=CookBookHandler.class)
+@ReconnectOn(exceptions = { SessionExpiredException.class })
+public CookBookEntity create(@Default("#[payload]") @RefOnly CookBookEntity entity) throws InvalidEntityException, SessionExpiredException {
+    return getClient().create(entity);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because of some devkit limitations regarding how to handle Abstract classes, we need to specify that the input can only be specified as a reference.</p>
+</div>
+<div class="paragraph">
+<p>But lets see how this affects the UI and user experience.</p>
+</div>
+<div class="paragraph">
+<p>Studio, can no longer determine input or output type:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ref-only-input.png" alt="ref only input" width="900">
+</div>
+<div class="title">Figure 3. Connector Input with @RefOnly</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ref-only-output.png" alt="ref only output" width="900">
+</div>
+<div class="title">Figure 4. Connector Output with Abstract Class</div>
+</div>
+<div class="paragraph">
+<p>And even in datamapper is not automatically populated, with the type:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/ref-only-datamapper.png" alt="ref only datamapper" width="900">
+</div>
+<div class="title">Figure 5. Datamapper with connector with @RefOnly parameter</div>
+</div>
+<div class="paragraph">
+<p>We are forced to manually configure the input:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/manual-datamapper.png" alt="manual datamapper" width="900">
+</div>
+<div class="title">Figure 6. Selecting the pojo manually</div>
+</div>
+<div class="paragraph">
+<p>In the next section we will see how me can get back our datamapper friendly user experience.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_implementing_adding_metadatacategory">6.2.2. Implementing adding @MetaDataCategory</h4>
+<div class="paragraph">
+<p>In order to implement DataSense using a @MetaDataCategory you need to separate your implementation in 2 steps, retrieving the keys and then describing the keys.</p>
+</div>
+<div class="paragraph">
+<p>First, we will annotate our retriever with the @MetaDataCategory and inject the connector (this last one is a requirement in the current devkit version).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@MetaDataCategory
+public class DataSenseResolver {
+
+	@Inject
+	private CookBookConnector connector;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, we need a method that retrieves the keys, which we will annotate with @MetaDataKeyRetriever:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@MetaDataKeyRetriever
+public List&lt;MetaDataKey&gt; getMetaDataKeys() throws Exception {
+    List&lt;MetaDataKey&gt; keys = new ArrayList&lt;MetaDataKey&gt;();
+
+    // Generate the keys
+    keys.add(new DefaultMetaDataKey("id1", "Ingredient"));
+    keys.add(new DefaultMetaDataKey("id2", "Recipe"));
+
+    return keys;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, we need a method that describes an entity fiven a keys, which we will annotate with @MetaDataRetriever, since we are using a static model, we can just create a PojoModel:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@MetaDataRetriever
+public MetaData getMetaData(MetaDataKey key) throws Exception {
+    DefaultMetaDataBuilder builder = new DefaultMetaDataBuilder();
+    // Since our model is static and we can simply create the pojo model.
+    PojoMetaDataBuilder&lt;?&gt; pojoObject = null;
+    if ("id1".equals(key.getId()))
+        pojoObject = builder.createPojo(Ingredient.class);
+    else if ("id2".equals(key.getId()))
+        pojoObject = builder.createPojo(Recipe.class);
+    else
+        throw new RuntimeException("Invalid key:" + key.getId());
+
+    MetaDataModel model = pojoObject.build();
+    MetaData metaData = new DefaultMetaData(model);
+
+    return metaData;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the full <a href="resources/java/v5/DataSenseResolver.java">source code</a>.</p>
+</div>
+<div class="paragraph">
+<p>Now, in order to use this in our connector we need to modify our @Processors so that the user can pick the entities.</p>
+</div>
+<div class="paragraph">
+<p>Lets annotate our @Connector class with the @MetaDataScope annotation. This will set the default MetaDataCategory that will be used every time the users chooses a @Processor that has a @MetaDataKeyParam.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Connector(name = "cook-book", friendlyName = "CookBook")
+@MetaDataScope(DataSenseResolver.class)
+public class CookBookConnector {</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to describe input and output, we need to tune our @Processor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Processor
+@OnException (handler=CookBookHandler.class)
+@ReconnectOn(exceptions = { SessionExpiredException.class })
+public CookBookEntity create(@MetaDataKeyParam(affects=MetaDataKeyParamAffectsType.BOTH) String type,
+        @Default("#[payload]") @RefOnly CookBookEntity entity) throws InvalidEntityException, SessionExpiredException {
+    return getClient().create(entity);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In our get operation we need to affect only output so we will modify it just a little:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Processor
+@OnException (handler=CookBookHandler.class)
+@ReconnectOn(exceptions = { SessionExpiredException.class })
+public CookBookEntity get(@MetaDataKeyParam(affects=MetaDataKeyParamAffectsType.OUTPUT) String type,@Default("1") Integer id) throws InvalidEntityException, SessionExpiredException, NoSuchEntityException {
+    return getClient().get(id);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lets check our our new connector looks in studio.</p>
+</div>
+<div class="paragraph">
+<p>Now, we have a combo that after we select the entity type and save it, will automatically refresh our MetaData.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datasense-static.png" alt="datasense static" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>And now even DataMapper knows how to interact with our @Connector</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datasense-static2.png" alt="datasense static2" width="900">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_my_model_is_dynamic">6.2.3. My model is dynamic</h4>
+<div class="paragraph">
+<p>Use v2 to generate a dynamic data sense to describe standard and custom entities using the operations provided by the API</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_testing_it">6.2.4. Testing it</h4>
+<div class="paragraph">
+<p>Show an unit test of DataSense.
+Show how to test it in Studio.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adding_query">6.3. Adding @Query</h3>
+<div class="paragraph">
+<p>Use v2 and extend datasense to describe what can be queryable.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_pagination">7. Adding Pagination</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TODO</p>
+</div>
+<div class="paragraph">
+<p>A quick example of Pagination with the query operation</p>
+</div>
+<div class="sect2">
+<h3 id="_testing_it_2">7.1. Testing it</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_batch">8. Adding Batch</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_what_is_it_2">8.1. What is it?</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_implement_it_in_your_connector">8.2. Implement it in your connector</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+<div class="paragraph">
+<p>Add batch to the operations that handle list of elements</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing_it_3">8.3. Testing it</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installing_my_connector">9. Installing my @Connector</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_using_anypoint_devkit_plugin">9.1. Using Anypoint DevKit Plugin</h3>
+<div class="paragraph">
+<p>Installing the connector is basically the same as installing any eclipse plugin.</p>
+</div>
+<div class="paragraph">
+<p>To install your connector from the devkit plugin, you just need to right click on your project folder, and select the option * Anypoint Studio &gt; Install Or Update *.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/install1.png" alt="install1" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>This will trigger the devkit maven build, and generate an <a href="http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fconcepts%2Fupdate_site.htm">update site</a> folder.</p>
+</div>
+<div class="paragraph">
+<p>After the update site is generated a popup will automatically open showing the task that will be performed.</p>
+</div>
+<div id="install-dialog" class="imageblock">
+<div class="content">
+<img src="images/install12.png" alt="install12" width="700">
+</div>
+</div>
+<div class="paragraph">
+<p>The next dialog is just to review the installation/update items, followed for some license agreement.</p>
+</div>
+<div class="paragraph">
+<p>Hit finish and after that you will need to restart Anypoint Studio for the changes to be recognized.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Jars are not signed during this run, so you will see a popup.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/security-warning.png" alt="security warning" width="600">
+</div>
+</div>
+<div class="paragraph">
+<p>Now you can use your connector in a mule app.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/install2.png" alt="install2" width="900">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_the_update_site_folder">9.2. Using the update site folder</h3>
+<div class="paragraph">
+<p>After running from the console <strong>mvn clean package</strong> , you can try installing it by manually selecting the update site.</p>
+</div>
+<div class="paragraph">
+<p>Go to <strong>Help &gt; Install New Software</strong></p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/install-updatesite.png" alt="install updatesite" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>Click on Add and in the new dialog look for the folder and select the UpdateSite file, generated under the target folder.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/install-updatesite2.png" alt="install updatesite2" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>You can either select the zip file named UpdateSite.zip or the folder update-site.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/install-updatesite3.png" alt="install updatesite3" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>After hitting OK you will be in the same dialog as the one described in the <a href="#install-dialog">previous section</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_debugging_your_connector">10. Debugging your @Connector</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After successfully installing your connector, you can start using your connector in a Mule App.
+By simple putting a breakpoint on your source code of the connector, you will be able to debug it.
+If your connector is a Community connector the source code will be shipped automatically in the installed connector.
+If your connector is an Enterprise, you will need to manually attach the source code of your jar.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+In order to correctly debug your code, take into account that the Mule app you are running is using the latest installed version, so if you did some changes, and you want to debug the Mule app, you need to install the connector again.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Debugging your connector when running your test, is as simple as debugging any java class.</p>
+</div>
+<div class="paragraph">
+<p>You just need to put a break point on your connector</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_documenting_my_connector">11. Documenting my @Connector</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Show how to document your connector and the samples. &lt; Current Doc &gt;</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sharing_my_connector">12. Sharing my @Connector</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Connector, as a component that can be installed in Anypoint Studio, is an Update Site.</p>
+</div>
+<div class="paragraph">
+<p>Update Sites are used to organize and export features so they can be installed into Eclipse applications.</p>
+</div>
+<div class="paragraph">
+<p>When the site is built, the included features (along with all plug-ins part of those features) will be exported into an installable form. The exported plug-ins and features will be put into two folders "plug-ins" and "features". Two other files, "content.xml" and "artifacts.xml" will also be generated and contain metadata for the exported files that make installing easier. These files, along with "site.xml", collectively form an Eclipse update site. To make the update site available to others you must make all these files available in a shared directory or web site.</p>
+</div>
+<div class="paragraph">
+<p>When building a connector, DevKit generates this for you, so that you don&#8217;t need to worry about generating this.</p>
+</div>
+<div class="paragraph">
+<p>You can use the Anypoint DevKit plugin to either install the connector on your current Studio, or export it as an update-site for others to use.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_features">13. Other Features</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_adding_source">13.1. Adding @Source</h3>
+<div class="sect3">
+<h4 id="_what_is_a_source">13.1.1. What is a @Source</h4>
+<div class="paragraph">
+<p>In some cases it is necessary to create Message Sources instead of Message Processors.</p>
+</div>
+<div class="paragraph">
+<p>Basically, a Message Source receives or generates new messages to be processed by Mule.
+One of the use cases of Message Sources is implementing Streaming APIs. The @Source annotation marks a method inside a @Connector annotated class as callable from a Mule flow and capable of generating Mule events. Each marked method will have a Message Source generated. The method must receive a SourceCallback as one of its arguments that represents the next message processor in the chain. It does not matter the order in which this parameter appears as long it is present in the method signature.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_create_a_source">13.1.2. Create a @Source</h4>
+<div class="paragraph">
+<p>Create a @Source that consumes the Get Recently Updated on the Connector
+Show how to use it in an app. Video of user drag and dropping into the canvas and configuring it.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_test_my_source">13.1.3. Test my @Source</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adding_transformer">13.2. Adding @Transformer</h3>
+<div class="sect3">
+<h4 id="_what_is_a_transformer">13.2.1. What is a @Transformer</h4>
+<div class="paragraph">
+<p>Transformers convert message payloads to formats expected by their destinations. Mule ESB provides many standard transformers, which you configure using predefined elements and attributes in your Mule XML configuration file but sometimes is useful to build custom transformers.</p>
+</div>
+<div class="paragraph">
+<p>Annotating a method with @Transformer signals the Mule DevKit to export this method functionality as a transformer. Transformers need to be declared in classes annotated with @Module or @Connector and many transformers can be declared in the one class. It is possible to declare transformers, message processors and message sources in the same class.
+The @Transformer annotated method must follow certain rules:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It must be static</p>
+</li>
+<li>
+<p>It must be public</p>
+</li>
+<li>
+<p>It must not return void</p>
+</li>
+<li>
+<p>It must not return java.lang.Object</p>
+</li>
+<li>
+<p>It must receive exactly one argument</p>
+</li>
+<li>
+<p>It must be inside a class annotated with @Connector</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_creating_a_transformer">13.2.2. Creating a transformer</h4>
+<div class="paragraph">
+<p>From String Json representation to Entity</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_the_transformer_in_a_mule_app">13.2.3. Using the transformer in a Mule app</h4>
+<div class="paragraph">
+<p>Show how it is used with auto discovery</p>
+</div>
+<div class="paragraph">
+<p>Show how it is used explicitly</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_test_my_transformer">13.2.4. Test my @Transformer</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improve_ui_layout">13.3. Improve UI Layout</h3>
+<div class="sect3">
+<h4 id="_using_friendlyname">13.3.1. Using friendlyName</h4>
+<div class="paragraph">
+<p>Show how to change the display name of the @Connector</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_password">13.3.2. Using @Password</h4>
+<div class="paragraph">
+<p>When using the @Password in a @Connect parameters, you will generate in the UI a masked input field.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">	@Connect
+	@TestConnectivity
+	public void connect(@ConnectionKey String username,
+			@Password String password) throws ConnectionException {</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In Studio this is translated into:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/password.png" alt="password" width="700">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_placement">13.3.3. Using @Placement</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_understanding_refonly">13.4. Understanding @RefOnly</h3>
+<div class="paragraph">
+<p>Explain the annotation and show how to use it and the impact on the UI this has.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2015-03-04 17:43:08 ART
+</div>
+</div>
+</body>
+</html>
