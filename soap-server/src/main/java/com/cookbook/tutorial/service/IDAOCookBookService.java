@@ -31,4 +31,6 @@ public interface IDAOCookBookService {
         Recipe updateQuantities(Recipe recipe) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
         Description describeEntity(CookBookEntity entity) throws InvalidEntityException, NoSuchEntityException;
+
+        List<CookBookEntity> getEntitiesList();
 }

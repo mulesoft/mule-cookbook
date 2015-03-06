@@ -193,6 +193,20 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         return description;
     }
 
+    @Override
+    public List<CookBookEntity> getEntitiesList() {
+        List<CookBookEntity> list = new ArrayList<>();
+        Ingredient ing=new Ingredient();
+        ing.setName("Ingredient");
+        ing.setId(0);
+        list.add(ing);
+        Recipe recipe=new Recipe();
+        recipe.setName("Recipe");
+        recipe.setId(0);
+        list.add(recipe);
+        return list;
+    }
+
     private Description getRecipeDescription(Integer id) throws NoSuchEntityException {
         Description description = new Description();
         List<Description> fields = new ArrayList<>();

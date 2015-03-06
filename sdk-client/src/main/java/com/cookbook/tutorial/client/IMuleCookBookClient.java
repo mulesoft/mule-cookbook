@@ -37,4 +37,8 @@ public interface IMuleCookBookClient {
 
     public CookBookEntity create(CookBookEntity entity) throws InvalidEntityException,
             SessionExpiredException;
+
+    public List<CookBookEntity> getEntities() throws SessionExpiredException;
+
+    public Description describeEntity(CookBookEntity cookBookEntity) throws InvalidTokenException, InvalidEntityException, NoSuchEntityException, SessionExpiredException;
 }

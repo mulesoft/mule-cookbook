@@ -32,14 +32,17 @@ public class MuleCookBookClient implements IMuleCookBookClient {
                 (BindingProvider.ENDPOINT_ADDRESS_PROPERTY), address);
     }
 
+    @Override
     public void login(String username, String password) throws InvalidCredentialsException {
         token = port.login(username, password);
     }
 
+    @Override
     public List<Recipe> getRecentlyAdded() {
         return port.getRecentlyAdded();
     }
 
+    @Override
     public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException {
         Get request = new Get();
         request.setId(id);
@@ -51,6 +54,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         }
     }
 
+    @Override
     public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws NoSuchEntityException,
             SessionExpiredException {
         SearchWithQuery request = new SearchWithQuery();
@@ -65,6 +69,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         }
     }
 
+    @Override
     public CookBookEntity update(CookBookEntity entity) throws NoSuchEntityException,
             InvalidEntityException, SessionExpiredException {
         Update request = new Update();
@@ -77,6 +82,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         }
     }
 
+    @Override
     public List<CookBookEntity> addList(List<CookBookEntity> entities) throws InvalidEntityException,
             SessionExpiredException {
         AddList request = new AddList();
@@ -89,6 +95,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         }
     }
 
+    @Override
     public List<CookBookEntity> getList(List<Integer> entityIds) throws NoSuchEntityException,
             SessionExpiredException {
         GetList getList = new GetList();
@@ -101,6 +108,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         }
     }
 
+    @Override
     public void delete(int id) throws NoSuchEntityException, SessionExpiredException {
         Delete delete = new Delete();
         delete.setId(id);
@@ -112,6 +120,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         }
     }
 
+    @Override
     public List<CookBookEntity> updateList(List<CookBookEntity> entities) throws NoSuchEntityException,
             InvalidEntityException, SessionExpiredException {
         UpdateList request = new UpdateList();
@@ -125,6 +134,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
 
     }
 
+    @Override
     public void deleteList(List<Integer> entityIds) throws NoSuchEntityException,
             SessionExpiredException {
         DeleteList request = new DeleteList();
@@ -137,6 +147,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         }
     }
 
+    @Override
     public CookBookEntity create(CookBookEntity entity) throws InvalidEntityException,
             SessionExpiredException {
         Create request = new Create();
@@ -147,5 +158,22 @@ public class MuleCookBookClient implements IMuleCookBookClient {
             logger.warn("Should never happen.", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<CookBookEntity> getEntities() throws SessionExpiredException{
+        try {
+            return port.getEntitiesList(new GetEntitiesList(),token).getReturn();
+        } catch (InvalidTokenException e) {
+            logger.warn("Should never happen.", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Description describeEntity(CookBookEntity cookBookEntity) throws InvalidTokenException, InvalidEntityException, NoSuchEntityException, SessionExpiredException {
+        DescribeEntity parameters=new DescribeEntity();
+        parameters.setEntity(cookBookEntity);
+        return port.describeEntity(parameters,token).getReturn();
     }
 }
