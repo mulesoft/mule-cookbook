@@ -54,6 +54,7 @@ Here we have our new create operation.
 ----
 include::{resourcesDir}/java/v4/CookBookConnector.java[lines=67..72]
 ----
+
 Because of some devkit limitations regarding how to handle Abstract classes, we need to specify that the input can only be specified as a reference.
 
 But lets see how this affects the UI and user experience.
@@ -72,9 +73,71 @@ We are forced to manually configure the input:
 
 image::manual-datamapper.png[title="Selecting the pojo manually",width="900"]
 
+In the next section we will see how me can get back our datamapper friendly user experience.
+
+==== Implementing adding @MetaDataCategory
+
+In order to implement DataSense using a @MetaDataCategory you need to separate your implementation in 2 steps, retrieving the keys and then describing the keys.
+
+First, we will annotate our retriever with the @MetaDataCategory and inject the connector (this last one is a requirement in the current devkit version).
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v5/DataSenseResolver.java[lines=31..36]
+----
+
+Then, we need a method that retrieves the keys, which we will annotate with @MetaDataKeyRetriever:
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v5/DataSenseResolver.java[lines=40..49]
+----
+
+Now, we need a method that describes an entity fiven a keys, which we will annotate with @MetaDataRetriever, since we are using a static model, we can just create a PojoModel:
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v5/DataSenseResolver.java[lines=60..76]
+----
+
+Check the full link:{resourcesDir}/java/v5/DataSenseResolver.java[source code].
+
+Now, in order to use this in our connector we need to modify our @Processors so that the user can pick the entities.
+
+Lets annotate our @Connector class with the @MetaDataScope annotation. This will set the default MetaDataCategory that will be used every time the users chooses a @Processor that has a @MetaDataKeyParam.
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v5/CookBookConnector.java[lines=37..39]
+----
+
+In order to describe input and output, we need to tune our @Processor:
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v5/CookBookConnector.java[lines=71..77]
+----
+
+In our get operation we need to affect only output so we will modify it just a little:
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v5/CookBookConnector.java[lines=110..115]
+----
+
+Lets check our our new connector looks in studio.
+
+Now, we have a combo that after we select the entity type and save it, will automatically refresh our MetaData.
+
+image::datasense-static.png[width="900"]
+
+And now even DataMapper knows how to interact with our @Connector
+
+image::datasense-static2.png[width="900"]
+
+View connector full source code link:{resourcesDir}/java/v5/CookBookConnector.java[here].
+
 ==== My model is dynamic
 
-Use v2 to generate a dynamic data sense to describe standard and custom entities using the operations provided by the API
+In our previous section we covered the scenario when your model is static. Lets take a look into a much more complex scenario.
+
+There are APIs that provide a way to get entities definitions dynamically. Salesforce, NetSuite are just some examples of this.
+
+In our case, our CookBook provides an operation that describes our entities, so lets use that instead
 
 ==== Testing it
 

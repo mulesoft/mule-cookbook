@@ -82,6 +82,9 @@ public interface IMuleCookBookService {
     Description describeEntity(@WebParam(name = "entity") CookBookEntity entity,
             @WebParam(name = "token",header = true) String token) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;
 
+    @WSDLDocumentation("List of CookBook Entities that can be retrieved from the server.")
+    List<CookBookEntity> getEntitiesList(@WebParam(name = "token",header = true) String token) throws InvalidTokenException, SessionExpiredException;
+
     @WSDLDocumentation("Logs into system, and returns a token to be used in future requests.")
     String login(@WebParam(name = "accountId") String accountId,@WebParam(name = "password") String password) throws InvalidCredentialsException;
 

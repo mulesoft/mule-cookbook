@@ -13,6 +13,8 @@
   <xs:element name="describeEntity" type="tns:describeEntity"/>
   <xs:element name="describeEntityResponse" type="tns:describeEntityResponse"/>
   <xs:element name="get" type="tns:get"/>
+  <xs:element name="getEntitiesList" type="tns:getEntitiesList"/>
+  <xs:element name="getEntitiesListResponse" type="tns:getEntitiesListResponse"/>
   <xs:element name="getList" type="tns:getList"/>
   <xs:element name="getListResponse" type="tns:getListResponse"/>
   <xs:element name="getRecentlyAdded" type="tns:getRecentlyAdded"/>
@@ -182,6 +184,14 @@
   <xs:complexType name="logoutResponse">
     <xs:sequence/>
   </xs:complexType>
+  <xs:complexType name="getEntitiesList">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="getEntitiesListResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:cookBookEntity"/>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="delete">
     <xs:sequence>
       <xs:element name="id" type="xs:int"/>
@@ -247,6 +257,12 @@
   </wsdl:message>
   <wsdl:message name="get">
     <wsdl:part name="parameters" element="tns:get">
+    </wsdl:part>
+    <wsdl:part name="token" element="tns:token">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getEntitiesList">
+    <wsdl:part name="parameters" element="tns:getEntitiesList">
     </wsdl:part>
     <wsdl:part name="token" element="tns:token">
     </wsdl:part>
@@ -391,6 +407,10 @@
     <wsdl:part name="token" element="tns:token">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getEntitiesListResponse">
+    <wsdl:part name="parameters" element="tns:getEntitiesListResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="addListResponse">
     <wsdl:part name="parameters" element="tns:addListResponse">
     </wsdl:part>
@@ -529,6 +549,17 @@
       <wsdl:output name="logoutResponse" message="tns:logoutResponse">
     </wsdl:output>
       <wsdl:fault name="InvalidTokenException" message="tns:InvalidTokenException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEntitiesList">
+<wsdl:documentation>List of CookBook Entities that can be retrieved from the server.</wsdl:documentation>
+      <wsdl:input name="getEntitiesList" message="tns:getEntitiesList">
+    </wsdl:input>
+      <wsdl:output name="getEntitiesListResponse" message="tns:getEntitiesListResponse">
+    </wsdl:output>
+      <wsdl:fault name="InvalidTokenException" message="tns:InvalidTokenException">
+    </wsdl:fault>
+      <wsdl:fault name="SessionExpiredException" message="tns:SessionExpiredException">
     </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="delete">
@@ -775,6 +806,23 @@
       </wsdl:output>
       <wsdl:fault name="InvalidTokenException">
         <soap:fault name="InvalidTokenException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEntitiesList">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getEntitiesList">
+        <soap:header message="tns:getEntitiesList" part="token" use="literal">
+        </soap:header>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getEntitiesListResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidTokenException">
+        <soap:fault name="InvalidTokenException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="SessionExpiredException">
+        <soap:fault name="SessionExpiredException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="delete">

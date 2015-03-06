@@ -20,7 +20,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
     private static final Logger logger = Logger.getLogger(MuleCookBookServiceImpl.class.getName());
 
     private Integer currentIndex = 0;
-    private Integer exceptionRatio = 3;
+    private Integer exceptionRatio = 10;
 
     private IDAOCookBookService serviceDAL;
 
@@ -134,6 +134,16 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
     @Override
     public void logout(@WebParam(name = "token", targetNamespace = "") String token) throws InvalidTokenException {
         verifyToken(token);
+    }
+
+    @Override public GetEntitiesListResponse getEntitiesList(
+            @WebParam(partName = "parameters", name = "getEntitiesList", targetNamespace = "http://service.tutorial.cookbook.com/") GetEntitiesList parameters,
+            @WebParam(partName = "token", name = "token", targetNamespace = "http://service.tutorial.cookbook.com/", header = true) String token)
+            throws InvalidTokenException, SessionExpiredException {
+        verifyToken(token);
+        GetEntitiesListResponse response = new GetEntitiesListResponse();
+        response.setReturn(serviceDAL.getEntitiesList());
+        return response;
     }
 
     @Override
