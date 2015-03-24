@@ -31,20 +31,7 @@ For the users, it abstracts them from the complexity of initializing any require
 
 For a quick overview of the Anypoint Studio DevKit Plugin and how to create a basic Connector check the documentation.
 
-== Features to cover in tutorial
-
-In this tutorial we are going to  incrementally show you how to add value and simplify the connectors users interaction in Mule with the different features provided by DevKit.
-We are going to start by generating a simple @Connector for a web service.
-
-After that we will show you how to add configurable field (@Configurable) that will be used in our @Processor, and how to test it.
-Then we are going to show you how to enrich the errors returned by an API and how to make sure your users don't need to handle session expirations.
-
-As we understand more about the API being consumed, we will show you why we need to add DataSense to your connector and how it improves user experience.
-Having DataSense also allow you to use our DataSense Query Language (DSQL).
-
-Other important feature that most APIs support is the Pagination of results, as well as the Batch processing
-
-For a full list of Supported annotations check our current documentation.
+include::features-covered.adoc[]
 
 include::service-description.adoc[]
 
