@@ -8,6 +8,7 @@
 :website: http://mulesoft.org/
 :muleJerveyVersion: 2.11
 :toclevels: 1
+:title: Cookbook Tutorial - MuleSoft
 
 = Anypoint Studio Devkit
 
