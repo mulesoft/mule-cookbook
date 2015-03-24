@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 1.5.2">
 <meta name="author" content="MuleSoft Inc.">
 <title>Anypoint Studio Devkit</title>
-<link rel="stylesheet" href="css/mule.css">
+<link rel="stylesheet" href="/Users/pablocabrera/dev/mule-store/tutorial/src/main/asciidoc/css/mule.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
@@ -542,7 +542,7 @@ Having DataSense also allow you to use our DataSense Query Language (DSQL).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_i_don_t_need_a_authentication">4.3.1. I don&#8217;t need a authentication</h4>
+<h4 id="_i_don_t_need_an_authentication">4.3.1. I don&#8217;t need an authentication</h4>
 <div class="paragraph">
 <p>Here even if we don&#8217;t need to authenticate against our sandbox, we still need to initialize the client before consuming the service.</p>
 </div>
@@ -1309,7 +1309,7 @@ public List&lt;MetaDataKey&gt; getMetaDataKeys() throws Exception {
 </div>
 </div>
 <div class="paragraph">
-<p>Now, we need a method that describes an entity fiven a keys, which we will annotate with @MetaDataRetriever, since we are using a static model, we can just create a PojoModel:</p>
+<p>Now, we need a method that describes an entity given a keys, which we will annotate with @MetaDataRetriever, since we are using a static model, we can just create a PojoModel:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1394,25 +1394,199 @@ public CookBookEntity get(@MetaDataKeyParam(affects=MetaDataKeyParamAffectsType.
 <img src="images/datasense-static2.png" alt="datasense static2" width="900">
 </div>
 </div>
+<div class="paragraph">
+<p>View connector full source code <a href="resources/java/v5/CookBookConnector.java">here</a>.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_my_model_is_dynamic">6.2.3. My model is dynamic</h4>
 <div class="paragraph">
-<p>Use v2 to generate a dynamic data sense to describe standard and custom entities using the operations provided by the API</p>
+<p>In our previous section we covered the scenario when your model is static. Lets take a look into a much more complex scenario.</p>
+</div>
+<div class="paragraph">
+<p>There are APIs that provide a way to get entities definitions dynamically. Salesforce, NetSuite are just some examples of this.</p>
+</div>
+<div class="paragraph">
+<p>In our case, our CookBook provides an operation that describes our entities, so lets use that instead to get the entities and structure.</p>
+</div>
+<div class="paragraph">
+<p>Fist we need to get the supported entities, and generate a key that we can use later.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@MetaDataKeyRetriever
+public List&lt;MetaDataKey&gt; getMetaDataKeys() throws Exception {
+    List&lt;MetaDataKey&gt; keys = new ArrayList&lt;MetaDataKey&gt;();
+    List&lt;CookBookEntity&gt; entities = connector.getConnectionStrategy()
+            .getClient().getEntities();
+    // Generate the keys
+    for (CookBookEntity entity : entities) {
+        keys.add(new DefaultMetaDataKey(entity.getClass().getName() + "#"
+                + entity.getId(), entity.getName()));
+    }
+
+    return keys;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we need to use a structure that we can dynamically modify, and the way to do this in mule is by using a Map&lt;String,Object&gt; as parameters and return types of our connector.</p>
+</div>
+<div class="paragraph">
+<p>Mule provides a builder that will help us in generate the MetaData for the entities.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@MetaDataRetriever
+public MetaData getMetaData(MetaDataKey key) throws Exception {
+    DefaultMetaDataBuilder builder = new DefaultMetaDataBuilder();
+    // Since our model is static and we can simply create the pojo model.
+    String[] keyParts = key.getId().split("#");
+    if (keyParts.length != 2) {
+        throw new RuntimeException(
+                "Invalid key. Format should be 'entityType#id'");
+    }
+    Integer id = Integer.valueOf(keyParts[1]);
+    CookBookEntity entity = (CookBookEntity) Class.forName(keyParts[0])
+            .newInstance();
+    entity.setId(id);
+    Description description = connector.getConnectionStrategy().getClient()
+            .describeEntity(entity);
+
+    DynamicObjectBuilder&lt;?&gt; dynamicObject = builder.createDynamicObject(key
+            .getId());
+
+    for (Description fields : description.getInnerFields()) {
+        addFields(fields, dynamicObject);
+    }
+
+    MetaDataModel model = builder.build();
+    MetaData metaData = new DefaultMetaData(model);
+
+    return metaData;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the full <a href="resources/java/v6/DataSenseResolver.java">source code</a>.</p>
+</div>
+<div class="paragraph">
+<p>In our @Connector now we need to add the code to generate the entities from the Map, and return Map in all our operations. Why is this important? To maintain consistency in our API.</p>
+</div>
+<div class="paragraph">
+<p>This is how our new Create looks like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Processor
+@OnException (handler=CookBookHandler.class)
+@ReconnectOn(exceptions = { SessionExpiredException.class })
+public Map&lt;String,Object&gt; create(@MetaDataKeyParam(affects=MetaDataKeyParamAffectsType.BOTH) String type,
+        @Default("#[payload]") @RefOnly Map&lt;String,Object&gt; entity) throws InvalidEntityException, SessionExpiredException {
+    ObjectMapper m = new ObjectMapper();
+    CookBookEntity  input = null;
+    if(type.contains("com.cookbook.tutorial.service.Recipe")){
+        input=m.convertValue(entity, Recipe.class);
+    }else if(type.contains("com.cookbook.tutorial.service.Ingredient")){
+        input=m.convertValue(entity, Ingredient.class);
+    }else{
+        throw new InvalidEntityException("Don't know how to handle type:"+type);
+    }
+    return m.convertValue(getClient().create(input),Map.class);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that now the UI is different form before, since the input is not a map.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datamapper-ui.png" alt="datamapper ui" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>In our mule app, we can not update the metadata and use our connector, and as you can see not we have a map structure instead of a Pojo:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datamapper-map.png" alt="datamapper map" width="900">
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_testing_it">6.2.4. Testing it</h4>
 <div class="paragraph">
-<p>Show an unit test of DataSense.
-Show how to test it in Studio.</p>
+<p>Lets start by adding an JUnit Test for our DataSenseResolver.</p>
+</div>
+<div class="paragraph">
+<p>Since in this case we need to connect to the service and we want this test to be as similar as possible to what will actually happen when the users use our datasense in studio, lets get our list of keys using mule.</p>
+</div>
+<div class="paragraph">
+<p>To do this we are going to write a test as we would for executing a flow, but instead of running on operation, we are going to ask to the mule context for our configuration element. This will actually give us an initialized connector. And after that we are going to ask for the keys and check that the result of this operation was a success.</p>
+</div>
+<div class="paragraph">
+<p>Our config on the xml file can be something like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-xml" data-lang="xml">&lt;cook-book:config-type username="admin" password="admin" name="config" doc:name="Cook-book"/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And our test will look like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">ConnectorMetaDataEnabled connector = (ConnectorMetaDataEnabled) muleContext.getRegistry().lookupObject("config");
+Result&lt;List&lt;MetaDataKey&gt;&gt; result = connector.getMetaDataKeys();
+assertTrue(Result.Status.SUCCESS.equals(result.getStatus()));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The same can be made for the MetaData itself. With our set of keys, we an ask our connector to describe the entity that corresponds to the first key.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">MetaDataKey key = result.get().get(0);
+assertTrue(Result.Status.SUCCESS.equals(connector.getMetaData(key).getStatus()));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In studio we just need to configure our connector, and it will start fetching the keys.</p>
+</div>
+<div class="paragraph">
+<p>After it finishes, we will be able to selected the entities in the UI.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datasense-dynamic.png" alt="datasense dynamic" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>Note that on the XML the value written is the key.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datasense-dynamic-xml.png" alt="datasense dynamic xml" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>After we add a datamapper in the middle we can see that the input and output is the one we described.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/datasense-dynamic-datamapper.png" alt="datasense dynamic datamapper" width="900">
+</div>
+</div>
+<div class="paragraph">
+<p>Check the full <a href="resources/java/v6/DataSenseTestCases.java">source code</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_adding_query">6.3. Adding @Query</h3>
 <div class="paragraph">
-<p>Use v2 and extend datasense to describe what can be queryable.</p>
+<p>Use v2 and extend datasense to describe what can be querable.</p>
 </div>
 </div>
 </div>
@@ -1587,7 +1761,7 @@ In order to correctly debug your code, take into account that the Mule app you a
 <h2 id="_documenting_my_connector">11. Documenting my @Connector</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Show how to document your connector and the samples. &lt; Current Doc &gt;</p>
+<p>To see how we recommend users to document their @Connector follow this <a href="https://docs.google.com/a/mulesoft.com/document/d/1XbtvvP6kYp7anzYbvJGN4ZAfsO5uCa85bWHpam-Og-c/edit#heading=h.18f13ohw5agk">guide</a>.</p>
 </div>
 </div>
 </div>
@@ -1675,11 +1849,31 @@ The @Transformer annotated method must follow certain rules:</p>
 <div class="sect3">
 <h4 id="_creating_a_transformer">13.2.2. Creating a transformer</h4>
 <div class="paragraph">
-<p>From String Json representation to Entity</p>
+<p>In our case, we are just going to create a transformer that converts a List&lt;Recipe&gt; into a List&lt;Map&lt;String,Object&gt;&gt;, that way we don&#8217;t need to modify our existing operation, and yet we can use the output of it in operations that recive a List&lt;Map&lt;String,Object&gt;&gt; .</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java" data-lang="java">@Transformer(sourceTypes = { List.class })
+public static List&lt;Map&lt;String,Object&gt;&gt; transformJsonToComments(List&lt;Recipe&gt; list){
+    ObjectMapper mapper = new ObjectMapper();
+    List&lt;Map&lt;String,Object&gt;&gt; result = mapper.convertValue(list,
+            new TypeReference&lt;List&lt;Map&lt;String,Object&gt;&gt;&gt;() {
+            });
+    return result;
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_using_the_transformer_in_a_mule_app">13.2.3. Using the transformer in a Mule app</h4>
+<div class="paragraph">
+<p>Now we can use it just by dragging and dropping it form the palette.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/transformer.png" alt="transformer" width="900">
+</div>
+</div>
 <div class="paragraph">
 <p>Show how it is used with auto discovery</p>
 </div>
@@ -1727,18 +1921,12 @@ The @Transformer annotated method must follow certain rules:</p>
 
 </div>
 </div>
-<div class="sect2">
-<h3 id="_understanding_refonly">13.4. Understanding @RefOnly</h3>
-<div class="paragraph">
-<p>Explain the annotation and show how to use it and the impact on the UI this has.</p>
-</div>
-</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2015-03-04 17:43:08 ART
+Last updated 2015-03-23 17:10:45 PDT
 </div>
 </div>
 </body>
