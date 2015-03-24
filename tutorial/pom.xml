@@ -82,7 +82,7 @@
                             <backend>html5</backend>
                             <sourceHighlighter>highlightjs</sourceHighlighter>
                             <attributes>
-                                <linkcss>true</linkcss>
+                                <linkcss>false</linkcss>
                                 <icons>font</icons>
                                 <!-- <docinfo1/> -->
                                 <stylesheet>${basedir}/src/main/asciidoc/css/mule.css</stylesheet>

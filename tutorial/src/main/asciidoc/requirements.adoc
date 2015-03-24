@@ -14,6 +14,22 @@ You can develop a connector using Windows, Mac, or Linux.
 * Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[maven configuration] in Anypoint Studio.
 * Install Anypoint DevKit plugin.
 * Install a http://git-scm.com/downloads[GitHub] client.
-* Clone https://github.com/mulesoft/mule-cookbook[tutorial] repository into your local machine.
 
 WARNING: JRE is not suited for development, you need to have a JDK installed.
+
+== Import the Cook Book
+
+* Clone https://github.com/mulesoft/mule-cookbook[tutorial] repository into your local machine.
+Lets say I have a *dev* folder where I want to clone it.
+[source,bash]
+----
+cd ~/dev
+git clone https://github.com/mulesoft/mule-cookbook.git
+----
+
+* Go to the cloned directory and run:
+[source,bash]
+----
+cd ~/dev/mule-cookbook
+mvn install eclipse:eclipse
+----
