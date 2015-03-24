@@ -91,7 +91,7 @@ Then, we need a method that retrieves the keys, which we will annotate with @Met
 include::{resourcesDir}/java/v5/DataSenseResolver.java[lines=40..49]
 ----
 
-Now, we need a method that describes an entity fiven a keys, which we will annotate with @MetaDataRetriever, since we are using a static model, we can just create a PojoModel:
+Now, we need a method that describes an entity given a keys, which we will annotate with @MetaDataRetriever, since we are using a static model, we can just create a PojoModel:
 [source,java,indent=0]
 ----
 include::{resourcesDir}/java/v5/DataSenseResolver.java[lines=60..76]
@@ -137,13 +137,82 @@ In our previous section we covered the scenario when your model is static. Lets 
 
 There are APIs that provide a way to get entities definitions dynamically. Salesforce, NetSuite are just some examples of this.
 
-In our case, our CookBook provides an operation that describes our entities, so lets use that instead
+In our case, our CookBook provides an operation that describes our entities, so lets use that instead to get the entities and structure.
+
+Fist we need to get the supported entities, and generate a key that we can use later.
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v6/DataSenseResolver.java[lines=47..59]
+----
+
+Now we need to use a structure that we can dynamically modify, and the way to do this in mule is by using a Map<String,Object> as parameters and return types of our connector.
+
+Mule provides a builder that will help us in generate the MetaData for the entities.
+
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v6/DataSenseResolver.java[lines=68..95]
+----
+Check the full link:{resourcesDir}/java/v6/DataSenseResolver.java[source code].
+
+In our @Connector now we need to add the code to generate the entities from the Map, and return Map in all our operations. Why is this important? To maintain consistency in our API.
+
+This is how our new Create looks like:
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v6/CookBookConnector.java[lines=77..92]
+----
+
+Note that now the UI is different form before, since the input is not a map.
+
+image::datamapper-ui.png[width="900"]
+
+In our mule app, we can not update the metadata and use our connector, and as you can see not we have a map structure instead of a Pojo:
+
+image::datamapper-map.png[width="900"]
 
 ==== Testing it
 
-Show an unit test of DataSense.
-Show how to test it in Studio.
+Lets start by adding an JUnit Test for our DataSenseResolver.
+
+Since in this case we need to connect to the service and we want this test to be as similar as possible to what will actually happen when the users use our datasense in studio, lets get our list of keys using mule.
+
+To do this we are going to write a test as we would for executing a flow, but instead of running on operation, we are going to ask to the mule context for our configuration element. This will actually give us an initialized connector. And after that we are going to ask for the keys and check that the result of this operation was a success.
+
+Our config on the xml file can be something like:
+[source,xml]
+----
+<cook-book:config-type username="admin" password="admin" name="config" doc:name="Cook-book"/>
+----
+
+And our test will look like:
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v6/DataSenseTestCases.java[lines=17..19]
+----
+
+The same can be made for the MetaData itself. With our set of keys, we an ask our connector to describe the entity that corresponds to the first key.
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v6/DataSenseTestCases.java[lines=20..21]
+----
+
+In studio we just need to configure our connector, and it will start fetching the keys.
+
+After it finishes, we will be able to selected the entities in the UI.
+
+image::datasense-dynamic.png[width="900"]
+
+Note that on the XML the value written is the key.
+
+image::datasense-dynamic-xml.png[width="900"]
+
+After we add a datamapper in the middle we can see that the input and output is the one we described.
+
+image::datasense-dynamic-datamapper.png[width="900"]
+
+Check the full link:{resourcesDir}/java/v6/DataSenseTestCases.java[source code].
 
 === Adding @Query
 
-Use v2 and extend datasense to describe what can be queryable.
+Use v2 and extend datasense to describe what can be querable.

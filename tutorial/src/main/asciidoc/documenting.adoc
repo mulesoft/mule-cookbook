@@ -1,0 +1,3 @@
+== Documenting my @Connector
+
+To see how we recommend users to document their @Connector follow this https://docs.google.com/a/mulesoft.com/document/d/1XbtvvP6kYp7anzYbvJGN4ZAfsO5uCa85bWHpam-Og-c/edit#heading=h.18f13ohw5agk[guide].

@@ -217,7 +217,7 @@ In your pom.xml add:
 </dependencies>
 ----
 
-==== I don't need a authentication
+==== I don't need an authentication
 
 Here even if we don't need to authenticate against our sandbox, we still need to initialize the client before consuming the service.
 
@@ -434,9 +434,7 @@ include::install-connector.adoc[]
 
 include::debug.adoc[]
 
-== Documenting my @Connector
-
-Show how to document your connector and the samples. < Current Doc >
+include::documenting.adoc[]
 
 == Sharing my @Connector
 
@@ -457,8 +455,6 @@ include::source.adoc[]
 include::transformer.adoc[]
 
 === Improve UI Layout
-
-// TODO
 
 ==== Using friendlyName
 
@@ -481,6 +477,3 @@ image::password.png[width="700"]
 
 ==== Using @Placement
 
-=== Understanding @RefOnly
-
-Explain the annotation and show how to use it and the impact on the UI this has.

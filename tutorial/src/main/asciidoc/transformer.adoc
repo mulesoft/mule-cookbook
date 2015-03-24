@@ -15,13 +15,18 @@ The @Transformer annotated method must follow certain rules:
 
 ==== Creating a transformer
 
-// TODO
+In our case, we are just going to create a transformer that converts a List<Recipe> into a List<Map<String,Object>>, that way we don't need to modify our existing operation, and yet we can use the output of it in operations that recive a List<Map<String,Object>> .
 
-From String Json representation to Entity
+[source,java,indent=0]
+----
+include::{resourcesDir}/java/v6/CookBookConnector.java[lines=162..169]
+----
 
 ==== Using the transformer in a Mule app
 
-// TODO
+Now we can use it just by dragging and dropping it form the palette.
+
+image::transformer.png[width="900"]
 
 Show how it is used with auto discovery
 
