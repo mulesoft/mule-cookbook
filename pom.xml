@@ -15,7 +15,20 @@
         <module>sdk-client</module>
         <module>rest-server</module>
         <module>cook-book-connector</module>
-        <module>tutorial</module>
     </modules>
 
+    <profiles>
+        <profile>
+            <id>asciidoc</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>buildDoc</name>
+                </property>
+            </activation>
+            <modules>
+                <module>tutorial</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>
