@@ -1,6 +1,6 @@
 == What is DevKit
 
-The http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit[DevKit] is an important part of the Anypoint Platform. It is a maven based tool that allows developers to build reusable components that not only can be run as part of a Mule application, but also can easily be configured/consumed from http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
+The http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit[DevKit] is an important part of the Anypoint Platform. It is a Maven based tool that allows developers to build reusable components that not only can be run as part of a Mule application, but also can easily be configured/consumed from http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
 
 == When to use it
 
@@ -26,7 +26,7 @@ You can develop a connector using Windows, Mac, or Linux.
 * Download and install http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html[Java 1.7 JDK].
 * Download and install http://maven.apache.org/download.cgi[Maven].
 * Download http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
-* Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[maven configuration] in Anypoint Studio.
+* Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[Maven configuration] in Anypoint Studio.
 * Install Anypoint DevKit plugin.
 * Install a http://git-scm.com/downloads[GitHub] client.
 * Clone https://github.com/mulesoft/mule-store[tutorial] repository into your local machine.

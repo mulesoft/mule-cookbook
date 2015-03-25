@@ -1,6 +1,6 @@
 :imagesdir: ./images
 :resourcesDir: resources
-:tutorial: Mule Cook Book
+:tutorial: Mule Cookbook
 :author: MuleSoft Inc.
 :toc: left
 :icons: font
@@ -42,15 +42,15 @@ Before start consuming our {tutorial} service, lets start by doing a Hello World
 
 Click *File* > *New*, then select *Anypoint Connector Project* or simple do a right click of the package explorer and select *New* > *Anypoint Connector Project*:
 
-image::new-connector-1.png[width="700"]
+image::new-connector-1.png[width="500"]
 
 Just put the name of your connector and click on finish:
 
-image::new-connector-2.png[width="700"]
+image::new-connector-2.png[width="500"]
 
 This generates a project containing the structure with all the required elements such as images, sample docs, and some basic tests for your connector.
 
-image::new-connector-3.png[width="900"]
+image::new-connector-3.png[width="600"]
 
 To enable the DevKit view select from the top bar *Window* > *Show view* > *Other* , and look for DevKit on the list.
 
@@ -60,7 +60,7 @@ image::enable-view.png[width="300", height="400"]
 
 ==== SDK Client
 
-If you have an SDK all you need to do is to include the maven dependency for your jar.
+If you have an SDK all you need to do is to include the Maven dependency for your jar.
 
 For example in our case, to consume the SDK for the cookstore we can add the dependency.
 
@@ -136,7 +136,7 @@ For example in your pom.xml you can add this (plus all the dependencies required
 If you use the DevKit plugin it will generate everything for you, you just need to specify the wsdl location.
 
 ==== REST API
-In this case, you have to write your client by hand. We recommend using Jersey {muleJerveyVersion} since it is the one provided by mule.
+In this case, you have to write your client by hand. We recommend using Jersey {muleJerveyVersion} since it is the one provided by mule (since 3.6.0).
 [source,xml,indent=0]
 ----
 <dependencies>
@@ -144,11 +144,12 @@ In this case, you have to write your client by hand. We recommend using Jersey {
     <groupId>org.glassfish.jersey.core</groupId>
     <artifactId>jersey-client</artifactId>
     <version>{muleJerveyVersion}</version>
+    <scope>provided</scope>
   </dependency>
 </dependencies>
 ----
 
-=== Understanding the a Connector structure
+=== Understanding the a Connector Structure
 
 Your Connector basically consists of a set of http://www.mulesoft.org/documentation/display/current/Message+Processors[message processors] and configurable elements users populate in order to consume the API your connector was developed for.
 
@@ -160,13 +161,13 @@ In this image you will be able to see how most of the code is mapped into UI ele
 
 // TODO: Use 2 images of screenshots with the default layout
 
-image::split-1-high.png[caption="Figure 1: ", title="View Structure and UI", alt="Image1", width="300", height="200", link="images/split-1-high.png"]
+image::split-1-high.png[caption="Figure 1: ", title="View Structure and UI", alt="Image1", width="500", height="200", link="images/split-1-high.png"]
 
 In this one, you can check how the code matches to XML and other UI elements.
 
 // TODO: Use 2 images of screenshots with the default layout
 
-image::split-2-high.png[caption="Figure 2: ", title="View configuration and XML", alt="Image2", width="300", height="200", link="images/split-2-high.png"]
+image::split-2-high.png[caption="Figure 2: ", title="View configuration and XML", alt="Image2", width="500", height="200", link="images/split-2-high.png"]
 
 === Connecting to my service
 
@@ -188,7 +189,7 @@ Since the {tutorial} service description says we don't need any kind of authenti
 
 Create a new Anypoint Connector Project with the following configuration and don't forget to uncheck the default generation:
 
-image:new1.png[width="700"]
+image:new1.png[width="500"]
 
 After that lets add our client dependency so that we can use it in our connector.
 
@@ -267,7 +268,7 @@ In our mule app, we just need to add a configuration that has bad credentials.
 
 The we just execute the test and make the assertions.
 
-image::connectivityTest.png[width="900"]
+image::connectivityTest.png[width="600"]
 
 ==== Using OAuthV2
 
@@ -281,13 +282,13 @@ Adding configurable fields is also easy with the plugin since there are a couple
 
 Just type "conf" at the editor of your @Connector or your connection strategy and use Ctrl + Space bar to display the templates.
 
-image::config1.png[width="900"]
+image::config1.png[width="600"]
 
 In our case, lets at a configurable field in our @Configuration component with a default value for the endpoint our client will connect to.
 
 This way we will allow users to connect to different sandboxes.
 
-image::config2.png[width="900"]
+image::config2.png[width="600"]
 
 We are now ready to add our first processor. If you want a little more details about configurable fields, continue reading. If not, lets just go to add our <<processor,processor>>.
 
@@ -354,11 +355,11 @@ Another very important use of the @Default annotation is when building a connect
 
 To add a processor simply type "proc" at the editor and use Ctrl + Space bar to display the templates and pick the simple processor.
 
-image::processor1.png[width="900"]
+image::processor1.png[width="600"]
 
 Lets change it to reflect the getRecentlyAdded method signature, and there we have..our first connector, ready to be tested.
 
-image::processor2.png[width="900"]
+image::processor2.png[width="600"]
 
 ==== Adding samples to your connector
 
@@ -372,7 +373,7 @@ If you have the Javadoc check enabled, DevKit plugin will mark the missing examp
 
 Otherwise, open the file and type "<" at the editor and use Ctrl + Space bar to display the templates and pick the one that best suite our operation.
 
-image::sample1.png[width="900"]
+image::sample1.png[width="600"]
 
 Our example in this case looks like this:
 
@@ -393,13 +394,13 @@ Select the operation you want to use to generate the test, and all the files you
 
 After the generation ends, just modify the test to make the corresponding setup and assertions.
 
-image::generate-tests1.png[width="900"]
+image::generate-tests1.png[width="600"]
 
 Start the server, and run your test now.
 
 It is all green!
 
-image::generate-tests2.png[width="900"]
+image::generate-tests2.png[width="600"]
 
 So..what just happened?
 
@@ -461,7 +462,7 @@ include::{resourcesDir}/java/v2/ConnectorConnectionStrategy.java[lines=50..53]
 
 In Studio this is translated into:
 
-image::password.png[width="700"]
+image::password.png[width="500"]
 
 ==== Using @Placement
 

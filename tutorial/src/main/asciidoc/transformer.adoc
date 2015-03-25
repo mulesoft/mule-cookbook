@@ -1,6 +1,6 @@
-=== Adding @Transformer
+=== Adding a Transformer
 
-==== What is a @Transformer
+==== What is a Transformer
 Transformers convert message payloads to formats expected by their destinations. Mule ESB provides many standard transformers, which you configure using predefined elements and attributes in your Mule XML configuration file but sometimes is useful to build custom transformers.
 
 Annotating a method with @Transformer signals the Mule DevKit to export this method functionality as a transformer. Transformers need to be declared in classes annotated with @Module or @Connector and many transformers can be declared in the one class. It is possible to declare transformers, message processors and message sources in the same class.
@@ -22,7 +22,7 @@ In our case, we are just going to create a transformer that converts a List<Reci
 include::{resourcesDir}/java/v6/CookBookConnector.java[lines=162..169]
 ----
 
-==== Using the transformer in a Mule app
+==== Using the Transformer in a Mule app
 
 Now we can use it just by dragging and dropping it form the palette.
 

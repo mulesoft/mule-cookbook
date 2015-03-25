@@ -6,49 +6,17 @@ The {tutorial} is software that helps users organize their recipes, so that they
 
 === API Description
 
-When the first version was released, the API allowed users to use the CRUD operations for single and multiple elements
+This API allows users to use the CRUD operations for single and multiple Recipes and Ingredients. It also allows you to get the recently added recipes.
 
-[cols="2*", options="header"]
-|===
-|Entities
-|Operations
+It is exposed in as a SOAP Service by a link:{resourcesDir}/wsdl/IMuleCookBookService.wsdl[WSDL] file, as a Rest API by a link:{resourcesDir}/api.raml[RAML] file, and through a link:{resourcesDir}/java/IMuleCookBookClient.java[SDK].
 
-|
-- Ingredient
 
-- Recipe
+=== Authentication
 
-|
-- Create
+Supports the following types:
 
-- Retrieve
+* Custom with username and password that will give you a token that needs to be sent in every request as part of the request.
 
-- Update
+* http://oauth.net/2/[OAuthV2]
 
-- Delete
 
-For Single and multiple elements
-
-- Get Recently Added
-
-- Update quantities in a recipe
-
-|===
-
-==== Authentication
-
-* Custom with username and password
-
-* OAuthV2
-
-=== WSDL API
-
-Download the link:{resourcesDir}/wsdl/IMuleCookBookService.wsdl[WSDL file] to see the full description.
-
-=== REST API
-
-Download the link:{resourcesDir}/api.raml[RAML file] to see the full description.
-
-=== SDK API
-
-Download the link:{resourcesDir}/java/IMuleCookBookClient.java[IMuleCookBookClient.java file] to see the full description.

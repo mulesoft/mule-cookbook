@@ -55,7 +55,7 @@ Here we have our new create operation.
 include::{resourcesDir}/java/v4/CookBookConnector.java[lines=67..72]
 ----
 
-Because of some devkit limitations regarding how to handle Abstract classes, we need to specify that the input can only be specified as a reference.
+Because of some DevKit limitations regarding how to handle Abstract classes, we need to specify that the input can only be specified as a reference.
 
 But lets see how this affects the UI and user experience.
 

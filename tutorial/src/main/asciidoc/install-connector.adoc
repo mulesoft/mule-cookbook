@@ -3,16 +3,16 @@
 === Using Anypoint DevKit Plugin
 Installing the connector is basically the same as installing any eclipse plugin.
 
-To install your connector from the devkit plugin, you just need to right click on your project folder, and select the option * Anypoint Studio > Install Or Update *.
+To install your connector from the DevKit plugin, you just need to right click on your project folder, and select the option * Anypoint Studio > Install Or Update *.
 
 
-image::install1.png[width="700"]
+image::install1.png[width="500"]
 
-This will trigger the devkit maven build, and generate an http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fconcepts%2Fupdate_site.htm[update site] folder.
+This triggers the DevKit Maven build and generates an http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.pde.doc.user%2Fconcepts%2Fupdate_site.htm[update site] folder.
 
-After the update site is generated a popup will automatically open showing the task that will be performed.
+After the update site is generated a popup automatically opens showing the task that is performed.
 [[install-dialog]]
-image::install12.png[width="700"]
+image::install12.png[width="500"]
 
 The next dialog is just to review the installation/update items, followed for some license agreement.
 

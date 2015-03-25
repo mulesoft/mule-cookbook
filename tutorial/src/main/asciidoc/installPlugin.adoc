@@ -1,4 +1,4 @@
-== Install Anypoint Devkit Plugin
+== Install Anypoint DevKit Plugin
 
 Installing the DevKit plugin is as easy as installing any eclipse plugin.
 

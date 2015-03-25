@@ -1,6 +1,6 @@
 == What is DevKit
 
-The http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit[DevKit] is an important part of the Anypoint Platform. It is a maven based tool that allows developers to build reusable components that not only can be run as part of a Mule application, but also can easily be configured/consumed from http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
+The http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit[DevKit] is an important part of the Anypoint Platform. It is a Maven based tool that allows developers to build reusable components that not only can be run as part of a Mule application, but also can easily be configured/consumed from http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
 
 == When to use it
 

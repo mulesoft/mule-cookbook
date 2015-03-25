@@ -11,7 +11,7 @@ You can develop a connector using Windows, Mac, or Linux.
 * Download and install http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase7-521261.html[Java 1.7 JDK].
 * Download and install http://maven.apache.org/download.cgi[Maven].
 * Download http://www.mulesoft.com/platform/mule-studio[Anypoint Studio].
-* Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[maven configuration] in Anypoint Studio.
+* Check http://www.mulesoft.org/documentation/display/current/Maven+Support+in+Anypoint+Studio[Maven configuration] in Anypoint Studio.
 * Install Anypoint DevKit plugin.
 * Install a http://git-scm.com/downloads[GitHub] client.
 
