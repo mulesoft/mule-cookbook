@@ -125,12 +125,6 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     }
 
     @Override
-    public Recipe updateQuantities(@WebParam(name = "arg0", targetNamespace = "") Recipe arg0)
-            throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
-        return null;
-    }
-
-    @Override
     public void deleteList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds) throws NoSuchEntityException {
         for (Integer id : entityIds) {
             delete(id);

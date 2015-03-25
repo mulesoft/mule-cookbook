@@ -74,10 +74,6 @@ public interface IMuleCookBookService {
     @WSDLDocumentation("Retrieves a list of the recently added recipies.")
     List<Recipe> getRecentlyAdded();
 
-    @WSDLDocumentation("Updates the quantities of a specific list.")
-    Recipe updateQuantities(@WebParam(name = "recipe") Recipe recipe,
-            @WebParam(name = "token",header = true) String token) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;
-
     @WSDLDocumentation("Describes an entity given the Id and entity Type.")
     Description describeEntity(@WebParam(name = "entity") CookBookEntity entity,
             @WebParam(name = "token",header = true) String token) throws InvalidEntityException, NoSuchEntityException, SessionExpiredException, InvalidTokenException;

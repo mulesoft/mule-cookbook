@@ -168,18 +168,6 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
         return response;
     }
 
-    @Override
-    public UpdateQuantitiesResponse updateQuantities(
-            @WebParam(partName = "parameters", name = "updateQuantities", targetNamespace = "http://service.tutorial.cookbook.com/") UpdateQuantities parameters,
-            @WebParam(partName = "token", name = "token", targetNamespace = "http://service.tutorial.cookbook.com/", header = true) String token)
-            throws InvalidTokenException, SessionExpiredException, InvalidEntityException, NoSuchEntityException {
-        verifyToken(token);
-        checkExpiredSessionCondition();
-        UpdateQuantitiesResponse updateQuantitiesResponse = new UpdateQuantitiesResponse();
-        updateQuantitiesResponse.setReturn(serviceDAL.updateQuantities(parameters.getRecipe()));
-        return updateQuantitiesResponse;
-    }
-
     private void checkExpiredSessionCondition() throws SessionExpiredException {
         currentIndex++;
         if (((currentIndex) % exceptionRatio) == 0) {
