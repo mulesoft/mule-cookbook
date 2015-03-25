@@ -22,7 +22,7 @@ include::installPlugin.adoc[]
 
 = Build Your Connector
 
-== What is a @Connector
+== What is a Connector
 
 A @Connector is a reusable component that knows how to interact with Mule, and with Anypoint Studio. 
 
@@ -36,7 +36,7 @@ include::features-covered.adoc[]
 
 include::service-description.adoc[]
 
-== Building a @Connector
+== Building a Connector
 
 Before start consuming our {tutorial} service, lets start by doing a Hello World Connector, and understanding the generated code.
 
@@ -56,98 +56,6 @@ To enable the DevKit view select from the top bar *Window* > *Show view* > *Othe
 
 image::enable-view.png[width="300", height="400"]
 
-=== I have an API to build the @Connector
-
-==== SDK Client
-
-If you have an SDK all you need to do is to include the Maven dependency for your jar.
-
-For example in our case, to consume the SDK for the cookstore we can add the dependency.
-
-[source,xml,indent=0]
-----
-<dependencies>
-  <dependency>
-    <groupId>foo.sdk.group.id</groupId>
-    <artifactId>foo.sdk.artifact.id</artifactId>
-    <version>${sdk.version}</version>
-  </dependency>
-</dependencies>
-----
-
-==== SOAP API
-
-If you have a wsdl, the easiest way to build a connector is to create a client using cxf http://cxf.apache.org/docs/wsdl-to-java.html[wsdl2java].
-
-You can configure the cxf goal in your pom.xml, very easily. The full documentation can by founded at http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html[cxf site].
-
-For example in your pom.xml you can add this (plus all the dependencies required) :
-[source,xml,indent=0]
-----
-<build>
-  <plugins>
-    <!-- CXF Code generation -->
-    <plugin>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-codegen-plugin</artifactId>
-      <version>${cxf.version}</version>
-      <executions>
-        <execution>
-          <phase>clean</phase> <!-- This is so it work with the Devkit -->
-          <goals>
-            <goal>wsdl2java</goal>
-          </goals>
-          <configuration>
-            <wsdlOptions>
-              <wsdlOption>
-                <wsdl>${basedir}/src/main/resources/wsdl/IMuleCookBookService.wsdl</wsdl>
-                <autoNameResolution>true</autoNameResolution>
-                <extendedSoapHeaders>false</extendedSoapHeaders>
-                <extraargs>
-                  <extraarg>-xjc-Xbg</extraarg>
-                   <extraarg>-xjc-Xcollection-setter-injector</extraarg>
-                  <extraarg>-p</extraarg>
-                  <extraarg>org.mule.modules.wsdl.api</extraarg>
-                </extraargs>
-              </wsdlOption>
-            </wsdlOptions>
-          </configuration>
-         </execution>
-      </executions>
-      <dependencies>
-        <!-- Boolean getters -->
-        <dependency>
-          <groupId>org.apache.cxf.xjcplugins</groupId>
-          <artifactId>cxf-xjc-boolean</artifactId>
-          <version>${cxf.version.boolean}</version>
-        </dependency>
-        <!-- Collection Setters -->
-        <dependency>
-          <groupId>net.java.dev.vcc.thirdparty</groupId>
-          <artifactId>collection-setter-injector</artifactId>
-          <version>0.5.0-1</version>
-        </dependency>
-      </dependencies>
-    </plugin>
-  </plugins>
-</build>
-----
-
-If you use the DevKit plugin it will generate everything for you, you just need to specify the wsdl location.
-
-==== REST API
-In this case, you have to write your client by hand. We recommend using Jersey {muleJerveyVersion} since it is the one provided by mule (since 3.6.0).
-[source,xml,indent=0]
-----
-<dependencies>
-  <dependency>
-    <groupId>org.glassfish.jersey.core</groupId>
-    <artifactId>jersey-client</artifactId>
-    <version>{muleJerveyVersion}</version>
-    <scope>provided</scope>
-  </dependency>
-</dependencies>
-----
 
 === Understanding the a Connector Structure
 
@@ -466,3 +374,128 @@ image::password.png[width="500"]
 
 ==== Using @Placement
 
+//TODO
+
+== I have an API to build the @Connector
+
+API are exposed in several ways, and in order to start using it you need to do setup different things before using it inside your connector.
+
+=== SDK Client
+
+If you have an SDK all you need to do is to include the Maven dependency for your jar in the pom.xml
+
+For example in our case, to consume the SDK for the Cookbook we can add the dependency.
+
+[source,xml,indent=0]
+----
+<dependencies>
+  <dependency>
+    <groupId>foo.sdk.group.id</groupId>
+    <artifactId>foo.sdk.artifact.id</artifactId>
+    <version>${sdk.version}</version>
+  </dependency>
+</dependencies>
+----
+
+=== SOAP API
+
+If you have a wsdl, the easiest way to build a connector is to create a client using cxf http://cxf.apache.org/docs/wsdl-to-java.html[wsdl2java].
+
+You can configure the cxf goal in your pom.xml, very easily. The full documentation can by founded at http://cxf.apache.org/docs/maven-cxf-codegen-plugin-wsdl-to-java.html[cxf site].
+
+For example in your pom.xml you can add this (plus all the dependencies required) :
+[source,xml,indent=0]
+----
+<build>
+  <plugins>
+    <!-- CXF Code generation -->
+    <plugin>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-codegen-plugin</artifactId>
+      <version>${cxf.version}</version>
+      <executions>
+        <execution>
+          <phase>clean</phase> <!-- This is so it work with the Devkit -->
+          <goals>
+            <goal>wsdl2java</goal>
+          </goals>
+          <configuration>
+            <wsdlOptions>
+              <wsdlOption>
+                <wsdl>${basedir}/src/main/resources/wsdl/IMuleCookBookService.wsdl</wsdl>
+                <autoNameResolution>true</autoNameResolution>
+                <extendedSoapHeaders>false</extendedSoapHeaders>
+                <extraargs>
+                  <extraarg>-xjc-Xbg</extraarg>
+                   <extraarg>-xjc-Xcollection-setter-injector</extraarg>
+                  <extraarg>-p</extraarg>
+                  <extraarg>org.mule.modules.wsdl.api</extraarg>
+                </extraargs>
+              </wsdlOption>
+            </wsdlOptions>
+          </configuration>
+         </execution>
+      </executions>
+      <dependencies>
+        <!-- Boolean getters -->
+        <dependency>
+          <groupId>org.apache.cxf.xjcplugins</groupId>
+          <artifactId>cxf-xjc-boolean</artifactId>
+          <version>${cxf.version.boolean}</version>
+        </dependency>
+        <!-- Collection Setters -->
+        <dependency>
+          <groupId>net.java.dev.vcc.thirdparty</groupId>
+          <artifactId>collection-setter-injector</artifactId>
+          <version>0.5.0-1</version>
+        </dependency>
+      </dependencies>
+    </plugin>
+  </plugins>
+</build>
+----
+
+If you use the DevKit plugin it will generate everything for you to get started, you just need to specify the wsdl location.
+
+=== REST API
+In this case, you have to write the request using any library that helps you make HTTP Requests.
+
+We recommend using Jersey {muleJerveyVersion} since it is the one provided by mule (since 3.6.0).
+[source,xml,indent=0]
+----
+<dependencies>
+  <dependency>
+    <groupId>org.glassfish.jersey.core</groupId>
+    <artifactId>jersey-client</artifactId>
+    <version>{muleJerveyVersion}</version>
+    <scope>provided</scope>
+  </dependency>
+</dependencies>
+----
+
+To make for example a GET Request you can do the following:
+[source,java,indent=0]
+----
+ClientConfig clientConfig = new ClientConfig();
+Client client = ClientBuilder.newClient(clientConfig);
+WebTarget webTarget = client.target("http://example.com/rest");  // # <1>
+WebTarget resourceWebTarget = webTarget.path("resource");
+WebTarget helloworldWebTarget = resourceWebTarget.path("helloworld");  // # <2>
+WebTarget helloworldWebTargetWithQueryParam =
+        helloworldWebTarget.queryParam("greeting", "Hi World!");  // # <3>
+
+Invocation.Builder invocationBuilder =
+        helloworldWebTargetWithQueryParam.request(MediaType.APPLICATION_JSON_TYPE);  // # <4>
+
+Response response = invocationBuilder.get();  // # <5>
+System.out.println(response.getStatus());
+System.out.println(response.readEntity(String.class));
+----
+<1> - At this point we have a client ready to make a request to URL http://example.com/rest
+<2> - We add some paths. It looks like http://example.com/rest/resource/helloworld
+<3> - We configure a query param. It looks like http://example.com/rest/resource/helloworld?greeting=Hi+World%21
+<4> - We specify we want the reply in JSON format
+<5> - We make a GET request
+
+
+If you want more information visit the https://jersey.java.net/documentation/latest/client.html[jersey client] documentation.
