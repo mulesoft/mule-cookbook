@@ -1,6 +1,7 @@
 package com.cookbook.tutorial.service;
 
-import com.cookbook.tutorial.internal.dsql.DsqlParser;
+import com.cookbook.tutorial.internal.dsql.*;
+import com.cookbook.tutorial.internal.dsql.Constants;
 import org.junit.Before;
 import org.junit.Test;
 import org.parboiled.Parboiled;
@@ -11,8 +12,7 @@ import org.parboiled.support.ParsingResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Mulesoft.
@@ -74,26 +74,30 @@ public class DsqlParserTest {
     }
 
     @Test
-    public void parserItemsTest(){
-        Pattern p = Pattern.compile("GET (.*) FROM ([\\w]*)( MATCHING (.*))?");
-        Matcher m = p.matcher("GET ALL FROM RECIPE MATCHING id contains 1");
-        boolean b = m.matches();
-        assertTrue(b);
+    public void getBasicQuery(){
+        String input = "GET ALL FROM INGREDIENT";
+        ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(input);
+        Dsql dsql = Dsql.newInstance(input);
+        assertEquals(Constants.INGREDIENT,dsql.getEntity());
+        assertTrue(dsql.getAllFields());
+        assertEquals(1, dsql.getFields().size());
+        assertEquals(0, dsql.getCriteria().size());
+    }
 
-        System.out.println(m.group(1).trim());
-        System.out.println(m.group(2).trim());
-        System.out.println(m.group(4).trim());
+    @Test
+    public void getComplex(){
+        String input = "GET id,created,lastModified,name,quantity,unit,prepTime,cookTime,ingredients FROM RECIPE MATCHING id==1";
+        ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(input);
+        Dsql dsql = Dsql.newInstance(input);
+        assertEquals(Constants.RECIPE,dsql.getEntity());
+        assertFalse(dsql.getAllFields());
+        assertEquals(9,dsql.getFields().size());
+        assertEquals(1,dsql.getCriteria().size());
+    }
 
-        m = p.matcher("GET ALL FROM RECIPE");
-        b = m.matches();
-        assertTrue(b);
-        System.out.println(m.group(1));
-        System.out.println(m.group(2));
-
-        m = p.matcher("GET id,created,lastModified,name,quantity,unit,prepTime,cookTime,ingredients FROM RECIPE");
-        b = m.matches();
-        assertTrue(b);
-        System.out.println(m.group(1).split(",").length);
-        System.out.println(m.group(2));
+    @Test(expected = RuntimeException.class)
+    public void invalid(){
+        String input = "Not Matching syntax";
+        Dsql.newInstance(input);
     }
 }

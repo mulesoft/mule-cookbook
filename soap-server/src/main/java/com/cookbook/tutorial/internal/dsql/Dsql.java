@@ -3,6 +3,7 @@ package com.cookbook.tutorial.internal.dsql;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,11 +22,14 @@ public class Dsql implements CookBookQuery{
 
     private Dsql(String query){
         matcher=queryPattern.matcher(query);
+        if(!matcher.matches()){
+            throw new RuntimeException("Don't know how to process:"+query);
+        }
     }
 
     @Override
     public boolean getAllFields() {
-        return matcher.group(1).equals("ALL");
+        return matcher.group(1).equals(Constants.ALL);
     }
 
     @Override
@@ -40,9 +44,9 @@ public class Dsql implements CookBookQuery{
 
     @Override
     public List<String> getCriteria() {
-        if(matcher.groupCount()>2){
+        if(matcher.groupCount()==4 && matcher.group(4)!=null) {
             return CollectionUtils.arrayToList(matcher.group(4).split(","));
         }
-        return null;
+        return Collections.EMPTY_LIST;
     }
 }

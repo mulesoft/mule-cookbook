@@ -17,6 +17,9 @@ import javax.xml.ws.WebFault;
 public class NoSuchEntityException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Field containing the CookBook entity that caused the exception
+     */
     private FaultBean faultBean;
 
     public NoSuchEntityException(){

@@ -4,9 +4,9 @@ import com.cookbook.tutorial.internal.service.CookBookDefaultBackEndImp;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by Mulesoft.
@@ -25,6 +25,12 @@ public class CRUDTest {
         Create createRequest = new Create();
         createRequest.setEntity(ingredient);
         created = (Ingredient) server.create(createRequest,token).getReturn();
+    }
+
+    @Test
+    public void getRecentlyAdded(){
+        List<Recipe> recentlyAdded = server.getRecentlyAdded();
+        assertFalse(recentlyAdded.isEmpty());
     }
 
     @Test
@@ -56,6 +62,17 @@ public class CRUDTest {
     }
 
     @Test(expected = NoSuchEntityException.class)
+    public void testUpdateNoneExistingEntity() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+        String name = "SSSDDDSSSDD";
+        Ingredient ing = new Ingredient();
+        ing.setName(name);
+        ing.setId(5);
+        Update update = new Update();
+        update.setEntity(ing);
+        server.update(update,token);
+    }
+
+    @Test(expected = NoSuchEntityException.class)
     public void testDelete() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
         Delete delete = new Delete();
         delete.setId(created.getId());
@@ -63,5 +80,21 @@ public class CRUDTest {
         Get get = new Get();
         get.setId(created.getId());
         server.get(get,token);
+    }
+
+    @Test(expected = NoSuchEntityException.class)
+    public void testDeleteNoneExisting() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+        Delete delete = new Delete();
+        delete.setId(5);
+        server.delete(delete,token);
+    }
+
+    @Test
+    public void getList() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+        GetList ids = new GetList();
+        ids.getEntityIds().add(1);
+        ids.getEntityIds().add(2);
+        GetListResponse response =server.getList(ids, token);
+        assertEquals(2,response.getReturn().size());
     }
 }

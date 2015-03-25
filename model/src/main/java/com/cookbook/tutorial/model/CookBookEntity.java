@@ -4,14 +4,29 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.Date;
 
 /**
- * Created by Mulesoft.
+ * Base Entity of all Cook Book entities.
  */
 @XmlSeeAlso({ Ingredient.class, Recipe.class })
 public abstract class CookBookEntity {
 
+    /**
+     * Unique identifier of an Entity
+     */
     private Integer id;
+
+    /**
+     * Date when it was created in the system.
+     */
     private Date created;
+
+    /**
+     * Date of the last time it was modified
+     */
     private Date lastModified;
+
+    /**
+     * Descriptive name of the entity.
+     */
     private String name;
 
     public String getName() {

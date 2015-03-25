@@ -65,7 +65,8 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
     private Map<Integer, CookBookEntity> entities = new HashMap<>();
 
-    @Override public List<CookBookEntity> getList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds)
+    @Override
+    public List<CookBookEntity> getList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds)
             throws NoSuchEntityException{
         List<CookBookEntity> returnValue = new ArrayList<>();
         for (Integer id : entityIds) {
@@ -74,14 +75,16 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         return returnValue;
     }
 
-    @Override public void delete(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException {
+    @Override
+    public void delete(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException {
         if (!entities.containsKey(id)) {
             throw new NoSuchEntityException();
         }
         entities.remove(id);
     }
 
-    @Override public CookBookEntity create(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws InvalidEntityException {
+    @Override
+    public CookBookEntity create(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws InvalidEntityException {
         if (entity.getId() != null) {
             FaultBean bean = new FaultBean();
             bean.setEntity(entity);
@@ -92,7 +95,8 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         return entity;
     }
 
-    @Override public CookBookEntity update(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity)
+    @Override
+    public CookBookEntity update(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity)
             throws NoSuchEntityException, InvalidEntityException {
         if (!entities.containsKey(entity.getId())) {
             throw new NoSuchEntityException();
@@ -101,7 +105,8 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         return entity;
     }
 
-    @Override public CookBookEntity get(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException {
+    @Override
+    public CookBookEntity get(@WebParam(name = "id", targetNamespace = "") int id) throws NoSuchEntityException {
 
         if (!entities.containsKey(id)) {
 
@@ -110,7 +115,8 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         return entities.get(id);
     }
 
-    @Override public List<CookBookEntity> updateList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities)
+    @Override
+    public List<CookBookEntity> updateList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities)
             throws NoSuchEntityException, InvalidEntityException {
         for (CookBookEntity entity : entities) {
             update(entity);
@@ -118,18 +124,21 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         return entities;
     }
 
-    @Override public Recipe updateQuantities(@WebParam(name = "arg0", targetNamespace = "") Recipe arg0)
+    @Override
+    public Recipe updateQuantities(@WebParam(name = "arg0", targetNamespace = "") Recipe arg0)
             throws NoSuchEntityException, SessionExpiredException, InvalidEntityException {
         return null;
     }
 
-    @Override public void deleteList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds) throws NoSuchEntityException {
+    @Override
+    public void deleteList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds) throws NoSuchEntityException {
         for (Integer id : entityIds) {
             delete(id);
         }
     }
 
-    @Override public List<CookBookEntity> addList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities)
+    @Override
+    public List<CookBookEntity> addList(@WebParam(name = "entities", targetNamespace = "") List<CookBookEntity> entities)
             throws InvalidEntityException {
         for (CookBookEntity entity : entities) {
             create(entity);

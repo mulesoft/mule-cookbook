@@ -3,9 +3,13 @@ package com.cookbook.tutorial.customization;
 import java.util.List;
 
 /**
- * Created by Mulesoft.
+ * This Class represents the description an entity and its fields.
  */
 public class Description {
+
+    /**
+     *
+     */
     private String name;
     private int entityId;
     private DataType dataType;
