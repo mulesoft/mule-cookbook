@@ -1,11 +1,18 @@
 package com.cookbook.tutorial.model;
 
 /**
- * Created by Mulesoft.
+ * Entity representing any of the foods or substances that are combined to make a particular dish.
  */
 public class Ingredient extends CookBookEntity {
 
+    /**
+     * Amount required
+     */
     private double quantity;
+
+    /**
+     * Unit type
+     */
     private UnitType unit;
 
     public double getQuantity() {

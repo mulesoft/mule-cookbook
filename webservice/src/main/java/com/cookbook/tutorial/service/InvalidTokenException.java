@@ -14,27 +14,16 @@ import javax.xml.ws.WebFault;
 public class InvalidTokenException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    private FaultBean faultBean;
-
     public InvalidTokenException(){
 
     }
 
-    public InvalidTokenException(String message, FaultBean faultBean, Throwable cause) {
+    public InvalidTokenException(String message, Throwable cause) {
         super(message, cause);
-        this.faultBean = faultBean;
     }
 
-    public InvalidTokenException(String message, FaultBean faultBean) {
+    public InvalidTokenException(String message) {
         super(message);
-        this.faultBean = faultBean;
     }
 
-    public FaultBean getFaultBean() {
-        return faultBean;
-    }
-
-    public void setFaultBean(FaultBean faultBean) {
-        this.faultBean = faultBean;
-    }
 }

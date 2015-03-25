@@ -3,7 +3,7 @@ package com.cookbook.tutorial.service;
 import com.cookbook.tutorial.model.CookBookEntity;
 
 /**
- * Created by Mulesoft.
+ * A simple container for the {@link com.cookbook.tutorial.model.CookBookEntity} that caused the exception.
  */
 public class FaultBean {
 

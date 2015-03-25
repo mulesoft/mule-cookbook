@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Mulesoft.
@@ -41,6 +42,13 @@ public class DataSenseTest {
         created = (Recipe) server.create(request,token).getReturn();
     }
 
+    @Test
+    public void getEntities() throws SessionExpiredException, InvalidTokenException {
+        GetEntitiesList request = new GetEntitiesList();
+        GetEntitiesListResponse response = server.getEntitiesList(request,token);
+        assertEquals(2,response.getReturn().size());
+    }
+    
     @Test
     public void testDescribeIngredient() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
 
@@ -100,7 +108,9 @@ public class DataSenseTest {
         ingredient.setId(7);
         DescribeEntity request = new DescribeEntity();
         request.setEntity(ingredient);
-        server.describeEntity(request,token);
+        Description description=server.describeEntity(request, token).getReturn();
+        List<Description> items =description.getInnerFields();
+        assertTrue(items.isEmpty());
     }
 
 
@@ -111,8 +121,8 @@ public class DataSenseTest {
         DescribeEntity request = new DescribeEntity();
         request.setEntity(recipe);
         Description description=server.describeEntity(request,token).getReturn();
-        Description ingredients = description.getInnerFields().get(4);
-        List<Description> items =ingredients.getInnerFields();
+        Description describedRecipe = description.getInnerFields().get(4);
+        List<Description> items =describedRecipe.getInnerFields();
         assertEquals(2, items.size());
 
         for(Description itemDescription : items){

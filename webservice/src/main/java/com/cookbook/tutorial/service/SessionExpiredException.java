@@ -17,27 +17,16 @@ import javax.xml.ws.WebFault;
 public class SessionExpiredException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    private FaultBean faultBean;
-
     public SessionExpiredException(){
 
     }
 
-    public SessionExpiredException(String message, FaultBean faultBean, Throwable cause) {
+    public SessionExpiredException(String message, Throwable cause) {
         super(message, cause);
-        this.faultBean = faultBean;
     }
 
-    public SessionExpiredException(String message, FaultBean faultBean) {
+    public SessionExpiredException(String message) {
         super(message);
-        this.faultBean = faultBean;
     }
 
-    public FaultBean getFaultBean() {
-        return faultBean;
-    }
-
-    public void setFaultBean(FaultBean faultBean) {
-        this.faultBean = faultBean;
-    }
 }

@@ -1,11 +1,7 @@
 package com.cookbook.tutorial.customization;
 
 /**
- * Created by Mulesoft.
- * [source,xml]
- * ----
- * include::doc/sample.xml[]
- * ----
+ * Represents the data types supported by the API.
  */
 public enum DataType {
     DATE,
@@ -14,5 +10,8 @@ public enum DataType {
     LIST,
     OBJECT,
     STRING,
+    /**
+     * @see com.cookbook.tutorial.model.UnitType
+     */
     UNIT_TYPE
 }

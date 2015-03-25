@@ -1,7 +1,7 @@
 package com.cookbook.tutorial.model;
 
 /**
- * Created by Mulesoft.
+ * Enum that contains all possible units supported by the system.
  */
 public enum UnitType {
     CUPS,

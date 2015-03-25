@@ -3,13 +3,28 @@ package com.cookbook.tutorial.model;
 import java.util.List;
 
 /**
- * Created by Mulesoft.
+ * Entity representing a set of instructions for preparing a particular dish, including a list of the ingredients required.
  */
 public class Recipe extends CookBookEntity{
 
+    /**
+     * List of ingredients required to make this recipe.
+     */
     private List<Ingredient> ingredients;
+
+    /**
+     * Estimated time required to prepare it.
+     */
     private Double prepTime;
+
+    /**
+     * Estimated time required to cook it.
+     */
     private Double cookTime;
+
+    /**
+     * List of steps that you need to follow in order to make this recipe.
+     */
     private List<String> directions;
 
     public List<Ingredient> getIngredients() {

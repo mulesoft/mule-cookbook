@@ -14,28 +14,17 @@ public class InvalidCredentialsException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    private FaultBean faultBean;
 
     public InvalidCredentialsException(){
 
     }
 
-    public InvalidCredentialsException(String message, FaultBean faultBean, Throwable cause) {
+    public InvalidCredentialsException(String message, Throwable cause) {
         super(message, cause);
-        this.faultBean = faultBean;
     }
 
     public InvalidCredentialsException(String message, FaultBean faultBean) {
         super(message);
-        this.faultBean = faultBean;
-    }
-
-    public FaultBean getFaultBean() {
-        return faultBean;
-    }
-
-    public void setFaultBean(FaultBean faultBean) {
-        this.faultBean = faultBean;
     }
 
 }
