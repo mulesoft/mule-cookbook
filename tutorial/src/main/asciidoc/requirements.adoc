@@ -33,3 +33,5 @@ git clone https://github.com/mulesoft/mule-cookbook.git
 cd ~/dev/mule-cookbook
 mvn install eclipse:eclipse
 ----
+
+* After it finishes just go to your Anypoint Studio and import the root project as an existing project.

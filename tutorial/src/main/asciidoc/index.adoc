@@ -172,11 +172,11 @@ image::split-2-high.png[caption="Figure 2: ", title="View configuration and XML"
 
 When consuming a service there you may need to configure different values in order to establish a connection. 
 
-To solve this, the DevKit provides a pair of annotations that allows developer to modularize in one class the behaviour exposed to the users (using the @Connector annotation) and in a different one the code related to the the connection.
+To solve this, the DevKit provides a pair of annotations that allows developer to modularize in one class the behaviour exposed to the users (using the @Connector annotation) and in a different one the code related to the connection.
 
-By marking a field with @org.mule.api.annotations.ConnectionStrategy the DevKit will make sure that you have an initialized object set when the Mule app is running and a request is made to your connector.
+By marking a field with @ConnectionStrategy the DevKit will make sure that you have an initialized object set when the Mule app is running and a request is made to your connector.
 
-If there is no need for authentication and/or connection management but you need to configure some things, you can have a class marked with @org.mule.api.annotations.components.Configuration.
+If there is no need for authentication and/or connection management but you need to configure some things, you can have a class marked with @Configuration.
 
 If you actually need an authentication there are several annotations that will help you achieve the desired behaviour as we will see in this tutorial.
 
@@ -368,7 +368,7 @@ First create the file pointed by the *{@sample ...}*
 
 NOTE: When you add an example, the name provided here is the name that narrows the example in the file. Inside of it you have to put an example of the @Processor.
 
-If you have the the Javadoc check enabled, DevKit plugin will mark the missing example as an error and provide a quick fix for us to easily add the example.
+If you have the Javadoc check enabled, DevKit plugin will mark the missing example as an error and provide a quick fix for us to easily add the example.
 
 Otherwise, open the file and type "<" at the editor and use Ctrl + Space bar to display the templates and pick the one that best suite our operation.
 
