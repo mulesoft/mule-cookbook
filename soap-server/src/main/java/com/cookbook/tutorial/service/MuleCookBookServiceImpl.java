@@ -1,5 +1,7 @@
 package com.cookbook.tutorial.service;
 
+import com.cookbook.tutorial.internal.service.ObjectFactorySingleton;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.soap.SOAPBinding;
@@ -30,7 +32,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, InvalidEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        CreateResponse response = new CreateResponse();
+        CreateResponse response = ObjectFactorySingleton.getInstance().createCreateResponse();
         response.setReturn(serviceDAL.create(parameters.getEntity()));
         return response;
     }
@@ -41,7 +43,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        GetListResponse response = new GetListResponse();
+        GetListResponse response =ObjectFactorySingleton.getInstance().createGetListResponse();
         response.setReturn(serviceDAL.getList(parameters.getEntityIds()));
         return response;
     }
@@ -52,7 +54,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, InvalidEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        AddListResponse response = new AddListResponse();
+        AddListResponse response = ObjectFactorySingleton.getInstance().createAddListResponse();
         response.setReturn(serviceDAL.addList(parameters.getEntities()));
         return response;
     }
@@ -64,7 +66,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, InvalidEntityException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        DescribeEntityResponse response = new DescribeEntityResponse();
+        DescribeEntityResponse response = ObjectFactorySingleton.getInstance().createDescribeEntityResponse();
         response.setReturn(serviceDAL.describeEntity(parameters.getEntity()));
         return response;
     }
@@ -76,7 +78,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        DeleteListResponse response = new DeleteListResponse();
+        DeleteListResponse response = ObjectFactorySingleton.getInstance().createDeleteListResponse();
         serviceDAL.deleteList(parameters.getEntityIds());
         return response;
     }
@@ -98,7 +100,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        SearchWithQueryResponse response = new SearchWithQueryResponse();
+        SearchWithQueryResponse response = ObjectFactorySingleton.getInstance().createSearchWithQueryResponse();
         response.setReturn(serviceDAL.searchWithQuery(parameters.getQuery(),parameters.getPage(),parameters.getPageSize()));
         return response;
     }
@@ -109,7 +111,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, InvalidEntityException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        UpdateResponse response = new UpdateResponse();
+        UpdateResponse response = ObjectFactorySingleton.getInstance().createUpdateResponse();
         response.setReturn(serviceDAL.update(parameters.getEntity()));
         return response;
     }
@@ -121,7 +123,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, InvalidEntityException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        UpdateListResponse response= new UpdateListResponse();
+        UpdateListResponse response= ObjectFactorySingleton.getInstance().createUpdateListResponse();
         response.setReturn(serviceDAL.updateList(parameters.getEntities()));
         return response;
     }
@@ -141,7 +143,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             @WebParam(partName = "token", name = "token", targetNamespace = "http://service.tutorial.cookbook.com/", header = true) String token)
             throws InvalidTokenException, SessionExpiredException {
         verifyToken(token);
-        GetEntitiesListResponse response = new GetEntitiesListResponse();
+        GetEntitiesListResponse response = ObjectFactorySingleton.getInstance().createGetEntitiesListResponse();
         response.setReturn(serviceDAL.getEntitiesList());
         return response;
     }
@@ -152,7 +154,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        DeleteResponse response = new DeleteResponse();
+        DeleteResponse response = ObjectFactorySingleton.getInstance().createDeleteResponse();
         serviceDAL.delete(parameters.getId());
         return response;
     }
@@ -163,7 +165,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
             throws InvalidTokenException, SessionExpiredException, NoSuchEntityException {
         verifyToken(token);
         checkExpiredSessionCondition();
-        GetResponse response = new GetResponse();
+        GetResponse response = ObjectFactorySingleton.getInstance().createGetResponse();
         response.setReturn(serviceDAL.get(parameters.getId()));
         return response;
     }

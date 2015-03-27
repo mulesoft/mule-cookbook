@@ -32,8 +32,6 @@ public class MuleStoreClientTest {
     @Test
     public void create() throws InvalidEntityException, SessionExpiredException, InvalidTokenException {
         Ingredient Ingredient = new Ingredient();
-
-
         assertNotNull(client.create(Ingredient).getId());
     }
 

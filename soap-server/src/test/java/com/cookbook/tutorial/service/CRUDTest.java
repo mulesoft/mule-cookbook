@@ -4,6 +4,7 @@ import com.cookbook.tutorial.internal.service.CookBookDefaultBackEndImp;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -95,6 +96,64 @@ public class CRUDTest {
         ids.getEntityIds().add(1);
         ids.getEntityIds().add(2);
         GetListResponse response =server.getList(ids, token);
-        assertEquals(2,response.getReturn().size());
+        assertEquals(2, response.getReturn().size());
+    }
+
+    @Test
+    public void updateList() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+        String updatedName = "XXX";
+        GetList ids = new GetList();
+        ids.getEntityIds().add(1);
+        ids.getEntityIds().add(2);
+        GetListResponse response =server.getList(ids, token);
+        List<CookBookEntity> list=response.getReturn();
+        assertEquals(2,list.size());
+        list.get(0).setName(updatedName);
+        list.get(1).setName(updatedName);
+        UpdateList updateRequest = new UpdateList();
+        updateRequest.setEntities(list);
+        UpdateListResponse result=server.updateList(updateRequest, token);
+        assertEquals(updatedName,result.getReturn().get(0).getName());
+        assertEquals(updatedName,result.getReturn().get(1).getName());
+    }
+
+
+    @Test
+    public void createList() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName("Foo");
+        AddList addList = new AddList();
+        List<CookBookEntity> entities = new ArrayList<>();
+        entities.add(ingredient);
+        ingredient = new Ingredient();
+        ingredient.setName("Foo2");
+        entities.add(ingredient);
+
+        addList.setEntities(entities);
+        AddListResponse result=server.addList(addList, token);
+        assertNotNull(result.getReturn().get(0));
+        assertNotNull(result.getReturn().get(1));
+    }
+
+    @Test
+    public void deleteList() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName("Foo");
+        Create createRequest = new Create();
+
+        createRequest.setEntity(ingredient);
+        Ingredient created = (Ingredient) server.create(createRequest,token).getReturn();
+        List<Integer> ids = new ArrayList<>();
+        ids.add(created.getId());
+
+        ingredient = new Ingredient();
+        ingredient.setName("Foo");
+        createRequest.setEntity(ingredient);
+        created = (Ingredient) server.create(createRequest,token).getReturn();
+        ids.add(created.getId());
+
+        DeleteList deleteRequest = new DeleteList();
+        deleteRequest.setEntityIds(ids);
+        server.deleteList(deleteRequest, token);
     }
 }

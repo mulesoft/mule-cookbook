@@ -18,22 +18,21 @@ import java.util.*;
 
 /**
  * Created by Mulesoft.
- *
+ * <p/>
  * This is a dummy implementation, none persistent. Will be valid until the server stops running.
- *
  */
 public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
     private Integer currentIndex = 0;
 
-    public CookBookDefaultBackEndImp(){
+    public CookBookDefaultBackEndImp() {
         initialize();
     }
 
     private void initialize() {
 
         try {
-            Ingredient ingredient =  new Ingredient();
+            Ingredient ingredient = ObjectFactorySingleton.getInstance().createIngredient();
             ingredient.setName("Apple");
             ingredient.setUnit(UnitType.UNIT);
             GregorianCalendar c = new GregorianCalendar();
@@ -41,11 +40,11 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
             ingredient.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
             this.create(ingredient);
 
-            Recipe recipe = new Recipe();
+            Recipe recipe = ObjectFactorySingleton.getInstance().createRecipe();
             recipe.setName("Baked Apples");
             recipe.setCookTime(20.0);
             recipe.setPrepTime(30.0);
-            List<String> directions= new ArrayList<>();
+            List<String> directions = new ArrayList<>();
             directions.add("Cut the Apples");
             directions.add("Put them in the oven");
             directions.add("Remove from the oven after 20.0 minutes");
@@ -67,7 +66,7 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
     @Override
     public List<CookBookEntity> getList(@WebParam(name = "entityIds", targetNamespace = "") List<Integer> entityIds)
-            throws NoSuchEntityException{
+            throws NoSuchEntityException {
         List<CookBookEntity> returnValue = new ArrayList<>();
         for (Integer id : entityIds) {
             returnValue.add(get(id));
@@ -86,7 +85,7 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     @Override
     public CookBookEntity create(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity) throws InvalidEntityException {
         if (entity.getId() != null) {
-            FaultBean bean = new FaultBean();
+            FaultBean bean = ObjectFactorySingleton.getInstance().createFaultBean();
             bean.setEntity(entity);
             throw new InvalidEntityException("Cannot specify Id at creation.", bean);
         }
@@ -143,35 +142,39 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     @Override
     public List<CookBookEntity> searchWithQuery(@WebParam(name = "query", targetNamespace = "") String query, @WebParam(name = "page", targetNamespace = "") Integer page,
             @WebParam(name = "pageSize", targetNamespace = "") Integer pageSize) throws NoSuchEntityException {
-        try {
-            DsqlParser parser = Parboiled.createParser(DsqlParser.class);
-            ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(query);
-            if(result.hasErrors()){
-                throw new NoSuchEntityException(result.parseErrors.get(0).getErrorMessage());
-            }
-            List<CookBookEntity> searchResult = new ArrayList<>();
-            CookBookQuery cookBookQuery = Dsql.newInstance(query);
-            if(cookBookQuery.getEntity().equals(Constants.INGREDIENT)){
-                for(CookBookEntity entity : entities.values()){
-                    if(entity instanceof Ingredient){
-                        searchResult.add(entity);
-                    }
-                }
-                return searchResult;
-            }
-            return CollectionUtils.arrayToList(entities.values().toArray());
-        } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
+
+        DsqlParser parser = Parboiled.createParser(DsqlParser.class);
+        ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(query);
+        if (result.hasErrors()) {
+            throw new NoSuchEntityException(result.parseErrors.get(0).getErrorMessage());
         }
+        List<CookBookEntity> searchResult = new ArrayList<>();
+        CookBookQuery cookBookQuery = Dsql.newInstance(query);
+        if (cookBookQuery.getEntity().equals(Constants.INGREDIENT)) {
+            for (CookBookEntity entity : entities.values()) {
+                if (entity instanceof Ingredient) {
+                    searchResult.add(entity);
+                }
+            }
+            return searchResult;
+        } else if (cookBookQuery.getEntity().equals(Constants.RECIPE)) {
+            for (CookBookEntity entity : entities.values()) {
+                if (entity instanceof Recipe) {
+                    searchResult.add(entity);
+                }
+            }
+            return searchResult;
+        }
+        return CollectionUtils.arrayToList(entities.values().toArray());
+
     }
 
     @Override public List<Recipe> getRecentlyAdded() {
         Collection<CookBookEntity> values = entities.values();
         List<Recipe> recipies = new ArrayList<>();
-        for(CookBookEntity entity : values){
-            if(entity instanceof Recipe){
-                recipies.add((Recipe)entity);
+        for (CookBookEntity entity : values) {
+            if (entity instanceof Recipe) {
+                recipies.add((Recipe) entity);
             }
         }
         return CollectionUtils.arrayToList(recipies.toArray());
@@ -180,16 +183,16 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     @Override public Description describeEntity(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity)
             throws NoSuchEntityException, InvalidEntityException {
         Description description = null;
-        if(entity.getId() == null || entity.getId()==0){
-            if( entity instanceof Ingredient){
+        if (entity.getId() == null || entity.getId() == 0) {
+            if (entity instanceof Ingredient) {
                 description = getIngredientDescription();
-            }else{
+            } else {
                 description = getRecipeDescription(entity.getId());
             }
         } else {
-            if( entity instanceof Ingredient){
+            if (entity instanceof Ingredient) {
                 throw new InvalidEntityException("You cannot describe specific ingredients");
-            }else{
+            } else {
                 description = getRecipeDescription(entity.getId());
             }
         }
@@ -199,11 +202,11 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     @Override
     public List<CookBookEntity> getEntitiesList() {
         List<CookBookEntity> list = new ArrayList<>();
-        Ingredient ing=new Ingredient();
+        Ingredient ing = ObjectFactorySingleton.getInstance().createIngredient();
         ing.setName("Ingredient");
         ing.setId(0);
         list.add(ing);
-        Recipe recipe=new Recipe();
+        Recipe recipe = new Recipe();
         recipe.setName("Recipe");
         recipe.setId(0);
         list.add(recipe);
@@ -211,11 +214,11 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     }
 
     private Description getRecipeDescription(Integer id) throws NoSuchEntityException {
-        Description description = new Description();
+        Description description = ObjectFactorySingleton.getInstance().createDescription();
         List<Description> fields = new ArrayList<>();
         description.setName("Recipe");
         populateCookBookEntityFields(description, fields);
-        addRecipeIngredientFields(fields,id);
+        addRecipeIngredientFields(fields, id);
         description.setInnerFields(fields);
         return description;
     }
@@ -224,37 +227,37 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
         Description field;
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("ingredients");
         field.setDataType(DataType.LIST);
         field.setQuerable(true);
         field.setSortable(true);
         field.setInnerType("Ingredient");
         fields.add(field);
-        if(id!=null && id!=0){
-            loadRecipeFields(field,id);
-        }else{
+        if (id != null && id != 0) {
+            loadRecipeFields(field, id);
+        } else {
             Description ingredient = getIngredientDescription();
             List<Description> innerFields = new ArrayList<>(1);
             innerFields.add(ingredient);
             field.setInnerFields(innerFields);
         }
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("prepTime");
         field.setDataType(DataType.DOUBLE);
         field.setQuerable(true);
         field.setSortable(true);
         fields.add(field);
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("cookTime");
         field.setDataType(DataType.DOUBLE);
         field.setQuerable(true);
         field.setSortable(true);
         fields.add(field);
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("directions");
         field.setDataType(DataType.LIST);
         field.setQuerable(false);
@@ -264,9 +267,9 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     }
 
     private void loadRecipeFields(Description field, Integer id) throws NoSuchEntityException {
-        Recipe recipe= (Recipe) this.get(id);
+        Recipe recipe = (Recipe) this.get(id);
         List<Description> innerFields = new ArrayList<>(recipe.getIngredients().size());
-        for(Ingredient ing : recipe.getIngredients()){
+        for (Ingredient ing : recipe.getIngredients()) {
             Description description = getIngredientDescription();
             description.setName(ing.getName());
             description.setQuerable(false);
@@ -277,7 +280,7 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     }
 
     private Description getIngredientDescription() {
-        Description description = new Description();
+        Description description = ObjectFactorySingleton.getInstance().createDescription();
         List<Description> fields = new ArrayList<>();
         description.setName("Ingredient");
         populateCookBookEntityFields(description, fields);
@@ -292,14 +295,14 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
         private double quantity;
         private UnitType unit;
         */
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("quantity");
         field.setDataType(DataType.DOUBLE);
         field.setQuerable(true);
         field.setSortable(true);
         fields.add(field);
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("unit");
         field.setDataType(DataType.UNIT_TYPE);
         field.setQuerable(true);
@@ -311,7 +314,7 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
      * Populate common CookBookEntity fields
      *
      * @param description The object representing the description of the CookBookEntity
-     * @param fields The list of fields we have to populate.
+     * @param fields      The list of fields we have to populate.
      */
     private void populateCookBookEntityFields(Description description, List<Description> fields) {
         description.setDataType(DataType.OBJECT);
@@ -320,28 +323,28 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
         Description field = null;
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("id");
         field.setDataType(DataType.INTEGER);
         field.setQuerable(true);
         field.setSortable(true);
         fields.add(field);
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("created");
         field.setDataType(DataType.DATE);
         field.setQuerable(false);
         field.setSortable(false);
         fields.add(field);
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("lastModified");
         field.setDataType(DataType.DATE);
         field.setQuerable(false);
         field.setSortable(false);
         fields.add(field);
 
-        field = new Description();
+        field = ObjectFactorySingleton.getInstance().createDescription();
         field.setName("name");
         field.setDataType(DataType.STRING);
         field.setQuerable(true);

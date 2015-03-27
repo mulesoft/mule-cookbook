@@ -27,7 +27,7 @@ public class AuthenticationTest {
     }
 
     @Test
-    public void validLoguot() throws SessionExpiredException, InvalidEntityException, InvalidTokenException {
+    public void validLogout() throws SessionExpiredException, InvalidEntityException, InvalidTokenException {
         server.logout(token);
     }
 }
