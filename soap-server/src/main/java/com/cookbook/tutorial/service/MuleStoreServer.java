@@ -18,10 +18,9 @@ public class MuleStoreServer {
 
     protected MuleStoreServer() throws Exception {
         System.out.println("Starting Server");
-        MuleCookBookServiceImpl implementor = new MuleCookBookServiceImpl();
-        implementor.setServiceDAL(new CookBookDefaultBackEndImp());
+        MuleCookBookServiceImpl implementer = new MuleCookBookServiceImpl();
 
-        Endpoint.publish(address, implementor);
+        Endpoint.publish(address, implementer);
     }
 
     public static void main(String args[]) throws Exception {
