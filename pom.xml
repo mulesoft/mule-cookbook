@@ -12,6 +12,7 @@
         <module>model</module>
         <module>webservice</module>
         <module>soap-server</module>
+        <module>mule-cookbook-server</module>
         <module>sdk-client</module>
         <module>rest-server</module>
         <module>cook-book-connector</module>
