@@ -21,7 +21,7 @@ public class RecipeResource {
 		}
 		try {
 			if(StringUtils.isEmpty(query)){
-				query="GET ALL FROM INGREDIENT";
+				query="GET ALL FROM RECIPE";
 			}
 			if(page==null){
 				page = 0;

@@ -29,7 +29,9 @@ public class IngredientResource {
 			return Response.status(200).entity(DALProvider.getInstance().searchWithQuery(query,page,pageSize)).build();
 		} catch (NoSuchEntityException e) {
 			return Response.status(404).entity("No such entity").build();
-		}
+		} catch (Exception ex){
+            return Response.status(500).entity("Unexpected error."+ex.getMessage()).build();
+        }
 	}
 
 	@GET
