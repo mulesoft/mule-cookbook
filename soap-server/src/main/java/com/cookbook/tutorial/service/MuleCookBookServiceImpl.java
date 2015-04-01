@@ -1,6 +1,5 @@
 package com.cookbook.tutorial.service;
 
-import com.cookbook.tutorial.internal.service.DAOCookBookServiceFactory;
 import com.cookbook.tutorial.internal.service.ObjectFactorySingleton;
 
 import javax.jws.WebMethod;
@@ -28,7 +27,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
     private IDAOCookBookService serviceDAL;
 
     public MuleCookBookServiceImpl(){
-        serviceDAL = DAOCookBookServiceFactory.newInstance();
+        serviceDAL = DAOCookBookServiceFactory.getInstance();
     }
     @Override
     public CreateResponse create(@WebParam(partName = "parameters", name = "create", targetNamespace = "http://service.tutorial.cookbook.com/") Create parameters,

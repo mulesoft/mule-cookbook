@@ -1,5 +1,6 @@
 package com.cookbook.tutorial;
 
+import com.cookbook.tutorial.service.DAOCookBookServiceFactory;
 import com.cookbook.tutorial.service.Constants;
 import com.cookbook.tutorial.service.Recipe;
 import com.cookbook.tutorial.service.InvalidEntityException;
@@ -29,7 +30,7 @@ public class RecipeResource {
 			if(pageSize==null){
 				pageSize = 0;
 			}
-			return Response.status(200).entity(DALProvider.getInstance().searchWithQuery(query,page,pageSize)).build();
+			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().searchWithQuery(query,page,pageSize)).build();
 		} catch (NoSuchEntityException e) {
 			return Response.status(404).entity("No such entity").build();
 		}
@@ -42,7 +43,7 @@ public class RecipeResource {
 			return Response.status(401).entity("Invalid Token").build();
 		}
 		try {
-			return Response.status(200).entity(DALProvider.getInstance().get(id)).build();
+			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().get(id)).build();
 		} catch (NoSuchEntityException e) {
 			return Response.status(404).entity("No such entity").build();
 		}
@@ -55,7 +56,7 @@ public class RecipeResource {
 			return Response.status(401).entity("Invalid Token").build();
 		}
 		try {
-			return Response.status(201).entity(DALProvider.getInstance().create(recipe)).build();
+			return Response.status(201).entity(DAOCookBookServiceFactory.getInstance().create(recipe)).build();
 		} catch (InvalidEntityException e) {
 			return Response.status(400).entity(e.getMessage()).build();
 
@@ -70,7 +71,7 @@ public class RecipeResource {
 			return Response.status(401).entity("Invalid Token").build();
 		}
 		try {
-			return Response.status(200).entity(DALProvider.getInstance().update(recipe)).build();
+			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().update(recipe)).build();
 		} catch (NoSuchEntityException e) {
 			return Response.status(404).entity("No such entity").build();
 		} catch (InvalidEntityException e) {
@@ -87,7 +88,7 @@ public class RecipeResource {
 			return Response.status(401).entity("Invalid Token").build();
 		}
 		try {
-			DALProvider.getInstance().delete(id);
+			DAOCookBookServiceFactory.getInstance().delete(id);
 			return Response.status(200).build();
 		} catch (NoSuchEntityException e) {
 			return Response.status(404).entity("No such entity").build();
@@ -104,7 +105,7 @@ public class RecipeResource {
 		try {
 			Recipe recipe = new Recipe();
 			recipe.setId(id);
-			return Response.status(200).entity(DALProvider.getInstance().describeEntity(recipe)).build();
+			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().describeEntity(recipe)).build();
 		} catch (NoSuchEntityException e) {
 			return Response.status(404).entity("No such entity").build();
 		} catch (InvalidEntityException e) {
