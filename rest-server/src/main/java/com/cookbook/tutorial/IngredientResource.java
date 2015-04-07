@@ -13,9 +13,9 @@ public class IngredientResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@HeaderParam("token") String token,@QueryParam("query") String query, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
+	public Response get(@HeaderParam("access_token") String token,@QueryParam("query") String query, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		if(!Constants.DEFAULT_TOKEN.equals(token)){
-			return Response.status(401).entity("Invalid Token").build();
+			return Response.status(401).entity(new ErrorResponse("invalid_client","Invalid Token")).build();
 		}
 		try {
 			if(StringUtils.isEmpty(query)){
@@ -29,7 +29,7 @@ public class IngredientResource {
 			}
 			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().searchWithQuery(query,page,pageSize)).build();
 		} catch (NoSuchEntityException e) {
-			return Response.status(404).entity("No such entity").build();
+            return Response.status(404).entity(new ErrorResponse("not_found", "No such entity")).build();
 		} catch (Exception ex){
             return Response.status(500).entity("Unexpected error." + ex.getMessage()).build();
         }
@@ -38,23 +38,23 @@ public class IngredientResource {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@PathParam("id") int id,@HeaderParam("token") String token) {
+	public Response get(@PathParam("id") int id,@QueryParam("access_token") String token) {
 
 		if(!Constants.DEFAULT_TOKEN.equals(token)){
-			return Response.status(401).entity("Invalid Token").build();
+			return Response.status(401).entity(new ErrorResponse("invalid_client","Invalid Token")).build();
 		}
 		try {
 			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().get(id)).build();
 		} catch (NoSuchEntityException e) {
-			return Response.status(404).entity("No such entity").build();
+			return Response.status(404).entity(new ErrorResponse("not_found", "No such entity")).build();
 		}
 	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(Ingredient ingredient,@HeaderParam("token") String token) {
+	public Response create(Ingredient ingredient,@QueryParam("access_token") String token) {
 		if(!Constants.DEFAULT_TOKEN.equals(token)){
-			return Response.status(401).entity("Invalid Token").build();
+			return Response.status(401).entity(new ErrorResponse("invalid_client","Invalid Token")).build();
 		}
 		try {
 			return Response.status(201).entity(DAOCookBookServiceFactory.getInstance().create(ingredient)).build();
@@ -67,14 +67,14 @@ public class IngredientResource {
 	@PUT
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@PathParam("id") String id,Ingredient ingredient,@HeaderParam("token") String token) {
+	public Response update(@PathParam("id") String id,Ingredient ingredient,@QueryParam("access_token") String token) {
 		if(!Constants.DEFAULT_TOKEN.equals(token)){
-			return Response.status(401).entity("Invalid Token").build();
+			return Response.status(401).entity(new ErrorResponse("invalid_client","Invalid Token")).build();
 		}
 		try {
 			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().update(ingredient)).build();
 		} catch (NoSuchEntityException e) {
-			return Response.status(404).entity("No such entity").build();
+			return Response.status(404).entity(new ErrorResponse("not_found", "No such entity")).build();
 		} catch (InvalidEntityException e) {
 			return Response.status(400).entity(e.getMessage()).build();
 
@@ -84,29 +84,29 @@ public class IngredientResource {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response delete(@PathParam("id") int id,@HeaderParam("token") String token) {
+	public Response delete(@PathParam("id") int id,@QueryParam("access_token") String token) {
 		if(!Constants.DEFAULT_TOKEN.equals(token)){
-			return Response.status(401).entity("Invalid Token").build();
+			return Response.status(401).entity(new ErrorResponse("invalid_client","Invalid Token")).build();
 		}
 		try {
 			DAOCookBookServiceFactory.getInstance().delete(id);
 			return Response.status(200).build();
 		} catch (NoSuchEntityException e) {
-			return Response.status(404).entity("No such entity").build();
+			return Response.status(404).entity(new ErrorResponse("not_found", "No such entity")).build();
 		}
 	}
 
 	@GET
 	@Path("describe")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@HeaderParam("token") String token) {
+	public Response get(@QueryParam("access_token") String token) {
 		if(!Constants.DEFAULT_TOKEN.equals(token)){
-			return Response.status(401).entity("Invalid Token").build();
+			return Response.status(401).entity(new ErrorResponse("invalid_client","Invalid Token")).build();
 		}
 		try {
 			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().describeEntity(new Ingredient())).build();
 		} catch (NoSuchEntityException e) {
-			return Response.status(404).entity("No such entity").build();
+			return Response.status(404).entity(new ErrorResponse("not_found", "No such entity")).build();
 		} catch (InvalidEntityException e) {
 			return Response.status(400).entity("Error").build();
 		}

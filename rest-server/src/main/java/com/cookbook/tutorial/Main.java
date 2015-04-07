@@ -20,7 +20,7 @@ public class Main {
      * @throws IOException
      */
     static HttpServer startServer() throws IOException {
-        // create a new server listening at port 8080
+        // create a new server listening at port 9091
         HttpServer server = HttpServer.create(new InetSocketAddress(getBaseURI().getPort()), 0);
         // create a handler wrapping the JAX-RS application
         HttpHandler handler = RuntimeDelegate.getInstance().createEndpoint(new JaxRsApplication(), HttpHandler.class);
@@ -60,7 +60,7 @@ public class Main {
      * @return base {@link URI}.
      */
     public static URI getBaseURI() {
-        return UriBuilder.fromUri("http://localhost/").port(getPort(8080)).build();
+        return UriBuilder.fromUri("http://localhost/").port(getPort(9091)).build();
     }
 }
 
