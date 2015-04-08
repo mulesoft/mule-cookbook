@@ -1,64 +1,15 @@
-= Mule CookBook Model
+= Mule Cookbook REST Server
 
-This is a basic model for the http://www.mulesoft.org/documentation/display/current/Anypoint+Connector+DevKit[DevKit] Tutorial
+This is a basic REST Jersey Server that exposes 3 resources.
 
-[plantuml,model,png]
-----
-title CookBook Entities
-
-package "com.cookbook.tutorial.model" #DDDDDD {
-CookBookEntity <|-- Recipe
-CookBookEntity <|-- Ingredient
-Recipe o-- “1..*” Ingredient : ingredientes
-Ingredient *- “1“ UnitType : unit
-}
-
-abstract class CookBookEntity {
-- Integer id
-- Date created
-- Date lastModified
-- String name
-}
-
-enum UnitType {
-    CUPS
-    GRAMS
-    KILOGRAMS
-    LITERS
-    MILLILITERS
-    POUNDS
-    SPOONS
-    UNIT
-}
-class Recipe {
--Double prepTime
--Double cookTime
--List<String> directions
-}
-class Ingredient {
--double quantity
-}
-
-
-package "com.cookbook.tutorial.customization” {
-Description *- “1“ Description : fields
-Description *- “1“ DataType : dataType
-}
-class Description {
--String name
--int entityId
--DataType dataType
--boolean isQuerable
--boolean isSortable
--String innerType
-}
-enum DataType {
-    DATE,
-    DOUBLE,
-    INTEGER,
-    LIST,
-    OBJECT,
-    STRING,
-    UNIT_TYPE
-}
-----
+* /oauth:
++
+This resource handles the server http://oauth.net/2/[OAuthV2] dance
++
+* /ingredient:
++
+To handle CRUD operations for Ingredient resource.
++
+* /recipe:
++
+To handle CRUD operations for Recipe resource.
