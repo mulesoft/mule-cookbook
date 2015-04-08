@@ -1,0 +1,8 @@
+
+= SDK Client
+
+To help users when consuming the SOAP API this client simplifies the consumption of the WSDL by generating a Java Interface.
+
+To do this, we use the WSDL provided by the web service and Using http://cxf.apache.org/docs/wsdl-to-java.html[CXF WSDL to Java] tool.
+
+By using the client developers no longer need to worry about the token required to authenticate, the can just call the login operation and all subsequent request will have the token.

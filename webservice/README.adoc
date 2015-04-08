@@ -1,0 +1,6 @@
+
+= SOAP Server Interface
+
+In this project defines the interface that we will use to generate a SOAP Server and a SOAP Client using cxf.
+
+The WSDL file is generated using the http://cxf.apache.org/docs/java-to-wsdl.html[Java to WSDL] tool provided by CXF.

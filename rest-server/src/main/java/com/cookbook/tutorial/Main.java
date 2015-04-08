@@ -32,7 +32,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println("\"Hello World\" Jersey Example Application");
+        System.out.println("\"Cookbook REST Server\" Application");
         HttpServer server = startServer();
         System.out.println("Application started.\n" +
                 "Try accessing " + getBaseURI() + "ingredient in the browser.\n" +

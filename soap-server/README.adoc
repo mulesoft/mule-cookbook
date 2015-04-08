@@ -1,0 +1,6 @@
+
+= SOAP Server
+
+In this project you will find all the SOAP implementation of our service.
+
+Using http://cxf.apache.org/docs/wsdl-to-java.html[CXF WSDL to Java] tool, we generate the scaffolding for our server and add a dummy persistence layer.

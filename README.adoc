@@ -1,5 +1,4 @@
-Mule Store
-==========
+= Mule Cookbook Tutorial
 
 A basic web service that users can use to learn the features provided by the DevKit and incrementally learn to develop Connectors.
 
