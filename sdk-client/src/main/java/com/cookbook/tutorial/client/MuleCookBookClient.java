@@ -44,6 +44,14 @@ public class MuleCookBookClient implements IMuleCookBookClient {
     }
 
     @Override
+    public void getRecentlyAdded(ICookbookCallback callback) throws Exception {
+        while(!Thread.interrupted()){
+            callback.execute(port.getRecentlyAdded());
+            Thread.sleep(10000);
+        }
+    }
+
+    @Override
     public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException {
         Get request = factory.createGet();
         request.setId(id);
