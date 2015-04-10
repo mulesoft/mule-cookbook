@@ -9,7 +9,7 @@ import org.mule.modules.cookbook.automation.CookBookTestParent;
 import org.mule.modules.cookbook.automation.RegressionTests;
 import org.mule.modules.cookbook.automation.SmokeTests;
 
-public class GetRecentlyAddedTestCases
+public class CreateTestCases
     extends CookBookTestParent
 {
 
@@ -19,7 +19,7 @@ public class GetRecentlyAddedTestCases
         throws Exception
     {
         //TODO: Add setup required to run test or remove method
-        initializeTestRunMessage("getRecentlyAddedTestData");
+        initializeTestRunMessage("createTestData");
     }
 
     @After
@@ -34,10 +34,10 @@ public class GetRecentlyAddedTestCases
         SmokeTests.class
     })
     @Test
-    public void testGetRecentlyAdded()
+    public void testCreate()
         throws Exception
     {
-        Object result = runFlowAndGetPayload("get-recently-added");
+        Object result = runFlowAndGetPayload("create");
         throw new RuntimeException("NOT IMPLEMENTED METHOD");
     }
 

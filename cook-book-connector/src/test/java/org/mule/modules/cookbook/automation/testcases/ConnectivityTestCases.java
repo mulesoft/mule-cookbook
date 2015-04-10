@@ -29,7 +29,7 @@ public class ConnectivityTestCases extends CookBookTestParent {
 
     @Test
     public void testConnectivity(){
-        Testable connector = muleContext.getRegistry().lookupObject("Cook-book");
+        Testable connector = muleContext.getRegistry().lookupObject("config");
         TestResult testResult = connector.test();
         assertEquals(testResult.getStatus(), Result.Status.SUCCESS);
     }

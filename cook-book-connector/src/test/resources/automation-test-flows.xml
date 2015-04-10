@@ -12,12 +12,30 @@ http://www.mulesoft.org/schema/mule/cook-book http://www.mulesoft.org/schema/mul
 
 	<context:property-placeholder location="automation-credentials.properties" />
 
-	<cook-book:config-type username="admin" password="admin" name="config" doc:name="config" />
+	<cook-book:config-type username="admin" password="admin" name="config" doc:name="Cook-book"/>
 
-	<cook-book:config-type username="foo" password="foo" name="config-that-fails" doc:name="config-that-fails" />
-	
 	<flow name="get-recently-added" doc:name="GetRecentlyAdded">
 		<cook-book:get-recently-added config-ref="config" />
+	</flow>
+
+	<flow name="create" doc:name="Create">
+		<cook-book:create config-ref="config" type="#[flowVars.type]">
+			<cook-book:entity ref="#[flowVars.EntityRef]" />
+		</cook-book:create>
+	</flow>
+
+	<flow name="update" doc:name="Update">
+		<cook-book:update config-ref="config" type="#[flowVars.type]">
+			<cook-book:entity ref="#[flowVars.EntityRef]" />
+		</cook-book:update>
+	</flow>
+
+	<flow name="get" doc:name="Get">
+		<cook-book:get config-ref="config" type="#[flowVars.type]" />
+	</flow>
+
+	<flow name="delete" doc:name="Delete">
+		<cook-book:delete config-ref="config" />
 	</flow>
 
 </mule>

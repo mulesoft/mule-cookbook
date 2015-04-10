@@ -5,62 +5,30 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.modules</groupId>
 	<artifactId>cook-book-connector</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>mule-module</packaging>
 	<name>Mule CookBook Anypoint Connector</name>
 
-
-	<parent>
-		<groupId>org.mule.tools.devkit</groupId>
-		<artifactId>mule-devkit-parent</artifactId>
-		<version>3.7.0-M1-SNAPSHOT</version>
-	</parent>
-	<build>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<version>2.9</version>
-					<configuration>
-						<classpathContainers>
-							<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-							<classpathContainer>{basedir}/target/classes</classpathContainer>
-						</classpathContainers>
-					</configuration>
-				</plugin>
-			</plugins>
-	</build>
+   <parent>
+        <groupId>org.mule.tools.devkit</groupId>
+        <artifactId>mule-devkit-parent</artifactId>
+        <version>3.6.1</version>
+    </parent>
+    
+    <properties>
+        <category>Community</category>
+        <licensePath>LICENSE.md</licensePath>
+        <devkit.studio.package.skip>false</devkit.studio.package.skip>
+    </properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.cookbook.tutorial</groupId>
 			<version>1.0.0-SNAPSHOT</version>
 			<artifactId>sdk-client</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.4</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Spring 3 dependencies -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-			<version>3.2.10.RELEASE</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework</groupId>
-					<artifactId>spring-core</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 	</dependencies>
-
-	<properties>
-		<category>Community</category>
-		<licensePath>LICENSE.md</licensePath>
-		<devkit.studio.package.skip>false</devkit.studio.package.skip>
-	</properties>
+	
 	<repositories>
 		<repository>
 			<id>mulesoft-releases</id>
