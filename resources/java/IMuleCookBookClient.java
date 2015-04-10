@@ -13,6 +13,8 @@ public interface IMuleCookBookClient {
 
     public List<Recipe> getRecentlyAdded();
 
+    public void getRecentlyAdded(ICookbookCallback callback) throws Exception;
+
     public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException;
 
     public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws NoSuchEntityException,
@@ -37,4 +39,8 @@ public interface IMuleCookBookClient {
 
     public CookBookEntity create(CookBookEntity entity) throws InvalidEntityException,
             SessionExpiredException;
+
+    public List<CookBookEntity> getEntities() throws SessionExpiredException;
+
+    public Description describeEntity(CookBookEntity cookBookEntity) throws InvalidTokenException, InvalidEntityException, NoSuchEntityException, SessionExpiredException;
 }
