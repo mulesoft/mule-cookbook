@@ -24,9 +24,10 @@ public class DSQLServerTest {
     }
 
     @Test
-    public void queryRecipes() throws SessionExpiredException, InvalidEntityException, InvalidTokenException, NoSuchEntityException {
+    public void queryRecipes() throws SessionExpiredException, InvalidEntityException, InvalidTokenException, InvalidRequestException {
         SearchWithQuery query = new SearchWithQuery();
         query.setQuery("GET ALL FROM INGREDIENT");
+        query.setPageSize(5);
         SearchWithQueryResponse result=server.searchWithQuery(query, token);
         assertNotNull(result.getReturn());
     }
@@ -34,17 +35,19 @@ public class DSQLServerTest {
 
 
     @Test
-    public void queryIngredients() throws SessionExpiredException, InvalidEntityException, InvalidTokenException, NoSuchEntityException {
+    public void queryIngredients() throws SessionExpiredException, InvalidEntityException, InvalidTokenException, InvalidRequestException {
         SearchWithQuery query = new SearchWithQuery();
         query.setQuery("GET ALL FROM RECIPE");
+        query.setPageSize(5);
         SearchWithQueryResponse result=server.searchWithQuery(query, token);
         assertNotNull(result.getReturn());
     }
 
-    @Test(expected = NoSuchEntityException.class)
-    public void badQuery() throws SessionExpiredException, InvalidEntityException, InvalidTokenException, NoSuchEntityException {
+    @Test(expected = InvalidRequestException.class)
+    public void badQuery() throws SessionExpiredException, InvalidEntityException, InvalidTokenException, InvalidRequestException {
         SearchWithQuery query = new SearchWithQuery();
         query.setQuery("GET ALL FROM FOO");
+        query.setPageSize(5);
         SearchWithQueryResponse result=server.searchWithQuery(query, token);
         assertNotNull(result.getReturn());
     }

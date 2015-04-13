@@ -1,10 +1,6 @@
 package com.cookbook.tutorial;
 
-import com.cookbook.tutorial.service.DAOCookBookServiceFactory;
-import com.cookbook.tutorial.service.Constants;
-import com.cookbook.tutorial.service.Recipe;
-import com.cookbook.tutorial.service.InvalidEntityException;
-import com.cookbook.tutorial.service.NoSuchEntityException;
+import com.cookbook.tutorial.service.*;
 import org.parboiled.common.StringUtils;
 
 import javax.ws.rs.*;
@@ -31,7 +27,7 @@ public class RecipeResource {
 				pageSize = 0;
 			}
 			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().searchWithQuery(query,page,pageSize)).build();
-		} catch (NoSuchEntityException e) {
+		} catch (InvalidRequestException e) {
 			return Response.status(404).entity(new ErrorResponse("not_found", "No such entity")).build();
 		}
 	}

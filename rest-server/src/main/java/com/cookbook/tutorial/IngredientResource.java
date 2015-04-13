@@ -28,7 +28,7 @@ public class IngredientResource {
 				pageSize = 0;
 			}
 			return Response.status(200).entity(DAOCookBookServiceFactory.getInstance().searchWithQuery(query,page,pageSize)).build();
-		} catch (NoSuchEntityException e) {
+		} catch (InvalidRequestException e) {
             return Response.status(404).entity(new ErrorResponse("not_found", "No such entity")).build();
 		} catch (Exception ex){
             return Response.status(500).entity("Unexpected error." + ex.getMessage()).build();

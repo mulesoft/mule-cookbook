@@ -8,7 +8,7 @@ import javax.xml.ws.WebFault;
 /**
  * Created by Mulesoft.
  */
-@WebFault(name = "InvalidToken", faultBean = "com.cookbook.tutorial.service.FaultBean")
+@WebFault(name = "InvalidRequest", faultBean = "com.cookbook.tutorial.service.FaultBean")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class InvalidRequestException extends RuntimeException {

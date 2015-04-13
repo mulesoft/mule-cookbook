@@ -64,7 +64,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
     }
 
     @Override
-    public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws NoSuchEntityException,
+    public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws InvalidRequestException,
             SessionExpiredException {
         SearchWithQuery request = factory.createSearchWithQuery();
         request.setPage(page);

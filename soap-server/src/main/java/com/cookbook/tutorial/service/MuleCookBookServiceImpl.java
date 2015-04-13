@@ -100,7 +100,7 @@ public class MuleCookBookServiceImpl implements IMuleCookBookService {
     public SearchWithQueryResponse searchWithQuery(
             @WebParam(partName = "parameters", name = "searchWithQuery", targetNamespace = "http://service.tutorial.cookbook.com/") SearchWithQuery parameters,
             @WebParam(partName = "token", name = "token", targetNamespace = "http://service.tutorial.cookbook.com/", header = true) String token)
-            throws InvalidTokenException, SessionExpiredException, NoSuchEntityException {
+            throws InvalidTokenException, SessionExpiredException, InvalidRequestException {
         verifyToken(token);
         checkExpiredSessionCondition();
         SearchWithQueryResponse response = ObjectFactorySingleton.getInstance().createSearchWithQueryResponse();

@@ -45,7 +45,7 @@ public class CRUDTest {
     @Test(expected = NoSuchEntityException.class)
     public void testGetWithWrongId() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
         Get get=new Get();
-        get.setId(5);
+        get.setId(85);
         server.get(get,token);
     }
 
@@ -67,7 +67,7 @@ public class CRUDTest {
         String name = "SSSDDDSSSDD";
         Ingredient ing = new Ingredient();
         ing.setName(name);
-        ing.setId(5);
+        ing.setId(85);
         Update update = new Update();
         update.setEntity(ing);
         server.update(update,token);
@@ -86,7 +86,7 @@ public class CRUDTest {
     @Test(expected = NoSuchEntityException.class)
     public void testDeleteNoneExisting() throws SessionExpiredException, InvalidEntityException, NoSuchEntityException, InvalidTokenException {
         Delete delete = new Delete();
-        delete.setId(5);
+        delete.setId(85);
         server.delete(delete,token);
     }
 

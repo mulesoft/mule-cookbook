@@ -24,7 +24,7 @@ public interface IDAOCookBookService {
         void deleteList(List<Integer> entityIds) throws NoSuchEntityException;
 
         List<CookBookEntity> searchWithQuery(String query,Integer page, Integer pageSize)
-                throws NoSuchEntityException;
+                throws InvalidRequestException;
 
         List<Recipe> getRecentlyAdded();
 

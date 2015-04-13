@@ -69,7 +69,7 @@ public interface IMuleCookBookService {
     @WSDLDocumentation("Searchs a list of ingredient or recipe matching a specific criteria.")
     List<CookBookEntity> searchWithQuery(@WebParam(name = "query") String query, @WebParam(name = "page") Integer page, @WebParam(name = "pageSize") Integer pageSize,
             @WebParam(name = "token",header = true) String token)
-            throws NoSuchEntityException, SessionExpiredException, InvalidTokenException;
+            throws SessionExpiredException, InvalidTokenException, InvalidRequestException;
 
     @WSDLDocumentation("Retrieves a list of the recently added recipies.")
     List<Recipe> getRecentlyAdded();

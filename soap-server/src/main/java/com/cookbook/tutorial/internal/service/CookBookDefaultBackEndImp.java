@@ -138,15 +138,19 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
 
     @Override
     public List<CookBookEntity> searchWithQuery(@WebParam(name = "query", targetNamespace = "") String query, @WebParam(name = "page", targetNamespace = "") Integer page,
-            @WebParam(name = "pageSize", targetNamespace = "") Integer pageSize) throws NoSuchEntityException {
+            @WebParam(name = "pageSize", targetNamespace = "") Integer pageSize) throws InvalidRequestException {
 
         DsqlParser parser = Parboiled.createParser(DsqlParser.class);
         ParsingResult<?> result = new ReportingParseRunner(parser.Statement()).run(query);
         if (result.hasErrors()) {
-            throw new NoSuchEntityException(result.parseErrors.get(0).getErrorMessage());
+            throw new InvalidRequestException(result.parseErrors.get(0).getErrorMessage());
         }
         List<CookBookEntity> searchResult = new ArrayList<>();
         CookBookQuery cookBookQuery = Dsql.newInstance(query);
+        if(pageSize==null){
+            throw new InvalidRequestException("Need to specify a page size");
+        }
+        Integer currentCount = 0;
         if (cookBookQuery.getEntity().equals(Constants.INGREDIENT)) {
             for (CookBookEntity entity : entities.values()) {
                 if (entity instanceof Ingredient) {
