@@ -5,8 +5,10 @@ import com.cookbook.tutorial.internal.dsql.CookBookQuery;
 import com.cookbook.tutorial.internal.dsql.Dsql;
 import com.cookbook.tutorial.internal.dsql.DsqlParser;
 import com.cookbook.tutorial.service.*;
-import org.apache.cxf.common.util.StringUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.parboiled.Parboiled;
+import org.parboiled.common.FileUtils;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
 import org.springframework.util.CollectionUtils;
@@ -14,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 import javax.jws.WebParam;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -32,29 +35,23 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
     private void initialize() {
 
         try {
-            Ingredient ingredient = ObjectFactorySingleton.getInstance().createIngredient();
-            ingredient.setName("Apple");
-            ingredient.setUnit(UnitType.UNIT);
-            GregorianCalendar c = new GregorianCalendar();
-            c.setTime(new Date());
-            ingredient.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
-            this.create(ingredient);
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Recipe>>() {
 
-            Recipe recipe = ObjectFactorySingleton.getInstance().createRecipe();
-            recipe.setName("Baked Apples");
-            recipe.setCookTime(20.0);
-            recipe.setPrepTime(30.0);
-            List<String> directions = new ArrayList<>();
-            directions.add("Cut the Apples");
-            directions.add("Put them in the oven");
-            directions.add("Remove from the oven after 20.0 minutes");
-            recipe.setDirections(directions);
-            List<Ingredient> ingredients = new ArrayList<>();
-            ingredients.add(ingredient);
-            recipe.setIngredients(ingredients);
-            recipe.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
-            this.create(recipe);
-
+            }.getType();
+            List<Recipe> recipes = gson.fromJson(FileUtils.readAllText(this.getClass().getClassLoader().getResourceAsStream("recipes.json")), listType);
+            for(Recipe recipe : recipes){
+                for(Ingredient ing:recipe.getIngredients()){
+                    GregorianCalendar c = new GregorianCalendar();
+                    c.setTime(new Date());
+                    ing.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
+                    this.create(ing);
+                }
+                GregorianCalendar c = new GregorianCalendar();
+                c.setTime(new Date());
+                recipe.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(c));
+                this.create(recipe);
+            }
         } catch (InvalidEntityException e) {
             e.printStackTrace();
         } catch (DatatypeConfigurationException e) {

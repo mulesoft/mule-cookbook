@@ -214,6 +214,7 @@
       <xs:enumeration value="GRAMS"/>
       <xs:enumeration value="KILOGRAMS"/>
       <xs:enumeration value="LITERS"/>
+      <xs:enumeration value="MILLIGRAMS"/>
       <xs:enumeration value="MILLILITERS"/>
       <xs:enumeration value="POUNDS"/>
       <xs:enumeration value="SPOONS"/>

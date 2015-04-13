@@ -8,6 +8,7 @@ public enum UnitType {
     GRAMS,
     KILOGRAMS,
     LITERS,
+    MILLIGRAMS,
     MILLILITERS,
     POUNDS,
     SPOONS,

@@ -1,0 +1,152 @@
+[
+  {
+    "name": "Simple Chili",
+    "directions": [
+      "Cook beef, onion and garlic in 3 qt saucepan until beef is brown.",
+      "Stir in remaining ingredients except beans.",
+      "Heat to boiling, reduce heat to low.",
+      "Cover and simmer 1 hour, stirring occasionally.",
+      "Stir in beans.",
+      "Heat to boiling, reduce heat to low.",
+      "Simmer uncovered about 10 minutes, stirring occasionally, until desired thickness.",
+      "To freeze for OAMC: Let chili cool to room temperature and then place into quart-size freezer bag. Remove air and freeze flat on a cookie sheet. Once frozen, can be stored in freezer standing up or stacked horizontally.",
+      "To serve, thaw in fridge overnight and then transfer to a pot and reheat over medium low heat until heated through."
+    ],
+    "ingredients": [
+      {
+        "quantity": 453.59,
+        "unit": "GRAMS",
+        "name": "Extra Lean Ground Beef"
+      },
+      {
+        "quantity": 118.0,
+        "unit": "MILLIGRAMS",
+        "name": "Onion"
+      },
+      {
+        "quantity": 1.0,
+        "unit": "UNIT",
+        "name": "Garlic Clove"
+      },
+      {
+        "quantity": 411.0,
+        "unit": "MILLIGRAMS",
+        "name": "Tomato"
+      },
+      {
+        "quantity": 226.0,
+        "unit": "GRAMS",
+        "name": "Tomato Sauce"
+      },
+      {
+        "quantity": 14.79,
+        "unit": "MILLIGRAMS",
+        "name": "Chili powder"
+      },
+      {
+        "quantity": 3.69,
+        "unit": "MILLIGRAMS",
+        "name": "Ground Cumin"
+      },
+      {
+        "quantity": 1.23,
+        "unit": "MILLIGRAMS",
+        "name": "Salt"
+      },
+      {
+        "quantity": 1.23,
+        "unit": "MILLIGRAMS",
+        "name": "Pepper"
+      },
+      {
+        "quantity": 425.0,
+        "unit": "GRAMS",
+        "name": "Kidney Beans"
+      }
+    ],
+    "cookTime": 70.0,
+    "prepTime": 10.0
+  },
+  {
+    "name": "Brownies",
+    "directions": [
+      "The first 3 ingredients cook over a stove on medium heat, till margarine melts.",
+      "Remove from heat, add the eggs and vanilla.",
+      "Then add the remaining ingredients.",
+      "Stir in the walnuts.",
+      "Put in a greased 8 inch squared pan, bake at 350 for 25 minutes.",
+      "I make a double batch.",
+      "Cocoa Glaze: Combine icing sugar, and cocoa powder.",
+      "Beat in margarine, add 1-2 tbsps of boiling water to make a smooth glaze."
+    ],
+    "ingredients": [
+      {
+        "quantity": 236.59,
+        "unit": "MILLIGRAMS",
+        "name": "Sugar"
+      },
+      {
+        "quantity": 118.0,
+        "unit": "MILLIGRAMS",
+        "name": "Margarine"
+      },
+      {
+        "quantity": 2.0,
+        "unit": "UNIT",
+        "name": "Egg"
+      },
+      {
+        "quantity": 78.0,
+        "unit": "MILLIGRAMS",
+        "name": "Unsweetened cocoa powder"
+      },
+      {
+        "quantity": 5.0,
+        "unit": "MILLIGRAMS",
+        "name": "Vanilla"
+      },
+      {
+        "quantity": 158.51,
+        "unit": "MILLIGRAMS",
+        "name": "Flour"
+      },
+      {
+        "quantity": 2.69,
+        "unit": "MILLIGRAMS",
+        "name": "Baking Powder"
+      },
+      {
+        "quantity": 1.23,
+        "unit": "MILLIGRAMS",
+        "name": "Salt"
+      },
+      {
+        "quantity": 118.23,
+        "unit": "MILLIGRAMS",
+        "name": "Chopped Walnuts"
+      },
+      {
+        "quantity": 236.0,
+        "unit": "MILLIGRAMS",
+        "name": "Icing Sugar"
+      },
+      {
+        "quantity": 30.0,
+        "unit": "MILLIGRAMS",
+        "name": "Cocoa Powder"
+      },
+      {
+        "quantity": 30.0,
+        "unit": "MILLIGRAMS",
+        "name": "Margarine"
+      },
+      {
+        "quantity": 1.23,
+        "unit": "MILLIGRAMS",
+        "name": "Vanilla"
+      }
+    ],
+    "cookTime": 25.0,
+    "prepTime": 15.0
+  }
+]
