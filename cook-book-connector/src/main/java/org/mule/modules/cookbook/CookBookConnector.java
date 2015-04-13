@@ -10,10 +10,13 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.mule.api.MuleException;
 import org.mule.api.annotations.ConnectionStrategy;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.MetaDataScope;
+import org.mule.api.annotations.Paged;
 import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.Query;
 import org.mule.api.annotations.ReconnectOn;
 import org.mule.api.annotations.Source;
 import org.mule.api.annotations.Transformer;
@@ -26,6 +29,8 @@ import org.mule.api.callback.SourceCallback;
 import org.mule.modules.cookbook.datasense.DataSenseResolver;
 import org.mule.modules.cookbook.handler.CookBookHandler;
 import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
+import org.mule.streaming.PagingConfiguration;
+import org.mule.streaming.ProviderAwarePagingDelegate;
 
 import com.cookbook.tutorial.client.ICookbookCallback;
 import com.cookbook.tutorial.client.MuleCookBookClient;
@@ -215,6 +220,51 @@ public class CookBookConnector {
 		client.delete(id);
 	}
 
+	
+	/**
+	 * Description for queryPaginated
+	 *
+	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample cook-book:query-paginated}
+	 *
+	 *	@param query The query
+	 *	@param pagingConfiguration the paging configuration
+	 *	@return return comment
+	 */
+	@Processor
+	@Paged
+	public ProviderAwarePagingDelegate<Map<String, Object>, CookBookConnector> queryPaginated(
+			final String query, final PagingConfiguration pagingConfiguration) {
+		return new ProviderAwarePagingDelegate<Map<String, Object>, CookBookConnector>() {
+			private Integer currentPage = 0;
+			ObjectMapper m = new ObjectMapper();
+
+			@Override
+			public void close() throws MuleException {
+
+			}
+
+			@Override
+			public List<Map<String, Object>> getPage(CookBookConnector connector)
+					throws Exception {
+
+				List<CookBookEntity> list = connector.getClient()
+						.searchWithQuery(query, ++currentPage,
+								pagingConfiguration.getFetchSize());
+				List<Map<String, Object>> result = m.convertValue(list,
+						new TypeReference<List<Map<String, Object>>>() {
+						});
+				return result;
+			}
+
+			@Override
+			public int getTotalResults(CookBookConnector connector)
+					throws Exception {
+				return 0;
+			}
+
+		};
+	}
+	
 	@Transformer(sourceTypes = { List.class })
 	public static List<Map<String, Object>> recipesToMaps(
 			List<Recipe> list) {

@@ -17,7 +17,7 @@ import com.cookbook.tutorial.service.InvalidEntityException;
 import com.cookbook.tutorial.service.Recipe;
 import com.cookbook.tutorial.service.SessionExpiredException;
 
-public class TestDriver {
+public class CookbookTestDriver {
 
 	CookBookConnector connector;
 	@Before
