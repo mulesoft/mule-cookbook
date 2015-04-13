@@ -151,17 +151,36 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
             throw new InvalidRequestException("Need to specify a page size");
         }
         Integer currentCount = 0;
+        Integer skipCount = 0;
+        Integer addedCount = 0;
+        if(page!=null){
+            skipCount=page*pageSize;
+        }
         if (cookBookQuery.getEntity().equals(Constants.INGREDIENT)) {
             for (CookBookEntity entity : entities.values()) {
                 if (entity instanceof Ingredient) {
-                    searchResult.add(entity);
+                    currentCount++;
+                    if(currentCount>skipCount) {
+                        addedCount++;
+                        searchResult.add(entity);
+                        if (pageSize.equals(addedCount)) {
+                            break;
+                        }
+                    }
                 }
             }
             return searchResult;
         } else if (cookBookQuery.getEntity().equals(Constants.RECIPE)) {
             for (CookBookEntity entity : entities.values()) {
                 if (entity instanceof Recipe) {
-                    searchResult.add(entity);
+                    currentCount++;
+                    if(currentCount>skipCount) {
+                        addedCount++;
+                        searchResult.add(entity);
+                        if (pageSize.equals(addedCount)) {
+                            break;
+                        }
+                    }
                 }
             }
             return searchResult;
