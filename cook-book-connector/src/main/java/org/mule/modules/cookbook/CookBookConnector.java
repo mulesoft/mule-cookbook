@@ -28,6 +28,7 @@ import org.mule.api.annotations.param.RefOnly;
 import org.mule.api.callback.SourceCallback;
 import org.mule.modules.cookbook.datasense.DataSenseResolver;
 import org.mule.modules.cookbook.handler.CookBookHandler;
+import org.mule.modules.cookbook.pagination.CookbookPagingDelegate;
 import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
 import org.mule.streaming.PagingConfiguration;
 import org.mule.streaming.ProviderAwarePagingDelegate;
@@ -231,40 +232,14 @@ public class CookBookConnector {
 	 *	@return return comment
 	 */
 	@Processor
+	@ReconnectOn(exceptions = { SessionExpiredException.class })
 	@Paged
 	public ProviderAwarePagingDelegate<Map<String, Object>, CookBookConnector> queryPaginated(
-			final String query, final PagingConfiguration pagingConfiguration) {
-		return new ProviderAwarePagingDelegate<Map<String, Object>, CookBookConnector>() {
-			private Integer currentPage = 0;
-			ObjectMapper m = new ObjectMapper();
-
-			@Override
-			public void close() throws MuleException {
-
-			}
-
-			@Override
-			public List<Map<String, Object>> getPage(CookBookConnector connector)
-					throws Exception {
-
-				List<CookBookEntity> list = connector.getClient()
-						.searchWithQuery(query, ++currentPage,
-								pagingConfiguration.getFetchSize());
-				List<Map<String, Object>> result = m.convertValue(list,
-						new TypeReference<List<Map<String, Object>>>() {
-						});
-				return result;
-			}
-
-			@Override
-			public int getTotalResults(CookBookConnector connector)
-					throws Exception {
-				return 0;
-			}
-
-		};
+			final String query, final PagingConfiguration pagingConfiguration)
+			throws SessionExpiredException {
+		return new CookbookPagingDelegate(query, pagingConfiguration.getFetchSize());
 	}
-	
+
 	@Transformer(sourceTypes = { List.class })
 	public static List<Map<String, Object>> recipesToMaps(
 			List<Recipe> list) {
