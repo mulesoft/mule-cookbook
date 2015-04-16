@@ -13,7 +13,7 @@ public class IngredientResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response get(@HeaderParam("access_token") String token,@QueryParam("query") String query, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
+	public Response get(@QueryParam("access_token") String token,@QueryParam("query") String query, @QueryParam("page") Integer page, @QueryParam("pageSize") Integer pageSize) {
 		if(!Constants.DEFAULT_TOKEN.equals(token)){
 			return Response.status(401).entity(new ErrorResponse("invalid_client","Invalid Token")).build();
 		}

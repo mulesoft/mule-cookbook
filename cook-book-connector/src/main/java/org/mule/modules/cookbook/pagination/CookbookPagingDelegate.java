@@ -32,6 +32,15 @@ public class CookbookPagingDelegate extends
 
 	}
 
+    /**
+     * Returns the next page of items. If the return value is <code>null</code> or an
+     * empty list, then it means no more items are available
+     *
+     * @param connector The provider to be used to do the query. You can assume this provider is already properly initialised
+     * @return a populated list of elements. <code>null</code> or an empty list, then
+     * it means no more items are available
+     * @throws Exception
+     */
 	@Override
 	public List<Map<String, Object>> getPage(CookBookConnector connector)
 			throws Exception {
@@ -51,9 +60,16 @@ public class CookbookPagingDelegate extends
 		}
 	}
 
+    /**
+     * Returns the total amount of items in the non-paged result set. In some scenarios,
+     * it might not be possible/convenient to actually retrieve this value. -1 is
+     * returned in such a case.
+     *
+     * @param connector The provider to be used to do the query. You can assume this provider is already properly initialised
+     */
 	@Override
 	public int getTotalResults(CookBookConnector connector) throws Exception {
-		return 0;
+		return -1;
 	}
 
 }

@@ -10,17 +10,16 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.mule.api.MuleException;
 import org.mule.api.annotations.ConnectionStrategy;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.MetaDataScope;
 import org.mule.api.annotations.Paged;
 import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.Query;
 import org.mule.api.annotations.ReconnectOn;
 import org.mule.api.annotations.Source;
 import org.mule.api.annotations.Transformer;
 import org.mule.api.annotations.lifecycle.OnException;
+import org.mule.api.annotations.oauth.OAuthProtected;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.MetaDataKeyParam;
 import org.mule.api.annotations.param.MetaDataKeyParamAffectsType;
@@ -62,16 +61,17 @@ public class CookBookConnector {
 	 *
 	 * {@sample.xml ../../../doc/cook-book-connector.xml.sample
 	 * cook-book:getRecentlyAdded}
-	 * 
+	 *
 	 * @return List of recently added Ingredients.
 	 *
 	 */
+    @OAuthProtected
 	@Processor
 	public List<Recipe> getRecentlyAdded() {
 		return getClient().getRecentlyAdded();
 	}
 
-	
+
 	/**
 	 * Description for getRecentlyAddedSource
 	 *
@@ -83,24 +83,27 @@ public class CookBookConnector {
 	 * @throws Exception
 	 *             When the source fails.
 	 */
+    @OAuthProtected
 	@Source
 	public void getRecentlyAddedSource(final SourceCallback callback)
 			throws Exception {
 		while (true) {
-			// Every 5 seconds our callback will be executed
-			getClient().getRecentlyAdded(new ICookbookCallback() {
+			//Our client may not have being initialized yet.
+            if (getClient() != null) {
+                // Every 5 seconds our callback will be executed
+                getClient().getRecentlyAdded(new ICookbookCallback() {
 
-				@Override
-				public void execute(List<Recipe> recipes) throws Exception{
-						callback.process(recipes);
-					
-				}
-			});
+                    @Override
+                    public void execute(List<Recipe> recipes) throws Exception {
+                        callback.process(recipes);
+                    }
+                });
 
-			if (Thread.interrupted()) {
-				throw new InterruptedException();
-			}
-			// This value can be configurable also
+                if (Thread.interrupted()) {
+                    throw new InterruptedException();
+                }
+            }
+            // This value can be configurable also
 			Thread.sleep(10000);
 		}
 	}
@@ -114,13 +117,14 @@ public class CookBookConnector {
 	 * @param entity
 	 *            Ingredient to be created
 	 * @return return Ingredient with Id from the system.
-	 * 
+	 *
 	 * @throws InvalidTokenException
 	 * @throws SessionExpiredException
 	 * @throws InvalidEntityException
 	 */
 	@SuppressWarnings("unchecked")
 	@Processor
+    @OAuthProtected
 	@OnException(handler = CookBookHandler.class)
 	@ReconnectOn(exceptions = { SessionExpiredException.class })
 	public Map<String, Object> create(
@@ -149,13 +153,14 @@ public class CookBookConnector {
 	 * @param entity
 	 *            Ingredient to be updated
 	 * @return return Ingredient with Id from the system.
-	 * 
+	 *
 	 * @throws SessionExpiredException
 	 * @throws InvalidEntityException
 	 * @throws NoSuchEntityException
 	 */
 	@SuppressWarnings("unchecked")
 	@Processor
+	@OAuthProtected
 	@OnException(handler = CookBookHandler.class)
 	@ReconnectOn(exceptions = { SessionExpiredException.class })
 	public Map<String, Object> update(
@@ -184,13 +189,14 @@ public class CookBookConnector {
 	 * @param id
 	 *            Id of the entity to retrieve
 	 * @return return Ingredient with Id from the system.
-	 * 
+	 *
 	 * @throws SessionExpiredException
 	 * @throws InvalidEntityException
 	 * @throws NoSuchEntityException
 	 */
 	@SuppressWarnings("unchecked")
 	@Processor
+	@OAuthProtected
 	@OnException(handler = CookBookHandler.class)
 	@ReconnectOn(exceptions = { SessionExpiredException.class })
 	public Map<String, Object> get(
@@ -209,11 +215,12 @@ public class CookBookConnector {
 	 * @param id
 	 *            Id of the entity to retrieve
 	 * @return return Ingredient with Id from the system.
-	 * 
+	 *
 	 * @throws SessionExpiredException
 	 * @throws NoSuchEntityException
 	 */
 	@Processor
+    @OAuthProtected
 	@OnException(handler = CookBookHandler.class)
 	@ReconnectOn(exceptions = { SessionExpiredException.class })
 	public void delete(@Default("1") Integer id) throws NoSuchEntityException,
@@ -221,7 +228,7 @@ public class CookBookConnector {
 		client.delete(id);
 	}
 
-	
+
 	/**
 	 * Description for queryPaginated
 	 *
@@ -231,6 +238,7 @@ public class CookBookConnector {
 	 *	@param pagingConfiguration the paging configuration
 	 *	@return return comment
 	 */
+    @OAuthProtected
 	@Processor
 	@ReconnectOn(exceptions = { SessionExpiredException.class })
 	@Paged
@@ -246,6 +254,16 @@ public class CookBookConnector {
 		ObjectMapper mapper = new ObjectMapper();
 		List<Map<String, Object>> result = mapper.convertValue(list,
 				new TypeReference<List<Map<String, Object>>>() {
+				});
+		return result;
+	}
+
+	@Transformer(sourceTypes = { Recipe.class })
+	public static Map<String, Object> recipeToMap(
+			Recipe recipe) {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> result = mapper.convertValue(recipe,
+				new TypeReference<Map<String, Object>>() {
 				});
 		return result;
 	}

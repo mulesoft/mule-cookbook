@@ -17,6 +17,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
     private IMuleCookBookService port;
     private String token;
     ObjectFactory factory;
+
     public MuleCookBookClient() {
 
         IMuleCookBookServiceService ss = new IMuleCookBookServiceService();
@@ -34,6 +35,11 @@ public class MuleCookBookClient implements IMuleCookBookClient {
     }
 
     @Override
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
     public void login(String username, String password) throws InvalidCredentialsException {
         token = port.login(username, password);
     }
@@ -45,7 +51,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
 
     @Override
     public void getRecentlyAdded(ICookbookCallback callback) throws Exception {
-        while(!Thread.interrupted()){
+        while (!Thread.interrupted()) {
             callback.execute(port.getRecentlyAdded());
             Thread.sleep(10000);
         }
@@ -170,9 +176,9 @@ public class MuleCookBookClient implements IMuleCookBookClient {
     }
 
     @Override
-    public List<CookBookEntity> getEntities() throws SessionExpiredException{
+    public List<CookBookEntity> getEntities() throws SessionExpiredException {
         try {
-            return port.getEntitiesList(factory.createGetEntitiesList(),token).getReturn();
+            return port.getEntitiesList(factory.createGetEntitiesList(), token).getReturn();
         } catch (InvalidTokenException e) {
             logger.warn("Should never happen.", e);
             throw new RuntimeException(e);
@@ -181,8 +187,8 @@ public class MuleCookBookClient implements IMuleCookBookClient {
 
     @Override
     public Description describeEntity(CookBookEntity cookBookEntity) throws InvalidTokenException, InvalidEntityException, NoSuchEntityException, SessionExpiredException {
-        DescribeEntity parameters= factory.createDescribeEntity();
+        DescribeEntity parameters = factory.createDescribeEntity();
         parameters.setEntity(cookBookEntity);
-        return port.describeEntity(parameters,token).getReturn();
+        return port.describeEntity(parameters, token).getReturn();
     }
 }

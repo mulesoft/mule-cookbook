@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface IMuleCookBookClient {
 
+    public void setToken(String token);
+
     public void login(String username,String password) throws InvalidCredentialsException;
 
     public List<Recipe> getRecentlyAdded();

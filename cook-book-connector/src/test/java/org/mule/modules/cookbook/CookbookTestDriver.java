@@ -11,6 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.api.ConnectionException;
+import org.mule.modules.cookbook.strategy.ConnectionManagementStrategy;
 import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
 
 import com.cookbook.tutorial.service.InvalidEntityException;
@@ -23,7 +24,7 @@ public class CookbookTestDriver {
 	@Before
 	public void init() throws ConnectionException{
 		connector = new CookBookConnector();
-		ConnectorConnectionStrategy connectionStrategy = new ConnectorConnectionStrategy();
+        ConnectionManagementStrategy connectionStrategy = new ConnectionManagementStrategy();
 		connectionStrategy.setEndpoint("http://localhost:8081/soap");
 		connector.setConnectionStrategy(connectionStrategy );
 		connectionStrategy.connect("admin", "admin");
