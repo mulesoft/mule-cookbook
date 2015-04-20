@@ -1,0 +1,16 @@
+*.class
+
+# IDEA IDE
+.idea
+*.iml
+
+# Project folders #
+cook-book-connector/
+model/
+mule-cookbook-parent/
+mule-cookbook-server/
+rest-server/
+sdk-client/
+soap-server/
+tutorial/
+webservice/
