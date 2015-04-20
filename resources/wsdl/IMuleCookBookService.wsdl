@@ -214,6 +214,7 @@
       <xs:enumeration value="GRAMS"/>
       <xs:enumeration value="KILOGRAMS"/>
       <xs:enumeration value="LITERS"/>
+      <xs:enumeration value="MILLIGRAMS"/>
       <xs:enumeration value="MILLILITERS"/>
       <xs:enumeration value="POUNDS"/>
       <xs:enumeration value="SPOONS"/>
@@ -236,6 +237,7 @@
   <xs:element name="InvalidEntity" nillable="true" type="tns:faultBean"/>
   <xs:element name="NoSuchEntity" nillable="true" type="tns:faultBean"/>
   <xs:element name="InvalidCredentials" nillable="true" type="tns:faultBean"/>
+  <xs:element name="InvalidRequest" nillable="true" type="tns:faultBean"/>
   <xs:element name="token" nillable="true" type="xs:string"/>
 </xs:schema>
   </wsdl:types>
@@ -319,6 +321,10 @@
   </wsdl:message>
   <wsdl:message name="searchWithQueryResponse">
     <wsdl:part name="parameters" element="tns:searchWithQueryResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="InvalidRequestException">
+    <wsdl:part name="InvalidRequestException" element="tns:InvalidRequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="update">
@@ -478,9 +484,9 @@
     </wsdl:output>
       <wsdl:fault name="InvalidTokenException" message="tns:InvalidTokenException">
     </wsdl:fault>
-      <wsdl:fault name="NoSuchEntityException" message="tns:NoSuchEntityException">
-    </wsdl:fault>
       <wsdl:fault name="SessionExpiredException" message="tns:SessionExpiredException">
+    </wsdl:fault>
+      <wsdl:fault name="InvalidRequestException" message="tns:InvalidRequestException">
     </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="update">
@@ -697,11 +703,11 @@
       <wsdl:fault name="InvalidTokenException">
         <soap:fault name="InvalidTokenException" use="literal"/>
       </wsdl:fault>
-      <wsdl:fault name="NoSuchEntityException">
-        <soap:fault name="NoSuchEntityException" use="literal"/>
-      </wsdl:fault>
       <wsdl:fault name="SessionExpiredException">
         <soap:fault name="SessionExpiredException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRequestException">
+        <soap:fault name="InvalidRequestException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="update">

@@ -26,8 +26,8 @@ import com.cookbook.tutorial.service.InvalidCredentialsException;
  *
  * @author MuleSoft, Inc.
  */
-@ConnectionManagement(configElementName = "config-type", friendlyName = "Connection Managament type strategy")
-public class ConnectorConnectionStrategy {
+
+public abstract class ConnectorConnectionStrategy {
 
 	private MuleCookBookClient client;
 
@@ -37,53 +37,6 @@ public class ConnectorConnectionStrategy {
 	@Configurable
 	@Default("http://localhost:9090/cook-book")
 	private String endpoint;
-
-	/**
-	 * Connect
-	 *
-	 * @param username
-	 *            A username
-	 * @param password
-	 *            A password
-	 * @throws ConnectionException
-	 */
-	@Connect
-	@TestConnectivity
-	public void connect(@ConnectionKey String username,
-			@Password String password) throws ConnectionException {
-		setClient(new MuleCookBookClient(getEndpoint()));
-		try {
-			getClient().login(username, password);
-		} catch (InvalidCredentialsException e) {
-			throw new ConnectionException(
-					ConnectionExceptionCode.INCORRECT_CREDENTIALS, e.getMessage(),
-					"Invalid credentials");
-		}
-	}
-
-	/**
-	 * Disconnect
-	 */
-	@Disconnect
-	public void disconnect() {
-		setClient(null);
-	}
-
-	/**
-	 * Are we connected
-	 */
-	@ValidateConnection
-	public boolean isConnected() {
-		return getClient() != null;
-	}
-
-	/**
-	 * Id used only when debuging.
-	 */
-	@ConnectionIdentifier
-	public String connectionId() {
-		return "001";
-	}
 
 	/**
 	 * Get endpoint

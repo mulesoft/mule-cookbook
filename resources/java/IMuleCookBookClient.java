@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface IMuleCookBookClient {
 
+    public void setToken(String token);
+
     public void login(String username,String password) throws InvalidCredentialsException;
 
     public List<Recipe> getRecentlyAdded();
@@ -17,7 +19,7 @@ public interface IMuleCookBookClient {
 
     public CookBookEntity get(int id) throws NoSuchEntityException, SessionExpiredException;
 
-    public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws NoSuchEntityException,
+    public List<CookBookEntity> searchWithQuery(String query, Integer page, Integer pageSize) throws InvalidRequestException,
             SessionExpiredException;
 
     public CookBookEntity update(CookBookEntity entity) throws NoSuchEntityException,
