@@ -25,6 +25,10 @@ public class MuleCookBookClient implements IMuleCookBookClient {
         port = ss.getIMuleCookBookServicePort();
     }
 
+    @Override public String toString() {
+        return super.toString();
+    }
+
     public MuleCookBookClient(String address) {
         JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
         factory.setServiceClass(IMuleCookBookService.class);
@@ -51,10 +55,7 @@ public class MuleCookBookClient implements IMuleCookBookClient {
 
     @Override
     public void getRecentlyAdded(ICookbookCallback callback) throws Exception {
-        while (!Thread.interrupted()) {
-            callback.execute(port.getRecentlyAdded());
-            Thread.sleep(10000);
-        }
+        callback.execute(port.getRecentlyAdded());
     }
 
     @Override

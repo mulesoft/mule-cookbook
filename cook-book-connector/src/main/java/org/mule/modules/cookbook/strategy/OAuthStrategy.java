@@ -10,7 +10,7 @@ import org.mule.api.annotations.oauth.*;
 @OAuth2(friendlyName = "OAuth2 Strategy",
         authorizationUrl = "http://localhost:9091/oauth/authorize",
         accessTokenUrl = "http://localhost:9091/oauth/accessToken")
-public class OAuthStrategy extends ConnectorConnectionStrategy{
+public class OAuthStrategy extends ConnectorConfig {
 
     @OAuthAccessToken
     private String accessToken;

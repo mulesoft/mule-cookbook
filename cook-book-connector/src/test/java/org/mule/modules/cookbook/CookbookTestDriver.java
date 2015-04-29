@@ -7,15 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.api.ConnectionException;
 import org.mule.modules.cookbook.strategy.ConnectionManagementStrategy;
-import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
 
 import com.cookbook.tutorial.service.InvalidEntityException;
-import com.cookbook.tutorial.service.Recipe;
 import com.cookbook.tutorial.service.SessionExpiredException;
 
 public class CookbookTestDriver {

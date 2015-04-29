@@ -13,7 +13,7 @@ import org.mule.api.annotations.param.ConnectionKey;
  * Created by Mulesoft.
  */
 @ConnectionManagement(configElementName = "config-type", friendlyName = "Connection Managament type strategy")
-public class ConnectionManagementStrategy extends ConnectorConnectionStrategy{
+public class ConnectionManagementStrategy extends ConnectorConfig {
 
     /**
      * Connect

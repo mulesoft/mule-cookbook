@@ -10,14 +10,7 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.mule.api.annotations.ConnectionStrategy;
-import org.mule.api.annotations.Connector;
-import org.mule.api.annotations.MetaDataScope;
-import org.mule.api.annotations.Paged;
-import org.mule.api.annotations.Processor;
-import org.mule.api.annotations.ReconnectOn;
-import org.mule.api.annotations.Source;
-import org.mule.api.annotations.Transformer;
+import org.mule.api.annotations.*;
 import org.mule.api.annotations.lifecycle.OnException;
 import org.mule.api.annotations.oauth.OAuthProtected;
 import org.mule.api.annotations.param.Default;
@@ -28,7 +21,7 @@ import org.mule.api.callback.SourceCallback;
 import org.mule.modules.cookbook.datasense.DataSenseResolver;
 import org.mule.modules.cookbook.handler.CookBookHandler;
 import org.mule.modules.cookbook.pagination.CookbookPagingDelegate;
-import org.mule.modules.cookbook.strategy.ConnectorConnectionStrategy;
+import org.mule.modules.cookbook.strategy.ConnectorConfig;
 import org.mule.streaming.PagingConfiguration;
 import org.mule.streaming.ProviderAwarePagingDelegate;
 
@@ -53,8 +46,8 @@ public class CookBookConnector {
 
 	private MuleCookBookClient client;
 
-	@ConnectionStrategy
-	ConnectorConnectionStrategy connectionStrategy;
+	@Config
+    ConnectorConfig connectionStrategy;
 
 	/**
 	 * Get a list of the most recently added Ingredients
@@ -84,28 +77,22 @@ public class CookBookConnector {
 	 *             When the source fails.
 	 */
     @OAuthProtected
-	@Source
+    @Source(sourceStrategy = SourceStrategy.POLLING, pollingPeriod = 10000)
 	public void getRecentlyAddedSource(final SourceCallback callback)
 			throws Exception {
-		while (true) {
-			//Our client may not have being initialized yet.
-            if (getClient() != null) {
-                // Every 5 seconds our callback will be executed
-                getClient().getRecentlyAdded(new ICookbookCallback() {
 
-                    @Override
-                    public void execute(List<Recipe> recipes) throws Exception {
-                        callback.process(recipes);
-                    }
-                });
+        if (getClient() != null) {
 
-                if (Thread.interrupted()) {
-                    throw new InterruptedException();
+            getClient().getRecentlyAdded(new ICookbookCallback() {
+
+                @Override
+                public void execute(List<Recipe> recipes) throws Exception {
+                    callback.process(recipes);
                 }
-            }
-            // This value can be configurable also
-			Thread.sleep(10000);
-		}
+            });
+
+        }
+
 	}
 
 	/**
@@ -268,12 +255,12 @@ public class CookBookConnector {
 		return result;
 	}
 
-	public ConnectorConnectionStrategy getConnectionStrategy() {
+	public ConnectorConfig getConnectionStrategy() {
 		return connectionStrategy;
 	}
 
 	public void setConnectionStrategy(
-			ConnectorConnectionStrategy connectionStrategy) {
+			ConnectorConfig connectionStrategy) {
 		this.connectionStrategy = connectionStrategy;
 	}
 

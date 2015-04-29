@@ -5,29 +5,16 @@
 
 package org.mule.modules.cookbook.strategy;
 
-import org.mule.api.ConnectionException;
-import org.mule.api.ConnectionExceptionCode;
 import org.mule.api.annotations.Configurable;
-import org.mule.api.annotations.Connect;
-import org.mule.api.annotations.ConnectionIdentifier;
-import org.mule.api.annotations.Disconnect;
-import org.mule.api.annotations.TestConnectivity;
-import org.mule.api.annotations.ValidateConnection;
-import org.mule.api.annotations.components.ConnectionManagement;
-import org.mule.api.annotations.display.Password;
-import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 
 import com.cookbook.tutorial.client.MuleCookBookClient;
-import com.cookbook.tutorial.service.InvalidCredentialsException;
 
 /**
- * Configuration type Strategy
- *
- * @author MuleSoft, Inc.
+ * Base Configuration
  */
 
-public abstract class ConnectorConnectionStrategy {
+public abstract class ConnectorConfig {
 
 	private MuleCookBookClient client;
 
