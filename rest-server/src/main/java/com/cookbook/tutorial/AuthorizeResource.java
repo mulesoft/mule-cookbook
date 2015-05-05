@@ -50,6 +50,7 @@ public class AuthorizeResource {
                 return Response.status(401).entity(new ErrorResponse("access_denied", "Code, client_id and/or client_secret didn't match the expected value")).build();
             }
         }catch (Exception ex){
+            ex.printStackTrace();
             return Response.status(400).entity(new ErrorResponse("server_error", ex.getMessage())).build();
         }
     }

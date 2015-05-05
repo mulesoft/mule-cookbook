@@ -15,7 +15,7 @@
         <module>mule-cookbook-server</module>
         <module>sdk-client</module>
         <module>rest-server</module>
-        <module>cook-book-connector</module>
+        <module>cookbook-connector</module>
     </modules>
 
     <profiles>
