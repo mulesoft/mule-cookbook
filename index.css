@@ -1,0 +1,50 @@
+body {
+	background-color: #414042;
+ 	font-family: Ubuntu, sans-serif;
+  	font-size: 14px;
+  	line-height: 1.42857143;
+  	margin: 0;
+}
+
+.content h1 {
+	color: #e0e0e0;
+}
+
+a {
+	line-height: 1.5em;
+	font-size: 16px;
+	text-decoration: none;
+	color: white;
+}
+
+a:hover{
+	color:#1097E1;
+}
+
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url('fonts/SourceCodePro-Regular.eot?#iefix') format('embedded-opentype'), url('fonts/SourceCodePro-Regular.woff') format('woff'), url('../fonts/SourceCodePro-Regular.ttf') format('truetype'), url('fonts/SourceCodePro-Regular.svg#@{svgFontName') format('svg');
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'Ubuntu';
+  src: url('fonts/Ubuntu-Light-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/Ubuntu-Light-webfont.woff') format('woff'), url('../fonts/Ubuntu-Light-webfont.ttf') format('truetype'), url('fonts/Ubuntu-Light-webfont.svg#@{svgFontName') format('svg');
+  font-style: normal;
+  font-weight: 300;
+}
+
+.title{
+	color: rgb(16, 140, 221) !important;
+}
+
+.version {
+	color: white
+}
+
+.middle {
+    margin-top: 14%;
+    	text-align: center;
+    	vertical-align: center;
+}
