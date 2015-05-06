@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:cookbook="http://www.mulesoft.org/schema/mule/cookbook" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/cookbook http://www.mulesoft.org/schema/mule/cookbook/current/mule-cookbook.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <cookbook:config-type name="Cookbook__Configuration_type_config" doc:name="Cookbook: Configuration type config" password="admin" username="admin">
+        <reconnect/>
+    </cookbook:config-type>
+    <cookbook:oauth2-type name="Cookbook__OAuth2_Configuration" consumerKey="ePU9CxyEVFIXF9nMoGH16s1lUGe5JYPPzClnnVBG" consumerSecret="YeKAsQCdr264tNmDdvTdJUAh9TQraJqZpwbEoTuz" doc:name="Cookbook: OAuth2 Configuration">
+        <cookbook:oauth-callback-config domain="localhost" localPort="8082" remotePort="8082" path="callback"/>
+    </cookbook:oauth2-type>
+    <!-- Before using the get with OAuth you need to authorize the connector -->
+    <flow name="authorize-flow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/authorize" doc:name="HTTP"/>
+        <cookbook:authorize config-ref="Cookbook__OAuth2_Configuration" accessTokenUrl="http://localhost:9091/oauth/accessToken" authorizationUrl="http://localhost:9091/oauth/authorize" doc:name="Cookbook"/>
+    </flow>
+    <flow name="get-with-oauth">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/get-with-oauth" doc:name="HTTP"/>
+        <cookbook:get config-ref="Cookbook__OAuth2_Configuration" type="id1" doc:name="Cookbook"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+    </flow>
+    <flow name="get-recently-procesor">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/get-recently" doc:name="HTTP"/>
+        <cookbook:get-recently-added config-ref="Cookbook__Configuration_type_config" doc:name="get-recently-added"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+    </flow>
+    <flow name="get-by-id">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/get" doc:name="HTTP"/>
+        <cookbook:get config-ref="Cookbook__Configuration_type_config" type="id1" doc:name="get"/>
+        <json:object-to-json-transformer doc:name="Copy_of_Object to JSON"/>
+    </flow>
+    <flow name="source">
+        <cookbook:get-recently-added-source config-ref="Cookbook__Configuration_type_config" doc:name="Cookbook (Streaming)"/>
+        <logger message="#[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+    <sub-flow name="mule-datasense-unused">
+        <data-mapper:transform doc:name="DataMapper"/>
+        <cookbook:create config-ref="Cookbook__Configuration_type_config" type="com.cookbook.tutorial.service.Ingredient#0" doc:name="Cookbook"/>
+        <data-mapper:transform doc:name="DataMapper"/>
+    </sub-flow>
+</mule>

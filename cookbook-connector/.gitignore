@@ -1,0 +1,22 @@
+*.class
+*.classpath
+*.project
+*.factorypath
+*.settings
+# Package Files #
+*.jar
+*.war
+*.ear
+target
+.DS_Store
+*/build.log
+*.iml
+*.idea
+/target
+bin
+
+# Vim temp files
+**/.*.un~
+
+# Build logs
+**/build.log
