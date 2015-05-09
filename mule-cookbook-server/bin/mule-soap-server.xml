@@ -18,8 +18,8 @@ http://www.mulesoft.org/schema/mule/jersey http://www.mulesoft.org/schema/mule/j
     <flow name="mule-cookbook-rest-server">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/rest/*" doc:name="Rest Endpoint"/>
         <jersey:resources doc:name="Rest Server">
+            <component class="com.cookbook.tutorial.AuthorizeResource"/>
             <component class="com.cookbook.tutorial.IngredientResource"/>
-            <component class="com.cookbook.tutorial.MuleAuthorizeResource"/>
             <component class="com.cookbook.tutorial.RecipeResource"/>
         </jersey:resources>
     </flow>

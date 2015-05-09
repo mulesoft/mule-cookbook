@@ -1,7 +1,5 @@
 package com.cookbook.tutorial.internal.dsql;
 
-import com.cookbook.tutorial.service.Ingredient;
-
 /**
  * Created by Mulesoft.
  */
