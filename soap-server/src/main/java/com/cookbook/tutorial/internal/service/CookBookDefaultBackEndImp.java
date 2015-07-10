@@ -7,11 +7,11 @@ import com.cookbook.tutorial.internal.dsql.DsqlParser;
 import com.cookbook.tutorial.service.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.apache.cxf.common.util.CollectionUtils;
 import org.parboiled.Parboiled;
 import org.parboiled.common.FileUtils;
 import org.parboiled.parserunners.ReportingParseRunner;
 import org.parboiled.support.ParsingResult;
-import org.springframework.util.CollectionUtils;
 
 import javax.jws.WebParam;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -185,7 +185,7 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
             }
             return searchResult;
         }
-        return CollectionUtils.arrayToList(entities.values().toArray());
+        return Arrays.asList(entities.values().toArray(new CookBookEntity[entities.size()]));
 
     }
 
@@ -197,7 +197,7 @@ public class CookBookDefaultBackEndImp implements IDAOCookBookService {
                 recipies.add((Recipe) entity);
             }
         }
-        return CollectionUtils.arrayToList(recipies.toArray());
+        return Arrays.asList(recipies.toArray(new Recipe[recipies.size()]));
     }
 
     @Override public Description describeEntity(@WebParam(name = "entity", targetNamespace = "") CookBookEntity entity)

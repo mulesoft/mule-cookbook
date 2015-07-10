@@ -1,7 +1,6 @@
 package com.cookbook.tutorial.internal.dsql;
 
-import org.springframework.util.CollectionUtils;
-
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +33,7 @@ public class Dsql implements CookBookQuery{
 
     @Override
     public List<String> getFields() {
-        return CollectionUtils.arrayToList(matcher.group(1).split(","));
+        return Arrays.asList(matcher.group(1).split(","));
     }
 
     @Override
@@ -45,7 +44,7 @@ public class Dsql implements CookBookQuery{
     @Override
     public List<String> getCriteria() {
         if(matcher.groupCount()==4 && matcher.group(4)!=null) {
-            return CollectionUtils.arrayToList(matcher.group(4).split(","));
+            return Arrays.asList(matcher.group(4).split(","));
         }
         return Collections.EMPTY_LIST;
     }

@@ -11,7 +11,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>1.7</jdk.version>
-        <cxf.version>2.5.9</cxf.version>
+        <cxf.version>2.7.15</cxf.version>
     </properties>
 
     <scm>
