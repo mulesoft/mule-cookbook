@@ -114,7 +114,7 @@
         <dependency>
             <groupId>org.mule.modules</groupId>
             <artifactId>mule-module-http</artifactId>
-            <version>3.6.1</version>
+            <version>3.7.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
