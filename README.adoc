@@ -4,4 +4,4 @@ A basic web service that users can use to learn the features provided by the Dev
 
 This Project contains a model, and the client interfaces for developing SOAP,REST, and Java Client based Connectors.
 
-Also a basic server implementation is provided for the to test the connectors.
+Also a basic server implementation is provided for the to test the connectors. Documentation could be found in the following link http://mulesoft.github.io/mule-cookbook-tutorial/
