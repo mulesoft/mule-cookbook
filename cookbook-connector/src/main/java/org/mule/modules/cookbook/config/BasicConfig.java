@@ -20,12 +20,12 @@ import com.cookbook.tutorial.client.MuleCookBookClient;
 import com.cookbook.tutorial.service.InvalidCredentialsException;
 
 /**
- * Connection Management handles login/logout for the user as well as reconnections.
+ * Connection Management handles login/logout for the user as well as reconnection's.
  *
  * @author MuleSoft, Inc.
  */
-@ConnectionManagement(friendlyName = "Configuration config")
-public class ConnectionManagementConfig extends ConnectorConfig {
+@ConnectionManagement(friendlyName = "Basic Configuration")
+public class BasicConfig extends AbstractConfig {
 
     /**
      * Connect

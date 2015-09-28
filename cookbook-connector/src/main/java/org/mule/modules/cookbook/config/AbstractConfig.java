@@ -15,7 +15,7 @@ import com.cookbook.tutorial.client.MuleCookBookClient;
  *
  * @author MuleSoft, Inc.
  */
-public abstract class ConnectorConfig {
+public abstract class AbstractConfig {
 
     /**
      * Description for address
