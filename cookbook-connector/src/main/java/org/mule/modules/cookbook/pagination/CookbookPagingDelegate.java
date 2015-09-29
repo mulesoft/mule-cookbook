@@ -1,16 +1,20 @@
+/**
+ * (c) 2003-2015 MuleSoft, Inc. The software in this package is
+ * published under the terms of the CPAL v1.0 license, a copy of which
+ * has been included with this distribution in the LICENSE.md file.
+ */
 package org.mule.modules.cookbook.pagination;
-
-import java.util.List;
-import java.util.Map;
-
-import org.mule.api.MuleException;
-import org.mule.modules.cookbook.CookbookConnector;
-import org.mule.streaming.ProviderAwarePagingDelegate;
 
 import com.cookbook.tutorial.service.CookBookEntity;
 import com.cookbook.tutorial.service.SessionExpiredException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mule.api.MuleException;
+import org.mule.modules.cookbook.CookbookConnector;
+import org.mule.streaming.ProviderAwarePagingDelegate;
+
+import java.util.List;
+import java.util.Map;
 
 public class CookbookPagingDelegate extends ProviderAwarePagingDelegate<Map<String, Object>, CookbookConnector> {
 
@@ -26,7 +30,6 @@ public class CookbookPagingDelegate extends ProviderAwarePagingDelegate<Map<Stri
         this.pageSize = pageSize;
     }
 
-    @Override
     public void close() throws MuleException {
 
     }
@@ -65,7 +68,7 @@ public class CookbookPagingDelegate extends ProviderAwarePagingDelegate<Map<Stri
      * In some scenarios, it might not be possible/convenient to actually retrieve this value. -1 is
      * returned in such a case.
      *
-     * @param connector The provider to be used to do the query. You can assume this provider is already properly initialised
+     * @param provider The provider to be used to do the query. You can assume this provider is already properly initialised
      */
     @Override
     public int getTotalResults(CookbookConnector provider) throws Exception {

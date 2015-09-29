@@ -1,17 +1,17 @@
 /**
- * (c) 2003-2015 MuleSoft, Inc. This software is protected under international
- * copyright law. All use of this software is subject to MuleSoft's Master
- * Subscription Agreement (or other Terms of Service) separately entered
- * into between you and MuleSoft. If such an agreement is not in
- * place, you may not use the software.
+ * (c) 2003-2015 MuleSoft, Inc. The software in this package is
+ * published under the terms of the CPAL v1.0 license, a copy of which
+ * has been included with this distribution in the LICENSE.md file.
  */
-
 package org.mule.modules.cookbook.automation.functional;
 
+import org.mule.tools.devkit.ctf.exceptions.XMLUtilsException;
+import org.mule.tools.devkit.ctf.utils.XMLUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.xml.stream.XMLStreamReader;
 import java.util.Map;
 
 public class TestDataBuilder {
@@ -22,6 +22,11 @@ public class TestDataBuilder {
         Map<String, Object> testData = (Map<String, Object>) context.getBean(beanName);
         ((ConfigurableApplicationContext) context).close();
         return testData;
+    }
+
+    private static String getFileName(String operation) {
+        final String path = System.getProperty("user.dir") + "/src/test/resources/payloads.xml/IMuleCookBookService#" + operation.toLowerCase() + ".xml";
+        return path;
     }
 
     public static Map<String, Object> createTestData() {
@@ -48,4 +53,7 @@ public class TestDataBuilder {
         return getSpringBean("updateTestData");
     }
 
+    public static XMLStreamReader getXMLStreamReaderForGet() throws XMLUtilsException {
+        return XMLUtils.loadFile(getFileName("get"));
+    }
 }

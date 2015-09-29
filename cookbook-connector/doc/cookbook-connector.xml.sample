@@ -1,0 +1,21 @@
+<!-- BEGIN_INCLUDE(cookbook:create) -->
+    <cookbook:create config-ref="Cookbook" type="com.cookbook.tutorial.service.Recipe" entity-ref="#[payload]"/>
+<!-- END_INCLUDE(cookbook:create) -->
+<!-- BEGIN_INCLUDE(cookbook:get-recently-added) -->
+    <cookbook:get-recently-added config-ref="Cookbook"/>
+<!-- END_INCLUDE(cookbook:get-recently-added) -->
+<!-- BEGIN_INCLUDE(cookbook:get-recently-added-source) -->
+    <cookbook:get-recently-added-source config-ref="Cookbook"/>
+<!-- END_INCLUDE(cookbook:get-recently-added-source) -->
+<!-- BEGIN_INCLUDE(cookbook:update) -->
+    <cookbook:update config-ref="Cookbook" type="com.cookbook.tutorial.service.Recipe" entity-ref="#[payload]"/>
+<!-- END_INCLUDE(cookbook:update) -->
+<!-- BEGIN_INCLUDE(cookbook:get) -->
+    <cookbook:get config-ref="Cookbook" type="com.cookbook.tutorial.service.Recipe" id="100"/>
+<!-- END_INCLUDE(cookbook:get) -->
+<!-- BEGIN_INCLUDE(cookbook:delete) -->
+    <cookbook:delete config-ref="Cookbook" id="100"/>
+<!-- END_INCLUDE(cookbook:delete) -->
+<!-- BEGIN_INCLUDE(cookbook:query-paginated) -->
+    <cookbook:query-paginated config-ref="Cookbook" query="#[flowVars.query]" fetchSize="20"/>
+<!-- END_INCLUDE(cookbook:query-paginated) -->

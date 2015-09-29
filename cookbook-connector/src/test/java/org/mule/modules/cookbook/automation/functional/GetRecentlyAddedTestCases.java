@@ -1,3 +1,8 @@
+/**
+ * (c) 2003-2015 MuleSoft, Inc. The software in this package is
+ * published under the terms of the CPAL v1.0 license, a copy of which
+ * has been included with this distribution in the LICENSE.md file.
+ */
 package org.mule.modules.cookbook.automation.functional;
 
 import com.cookbook.tutorial.service.Recipe;
@@ -5,7 +10,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.modules.cookbook.CookbookConnector;
+import org.mule.tools.devkit.ctf.configuration.DeploymentProfiles;
 import org.mule.tools.devkit.ctf.junit.AbstractTestCase;
+import org.mule.tools.devkit.ctf.junit.RunOnlyOn;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +34,7 @@ public class GetRecentlyAddedTestCases extends AbstractTestCase<CookbookConnecto
     }
 
     @Test
+    @RunOnlyOn(profiles = DeploymentProfiles.embedded)
     public void testGetRecentlyAdded() {
         try {
             List<Recipe> recipes = getConnector().getRecentlyAdded();
