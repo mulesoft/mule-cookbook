@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mule.api.ConnectionException;
 import org.mule.api.ConnectionExceptionCode;
-import org.mule.modules.cookbook.config.BasicConfig;
+import org.mule.modules.cookbook.config.Config;
 import org.mule.tools.devkit.ctf.configuration.util.ConfigurationUtils;
 
 import java.util.Properties;
@@ -23,7 +23,7 @@ public class BasicConfigSystemTestCases {
     private String address;
     private String username;
     private String password;
-    private BasicConfig basicConfig;
+    private Config config;
 
     @Before
     public void setUp() throws Exception {
@@ -31,14 +31,14 @@ public class BasicConfigSystemTestCases {
         address = validCredentials.getProperty("config.address");
         username = validCredentials.getProperty("config.username");
         password = validCredentials.getProperty("config.password");
-        basicConfig = new BasicConfig();
-        basicConfig.setAddress(address);
+        config = new Config();
+        config.setAddress(address);
     }
 
     @Test
     public void validCredentialsConnectivityTest() {
         try {
-            basicConfig.connect(username, password);
+            config.connect(username, password);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -47,7 +47,7 @@ public class BasicConfigSystemTestCases {
     @Test
     public void invalidCredentialsConnectivityTest() {
         try {
-            basicConfig.connect("noUsername", "noPassword");
+            config.connect("noUsername", "noPassword");
         } catch (ConnectionException ce) {
             assertEquals(ConnectionExceptionCode.INCORRECT_CREDENTIALS, ce.getCode());
         } catch (Exception e) {
@@ -58,7 +58,7 @@ public class BasicConfigSystemTestCases {
     @Test
     public void nullCredentialsConnectivityTest() {
         try {
-            basicConfig.connect(null, null);
+            config.connect(null, null);
         } catch (ConnectionException ce) {
             assertEquals(ConnectionExceptionCode.INCORRECT_CREDENTIALS, ce.getCode());
         } catch (Exception e) {

@@ -32,6 +32,7 @@ import java.util.Map;
  *
  * @author MuleSoft, Inc.
  */
+@ReconnectOn(exceptions = {SessionExpiredException.class})
 @Connector(name = "cookbook", friendlyName = "Cookbook")
 @MetaDataScope(DataSenseResolver.class)
 public class CookbookConnector {
@@ -90,11 +91,9 @@ public class CookbookConnector {
      * @throws SessionExpiredException Exception thrown when an action is taken by a client who's session has expired.
      * @throws InvalidEntityException  Exception thrown when an wrong entity or type is mapped to the entity parameter.
      */
-    @SuppressWarnings("unchecked")
     @OAuthProtected
     @Processor
     @OnException(handler = CookbookHandler.class)
-    @ReconnectOn(exceptions = {SessionExpiredException.class})
     public Map<String, Object> create(@MetaDataKeyParam(affects = MetaDataKeyParamAffectsType.BOTH) String type, @Default("#[payload]") @RefOnly Map<String, Object> entity)
             throws InvalidEntityException, SessionExpiredException {
         ObjectMapper m = new ObjectMapper();
@@ -121,11 +120,9 @@ public class CookbookConnector {
      * @throws InvalidEntityException  Exception thrown when an wrong entity or type is mapped to the entity parameter.
      * @throws NoSuchEntityException   Exception thrown when the specified entity does not exist in the system.
      */
-    @SuppressWarnings("unchecked")
     @OAuthProtected
     @Processor
     @OnException(handler = CookbookHandler.class)
-    @ReconnectOn(exceptions = {SessionExpiredException.class})
     public Map<String, Object> update(@MetaDataKeyParam(affects = MetaDataKeyParamAffectsType.BOTH) String type, @Default("#[payload]") @RefOnly Map<String, Object> entity)
             throws InvalidEntityException, SessionExpiredException, NoSuchEntityException {
         ObjectMapper m = new ObjectMapper();
@@ -152,11 +149,9 @@ public class CookbookConnector {
      * @throws InvalidEntityException  Exception thrown when an wrong entity or type is mapped to the entity parameter.
      * @throws NoSuchEntityException   Exception thrown when the specified entity does not exist in the system.
      */
-    @SuppressWarnings("unchecked")
     @OAuthProtected
     @Processor
     @OnException(handler = CookbookHandler.class)
-    @ReconnectOn(exceptions = {SessionExpiredException.class})
     public Map<String, Object> get(@MetaDataKeyParam(affects = MetaDataKeyParamAffectsType.OUTPUT) String type, @Default("1") Integer id) throws InvalidEntityException,
             SessionExpiredException, NoSuchEntityException {
         ObjectMapper m = new ObjectMapper();
@@ -175,7 +170,6 @@ public class CookbookConnector {
     @OAuthProtected
     @Processor
     @OnException(handler = CookbookHandler.class)
-    @ReconnectOn(exceptions = {SessionExpiredException.class})
     public void delete(@Default("1") Integer id) throws NoSuchEntityException, SessionExpiredException {
         this.getConfig().getClient().delete(id);
     }
@@ -192,7 +186,6 @@ public class CookbookConnector {
      */
     @OAuthProtected
     @Processor
-    @ReconnectOn(exceptions = {SessionExpiredException.class})
     @Paged
     public ProviderAwarePagingDelegate<Map<String, Object>, CookbookConnector> queryPaginated(
             final String query, final PagingConfiguration pagingConfiguration)

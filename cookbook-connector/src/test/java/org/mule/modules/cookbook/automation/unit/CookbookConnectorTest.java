@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mule.modules.cookbook.CookbookConnector;
-import org.mule.modules.cookbook.config.BasicConfig;
+import org.mule.modules.cookbook.config.Config;
 import org.mule.streaming.PagingConfiguration;
 import org.mule.streaming.ProviderAwarePagingDelegate;
 
@@ -41,7 +41,7 @@ public class CookbookConnectorTest {
         this.connector = new CookbookConnector();
         this.randomString = String.format("qaTest%s", new Object[]{UUID.randomUUID().toString().substring(0, 7)});
 
-        BasicConfig config = new BasicConfig();
+        Config config = new Config();
         config.setClient(client);
         this.connector.setConfig(config);
     }
