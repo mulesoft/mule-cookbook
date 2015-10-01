@@ -5,15 +5,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mule.modules</groupId>
 	<artifactId>cookbook-connector</artifactId>
-	<version>6.0.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-module</packaging>
-	<name>Mule Cookbook Anypoint Connector</name>
+	<name>Anypoint Cookbook Connector</name>
 
 	<parent>
 		<groupId>org.mule.tools.devkit</groupId>
 		<artifactId>mule-devkit-parent</artifactId>
-		<version>3.7.0</version>
+		<version>3.7.1</version>
 	</parent>
+
+	<properties>
+		<category>Community</category>
+		<licensePath>LICENSE.md</licensePath>
+		<devkit.studio.package.skip>false</devkit.studio.package.skip>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -23,11 +29,6 @@
 		</dependency>
 	</dependencies>
 
-	<properties>
-		<category>Community</category>
-		<licensePath>LICENSE.md</licensePath>
-		<devkit.studio.package.skip>false</devkit.studio.package.skip>
-	</properties>
 	<repositories>
 		<repository>
 			<id>mulesoft-releases</id>
