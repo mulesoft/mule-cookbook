@@ -1,4 +1,4 @@
-## Anypoint Cookbook Connector
+## Cookbook Connector
 
 The Cookbook is a service that helps users organize ingredients and recipes, so that users can easily find recipes for the foods they like to prepare.
 
