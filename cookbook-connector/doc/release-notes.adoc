@@ -1,0 +1,54 @@
+= Cookbook Connector Release Notes
+
+Anypoint™ Connector for Cookbook Service provides the ability to save and query recipes.
+This connector is intended to help newbie's learn and develop SDK based Connectors using Devkit.
+
+== References:
+
+- System name: Cookbook Connector
+
+- Release date: XX-Oct-2015
+
+- Connector version: 1.0.0
+
+- Connector guide URL: http://www.mulesoft.org/documentation/display/current/Cookbook+Connector
+
+- Supported Mule version: 3.6.0 and higher
+
+== Cookbook Connector Release Notes
+=== XX-Oct-2015
+
+=== Contents
+
+- Compatibility
+- Features
+- Fixed in this Release
+- Known Issues
+- Support Resources
+
+Release Notes for version 1.0.0 of the Cookbook Connector. These Release Notes accompany the http://www.mulesoft.org/documentation/display/current/Cookbook+Connector[Cookbook Connector Guide].
+
+=== Compatibility
+The Cookbook Connector is compatible with:
+
+|===
+|Application/Service|Version
+|Mule Runtime|3.6.x or higher
+|Cookbook Service SDK|1.0.0
+|Java|1.7.0_x
+|Anypoint Studio|5.2 or higher
+|===
+
+=== Features
+
+- Supports OAuth 2.0 and Username/Password based Configuration.
+- Supports Query Pagination and also acts an Inbound endpoint to poll the result.
+- Supports DataSense and improved exception handling.
+
+=== Known Issues
+
+None.
+
+=== Support Resources
+
+- To learn how you can use the features provided by Devkit refer to link:http://mulesoft.github.io/mule-cookbook-tutorial/[Mule Cookbook Tutorial]

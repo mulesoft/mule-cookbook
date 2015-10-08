@@ -1,0 +1,298 @@
+= Cookbook Connector User Guide
+:keywords: anypoint studio, esb, connector, endpoint, cookbook
+:imagesdir: ./images
+
+_Community_
+
+---
+
+== Introduction
+
+The Cookbook is a service that helps users organize ingredients and recipes, so that users can easily find recipes for the foods they like to prepare.
+
+This API allows users to use the create, read, update, and delete (CRUD) operations for single & multiple recipes and ingredients. The API also allows you to view recently added recipes.
+
+=== Prerequisites
+
+This document assumes you are familiar with Mule, https://developer.mulesoft.com/docs/display/current/Anypoint+Connectors[Anypoint Connectors], and https://developer.mulesoft.com/docs/display/current/Anypoint+Studio+Essentials[Anypoint Studio Essentials]. To increase your familiarity with Studio, consider completing one or more https://developer.mulesoft.com/docs/display/current/Anypoint+Connector+Tutorial[Anypoint Studio Tutorials]. Further, this page assumes that you have a basic understanding of https://developer.mulesoft.com/docs/display/current/Elements+in+a+Mule+Flow[Mule flows] and https://developer.mulesoft.com/docs/display/current/Global+Elements[Mule Global Elements].
+
+To use the Cookbook connector, you must have the following:
+
+* **Anypoint Studio:** If you don't use Anypoint Studio for development, follow the instructions to install the PeopleSoft Maven dependencies into your pom.xml file .
+* **Cookbook Service:** You can start the cookbook service locally or can use the service endpoint exposed in CloudHub. For Authentication details refer to http://mulesoft.github.io/mule-cookbook-tutorial/#_authentication[Cookbook Authentication] section.
+
+=== Requirements
+
+For Hardware and software requirements, please visit https://www.mulesoft.com/lp/dl/mule-esb-enterprise[Mulesoft.com].
+
+=== Dependencies
+
+The connector requires the following dependencies:
+
+[options="header,autowidth"]
+|===
+|Application/Service|Version
+|Mule Runtime|3.6.x or higher
+|Cookbook SDK|1.0.0
+|Anypoint Studio|5.2 or higher
+|===
+
+== Installing and Configuring
+
+The Cookbook connector is a sample connector developed to be useful as both learning tool and a skeleton connector. The connector will guide you to develop SDK based connector's using the features provided by Anypoint Devkit framework and should not be used in Production environments.
+
+=== Installing
+
+To install Cookbook connector in Anypoint Studio, follow the steps below:
+
+* Open Anypoint Studio and got to **Help -> Install New Software**.
+* Select *Anypoint Connectors Update Site - http://repository.mulesoft.org/connectors/releases/3.5.0*.
+* Locate the Cookbook Connector.
+
+[.center.text-center]
+image:cookbook_install_updatesite.png["Anypoint Studio Install Window"]
+
+* Click *Next* and accept the License Agreement.
+* Restart Studio when prompted.
+* Now, the Cookbook connector should appear in your Studio Palette: +
+
+[.center.text-center]
+image:cookbook_install_palette.png["Anypoint Studio palette - Cookbook Connector"]
+
+
+NOTE: Read more about http://www.mulesoft.org/documentation/display/current/Installing+Connectors[Installing Connectors].
+
+=== Configuring
+
+To use the Cookbook connector in your Mule application, you must configure a global Cookbook element that can be used by all the Cookbook connectors in the application.
+
+NOTE: Read more about https://developer.mulesoft.com/docs/display/current/Global+Elements[Global Elements].
+
+==== Setting up the Global Configuration
+
+---
+===== Studio Visual Editor
+---
+
+* Click the **Global Elements** tab at the base of the canvas.
+* On the **Global Mule Configuration Elements** screen, click **Create**.
+* In the **Choose Global Type** wizard, expand **Connector Configuration**. You can select either of the Connector Configurations provided by the connector and click **Ok.**
+
+[.center.text-center]
+image:cookbook_config_global_wizard.png["Global Element Configuration Wizard"]
+
+* For **Cookbook: Configuration:** Configure the parameters according to instructions below.
+
+[.center.text-center]
+image:cookbook_config_global.png["Global Element Configuration"]
+
+[options="header,autowidth"]
+|===
+|Field|Description
+|`Username`|Enter the username to connect to the Cookbook instance.
+|`Password`|Enter the password to connect to the Cookbook instance.
+|`Address`| Enter the SOAP endpoint of your local cookbook service or use the default to connect to the cloudhub instance.
+|===
+
+* For **Cookbook: OAuth 2.0:** Configure the parameters according to instructions below.
+
+[.center.text-center]
+image:cookbook_oauth_global.png["Global Element Configuration"]
+
+[options="header,autowidth"]
+|===
+|Field|Description| Example
+|`Consumer Key`|Enter the consumer key to connect to the Cookbook instance.|
+|`Consumer Secret`|Enter the consumer secret to connect to the Cookbook instance.|
+3+|Oauth Tab
+|`Domain`| Enter the domain for returning call after Oauth Dance.| **localhost**
+|`Local Port`| Enter the port for the call back.| **8081**
+|`Remort Port`| Enter the port for the call back.| **8081**
+|`Path`| Enter the path for the call back.| **callback**
+|===
+
+*  Keep the *Pooling Profile* and the *Reconnection  tabs* with their default entries.
+* Click *Test Connection* to confirm that the parameters of your global configuration are accurate, and that Mule is able to successfully connect to your cookbook instance.
+
+NOTE: Read more about http://www.mulesoft.org/documentation/display/current/Testing+Connections[Testing Connections].
+
+* Click *OK* to save the global connector configurations.
+
+---
+===== Studio XML Editor
+---
+
+* Ensure you have included the **Cookbook namespace** in your configuration file.
+```xml
+<mule xmlns:cookbook="http://www.mulesoft.org/schema/mule/cookbook" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/cookbook http://www.mulesoft.org/schema/mule/cookbook/current/mule-cookbook.xsd">
+    <!-- use the following global configuration code to create the cookbook config -->
+
+    <cookbook:config name="Cookbook__Configuration" username="${mule.cookbook.username}" password="${mule.cookbook.password}" doc:name="Cookbook: Configuration"/>
+
+    <!-- here go your flow elements -->
+</mule>
+```
+* Save the changes made to the XML file.
+
+== Using This Connector
+The Cookbook connector is an operation-based connector, which mean that when you add the connector to you flow, you need to configure a specific operation the connector is intended to perform.
+The Connector supports the following operations.
+
+**Message Processors**
+
+* Create
+* Get
+* Update
+* Delete
+* QueryPaginated
+* GetRecentlyAdded
+
+**Message Sources**
+
+* GetRecentlyAddedSource
+
+**Transformers**
+
+* RecipesToMaps
+* RecipeToMap
+
+=== Adding to a Flow
+* Create a new *Mule Project* in Anypoint Studio.
+* Add a suitable Mule *Inbound Endpoint*, such as the HTTP listener or File endpoint, to begin the flow.
+* Drag & drop the *Cookbook Connector* onto the canvas.
+* Click on the connector component to open the *Properties Editor*.
+
+[.center.text-center]
+image:cookbook_usecase_settings.png[Flow Settings]
+
+* Configure the following parameters:
+
+[options="header,autowidth"]
+|===
+|Field|Description
+|`Display Name`|Enter a unique label for the connector in your application.
+2+|`*BASIC SETTINGS*`
+|`Connector Configuration`|Connect to a global element linked to this connector. Global elements encapsulate reusable data about the connection to the target resource or service. Select the global Cookbook connector element that you just created.
+|`Operation`|Select `*Create*` from the drop-down menu.
+2+|`*GENERAL*`
+|`Type`|Select the type of the entity you want to work with. If you have provided the credentials earlier, the connector would automatically fetch the metadata.
+|`Entity Reference`|Provide the entity object that you would like to create.
+|===
+
+* Click the blank space on the canvas to save your configurations.
+
+=== Use Cases and Demos
+The most common use cases for the Cookbook connector are listed below:
+
+[options="autowidth"]
+|===
+|`*CRUD*`|Create, Get, Update, and Delete the recipes and ingredients from the repository.
+|`*Get Recently Added*`|Retrieves the complete recipe along with ingredients, and directions to prepare the recipe of a recently added, if exists in the repository.
+|===
+
+== Example Use Case
+
+Retrieve recently added recipe from the repository.
+
+[.center.text-center]
+image:cookbook_usecase_flow.png[Get recently added recipe flow]
+
+=== Anypoint Studio Visual Editor | XML Editor
+
+* Create a new **Mule Project** in Anypoint Studio.
+* Edit the `**mule-app.properties**` file placed under `**src\main\app**` folder to hold your Cookbook credentials.
+
+```
+mule.cookbook.username=<USERNAME>
+mule.cookbook.password=<PASSWORD>
+```
+* Drag a **HTTP endpoint** into the canvas and configure the following parameters:
+
+[options="header,autowidth"]
+|===
+|Parameter|Value
+|`Display Name`|/HTTP
+|`Connector Configuration`| If no HTTP element has been created yet, click the plus sign to add a new **HTTP Listener Configuration** and click **OK** (leave the values to its defaults).
+|`Path`|/getrecentlyadded
+|`Username`|`${mule.cookbook.username}`
+|`Password`|`${mule.cookbook.password}`
+|===
+
+TIP: Username and Password use property **placeholder syntax** to load the credentials in a more simple and reusable way. Read more about this practice at https://developer.mulesoft.com/docs/display/current/Configuring+Properties[Configuring Properties].
+
+* Drag the **Cookbook connector** next to the HTTP and configure it according to the steps below:
+** Select the **Cookbook Global Element** that you have previously created.
+
+```xml
+<cookbook:config name="Cookbook__Configuration" username="${mule.cookbook.username}" password="${mule.cookbook.password}" doc:name="Cookbook: Configuration"/>
+```
+** Back in the properties editor of the Cookbook connector, configure the remaining parameters:
+
+[options="header,autowidth"]
+|===
+|Parameter|Value
+|`Display Name`|Get Recently added Recipe (or any other name you prefer).
+|`Connector Configuration`|Cookbook__Configuration (the reference name to the global element you have previously created).
+|`Operation`|Get recently added
+|===
+
+Then, your XML should look like:
+
+[width="50%"]
+```xml
+<cookbook:get-recently-added config-ref="Cookbook__Configuration" doc:name="Get Recently added Recipe"/>
+```
+* Add a **Object to XML transformer** to display the response in the browser.
+* Add a **Logger** scope after the XML transformer to print the data that is being passed by the Cookbook connector in the Mule Console. Configure the Logger according to the table below.
+
+[options="header,autowidth"]
+|===
+|Parameter|Value
+|`Display Name`|Employee List (or any other name you prefer)
+|`Message`|`#[payload]` (the output from DataWeave)
+|`Level`|INFO
+|===
+
+* Save and **run** the project as a Mule Application.
+* Open a web browser and hit the URL `**http://localhost:8081/getrecentlyadded**`. If your Cookbook repository has any recently added recipe, the you should see the XML with the recipe, Otherwise empty.
+
+
+=== Code Example
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:cookbook="http://www.mulesoft.org/schema/mule/cookbook" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/cookbook http://www.mulesoft.org/schema/mule/cookbook/current/mule-cookbook.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd">
+    <cookbook:config name="Cookbook__Configuration" username="${mule.cookbook.username}" password="${mule.cookbook.password}" doc:name="Cookbook: Configuration"/>
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+    <flow name="cookbook-exampleFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
+        <cookbook:get-recently-added config-ref="Cookbook__Configuration" doc:name="Get Recently added Recipe"/>
+        <mulexml:object-to-xml-transformer doc:name="Map<String, Recipe> to XML"/>
+        <logger message="#[payload]" level="INFO" doc:name="Log the recipe"/>
+    </flow>
+</mule>
+
+```
+
+=== Demo
+
+You can download a fully working example from http://mulesoft.github.io/cookbook-connector/[here]
+
+=== See Also
+
+* For additional technical information regarding Cookbook Connector and Devkit features, please visit our http://mulesoft.github.io/mule-cookbook-tutorial/[Devkit Tutorial]
+* Learn more about working with http://www.mulesoft.org/documentation/display/current/Anypoint+Connectors[Anypoint Connectors].
+* Learn how to use http://www.mulesoft.org/documentation/display/current/Using+Transformers[Mule Transformers].
