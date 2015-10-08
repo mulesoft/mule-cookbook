@@ -46,9 +46,9 @@ cookbook.password=<PASSWORD>
 
 ## About the flows
 
-** Cookbook-CRUD-Flow:**
+**Cookbook-CRUD-Flow:**
 
-![Flow Create](images/cookbook_flow.png)
+![CRUD Workflow](images/cookbook_flow.png)
 
 1. Creates a recipe to prepare an Omelette, Using the OmeletteRecipe Java Component we create the Recipe object along with the ingredients and the directions related to the recipe. **Recipe to Map transformer** is used to transform the Recipe object to a Map which forms the input to the cookbook connector's **create** operation.
 2. We perform an **update** operation to update the preparation time attribute of the recipe that we have created and stored earlier in the cookbook repository.
@@ -61,4 +61,4 @@ cookbook.password=<PASSWORD>
 * Click the link **"Cookbook CRUD Workflow"**.
 * There is no user input for this demo. A sample recipe is considered as an input via the Java Component placed at the starting of the flow. To view or edit the recipe, refer to **OmletteRecipe** class located at **src/main/java/org/mule/cookbook**
 * Click the **"Execute Workflow"** button and wait until the operation finishes processing.
-* A pop-up message will indicate if the operation was successful or not.
+* If the operation is successful, the recipe result would be shown in JSON format or else an alert popup stating the error.
