@@ -48,7 +48,7 @@ cookbook.password=<PASSWORD>
 
 **Cookbook-CRUD-Flow:**
 
-![CRUD Workflow](images/cookbook_flow.png)
+![CRUD Workflow](images/cookbook_workflow.png)
 
 1. Creates a recipe to prepare an Omelette, Using the OmeletteRecipe Java Component we create the Recipe object along with the ingredients and the directions related to the recipe. **Recipe to Map transformer** is used to transform the Recipe object to a Map which forms the input to the cookbook connector's **create** operation.
 2. We perform an **update** operation to update the preparation time attribute of the recipe that we have created and stored earlier in the cookbook repository.
