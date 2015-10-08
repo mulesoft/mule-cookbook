@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper"
+	xmlns:cookbook="http://www.mulesoft.org/schema/mule/cookbook"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:json="http://www.mulesoft.org/schema/mule/json"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.6.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/cookbook http://www.mulesoft.org/schema/mule/cookbook/current/mule-cookbook.xsd
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd">
+	<http:listener-config name="HTTP_Listener_Configuration"
+		host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration" />
+	<cookbook:config name="Cookbook__Configuration"
+		username="${cookbook.username}" password="${cookbook.password}"
+		doc:name="Cookbook: Configuration" />
+<flow name="mule-demo-cookbookFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/" doc:name="HTTP"/>
+        <parse-template location="src/main/resources/form.html" doc:name="Parse Template"/>
+        <set-property propertyName="Content-Type" value="text/html" doc:name="Property"/>
+    </flow>
+	<flow name="Cookbook-CRUD-Flow">
+		<http:listener config-ref="HTTP_Listener_Configuration"
+			path="/recipe" doc:name="HTTP" />
+		<component doc:name="Omelette Recipe " class="org.mule.cookbook.OmletteRecipe">
+		</component>
+		<cookbook:recipe-to-map doc:name="Recipe to Map" />
+		<cookbook:create config-ref="Cookbook__Configuration"
+			type="com.cookbook.tutorial.service.Recipe#0" doc:name="Add Omelette Recipe" />
+		<logger message="Recipe Added Successfully : ID - #[payload.id]"
+			level="INFO" doc:name="Log ID of Recipe" />
+		<set-variable variableName="recipeId" value="#[payload.id]"
+			doc:name="Store Recipe ID" />
+		<component doc:name="Add PrepTime to Recipe" class="org.mule.cookbook.UpdatedRecipe">
+		</component>
+		<cookbook:update config-ref="Cookbook__Configuration"
+			type="com.cookbook.tutorial.service.Recipe#0" doc:name="Update Omelette Recipe" />
+        <json:object-to-json-transformer doc:name="Omletter Recipe to JSON"/>
+        <logger message="Updated Recipe with PrepTime: #[payload]" level="INFO" doc:name="Log Updated Recipe"/>
+		<cookbook:get config-ref="Cookbook__Configuration"
+			doc:name="Get Omelette Recipe" id="#[flowVars.recipeId]"
+			type="com.cookbook.tutorial.service.Recipe#0" />
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+        <logger message="Getting recently updated recipe, Result will be displayed in browser" level="INFO" doc:name="Log Final Recipe"/>
+		<cookbook:delete config-ref="Cookbook__Configuration"
+			id="#[flowVars.recipeId]" doc:name="Delete Omelette Recipe" />
+        <logger message="Successfully delete the Omelette Recipe with ID : #[flowVars.recipeId]" level="INFO" doc:name="Flow Completed"/>
+	</flow>
+</mule>

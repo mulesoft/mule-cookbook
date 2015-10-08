@@ -43,4 +43,24 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>mulesoft-releases</id>
+			<name>MuleSoft Repository</name>
+			<url>http://repository-master.mulesoft.org/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>mulesoft-snapshots</id>
+			<name>MuleSoft Snapshot Repository</name>
+			<url>http://repository-master.mulesoft.org/snapshots/</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:git:git://github.com:mulesoft/cookbook-connector.git</connection>
+		<developerConnection>scm:git:git@github.com:mulesoft/cookbook-connector.git</developerConnection>
+		<url>http://github.com/mulesoft/cookbook-connector</url>
+	</scm>
 </project>

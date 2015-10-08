@@ -1,0 +1,118 @@
+<!--
+
+    (c) 2003-2015 MuleSoft, Inc. The software in this package is
+    published under the terms of the CPAL v1.0 license, a copy of which
+    has been included with this distribution in the LICENSE.md file.
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- JQuery will be required for this demo -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+    <!-- Import Twitter bootstrap libs + css -->
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.js"></script>
+</head>
+<body>
+<!-- Keep this simple ... define CSS for this simple webpage in the same file -->
+<style>
+    body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+    }
+    .demo-form {
+    max-width: 500px;
+    padding: 15px;
+    margin: 0 auto;
+    }
+    .demo-form .demo-heading,
+    .demo-form .checkbox {
+    margin-bottom: 10px;
+    }
+    .demo-form .checkbox {
+    font-weight: normal;
+    }
+    .demo-form .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+    }
+    .demo-form .form-control:focus {
+    z-index: 2;
+    }
+    input[type="radio"] {
+    margin-right: 15px;
+    }
+
+</style>
+<script type="text/javascript">
+
+		$(document).ready( function() {
+
+			var createDiv 	= $('#createDiv');
+
+			var createForm 	= $('#createForm');
+
+			var btn = null;
+
+			$('button').click(function(){
+				btn = $(this);
+				btn.button('loading');	// Triggers the loading spinner for every button that is clicked
+			});
+
+            createForm.submit(function() {
+				$.ajax({
+	                type: 'GET',							  // Submit an HTTP GET request
+	                url: '/recipe',							  // The URL where your endpoint is listening
+	                data: createForm.serialize(),			  // Serialized form URL-encoded input
+	                success: function(data) {				  // Success function called if request succeeds
+
+	                  	$("div.panel-body").html("<b>Final Result: </b> <br>" + JSON.stringify(data));
+
+	                },
+	                error: function(request, status, error){  // Error function is executed if an exception occurs in the flow
+	                	alert('Could not process the operation. Please, try again: ' + error);			  // Alert the user of any errors
+	              	}
+              }).always(function () {
+                    btn.button('reset');
+              });
+              return false;								  // Let jQuery handle the form submission
+	        });
+
+
+        });
+
+
+</script>
+<div class="container">
+    <h4>Workflow Name: Cookbook-CRUD-Flow</h4>
+    <hr>
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title demo-heading">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#createDiv">Create Update Get Delete Workflow</a>
+                </h2>
+            </div>
+            <div id="createDiv" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <form id="createForm" class="demo-form" role="form">
+                        <button type="submit" class="btn btn-lg btn-primary btn-block"
+                                data-loading-text="<img src='http://i.giphy.com/lijuimVKUcwRa.gif' height=16 width=16 /> Processing...">Execute Workflow
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

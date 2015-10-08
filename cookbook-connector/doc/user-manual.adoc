@@ -1,14 +1,16 @@
 = Cookbook Connector User Guide
+:keywords: anypoint studio, esb, connector, endpoint, cookbook
+:imagesdir: ./images
 
-The Cookbook is a service that helps users organize ingredients and recipes, so that users can easily find recipes for the foods they like to prepare.
-
-This API allows users to use the create, read, update, and delete (CRUD) operations for single & multiple recipes and ingredients. The API also allows you to view recently added recipes.
+_Community_
 
 ---
 
 == Introduction
 
-The Cookbook connector uses a real time cookbook service to showcases the features provided by Devkit for developing connectors that are SDK based.
+The Cookbook is a service that helps users organize ingredients and recipes, so that users can easily find recipes for the foods they like to prepare.
+
+This API allows users to use the create, read, update, and delete (CRUD) operations for single & multiple recipes and ingredients. The API also allows you to view recently added recipes.
 
 === Prerequisites
 
@@ -37,7 +39,7 @@ The connector requires the following dependencies:
 
 == Installing and Configuring
 
-The Cookbook connector is a sample connector intented to be useful as both learning tool and a skeletion connector. The connector will guide you to develop SDK based connector's using the features provided by Anypoint Devkit framework and should not be used in Production environments.
+The Cookbook connector is a sample connector developed to be useful as both learning tool and a skeleton connector. The connector will guide you to develop SDK based connector's using the features provided by Anypoint Devkit framework and should not be used in Production environments.
 
 === Installing
 
@@ -48,14 +50,14 @@ To install Cookbook connector in Anypoint Studio, follow the steps below:
 * Locate the Cookbook Connector.
 
 [.center.text-center]
-image:images/cookbook_install_updatesite.png["Anypoint Studio Install Window"]
+image:cookbook_install_updatesite.png["Anypoint Studio Install Window"]
 
 * Click *Next* and accept the License Agreement.
 * Restart Studio when prompted.
 * Now, the Cookbook connector should appear in your Studio Palette: +
 
 [.center.text-center]
-image:images/cookbook_install_palette.png["Anypoint Studio palette - Cookbook Connector"]
+image:cookbook_install_palette.png["Anypoint Studio palette - Cookbook Connector"]
 
 
 NOTE: Read more about http://www.mulesoft.org/documentation/display/current/Installing+Connectors[Installing Connectors].
@@ -77,12 +79,12 @@ NOTE: Read more about https://developer.mulesoft.com/docs/display/current/Global
 * In the **Choose Global Type** wizard, expand **Connector Configuration**. You can select either of the Connector Configurations provided by the connector and click **Ok.**
 
 [.center.text-center]
-image:images/cookbook_config_global_wizard.png["Global Element Configuration Wizard"]
+image:cookbook_config_global_wizard.png["Global Element Configuration Wizard"]
 
 * For **Cookbook: Configuration:** Configure the parameters according to instructions below.
 
 [.center.text-center]
-image:images/cookbook_config_global.png["Global Element Configuration"]
+image:cookbook_config_global.png["Global Element Configuration"]
 
 [options="header,autowidth"]
 |===
@@ -95,7 +97,7 @@ image:images/cookbook_config_global.png["Global Element Configuration"]
 * For **Cookbook: OAuth 2.0:** Configure the parameters according to instructions below.
 
 [.center.text-center]
-image:images/cookbook_oauth_global.png["Global Element Configuration"]
+image:cookbook_oauth_global.png["Global Element Configuration"]
 
 [options="header,autowidth"]
 |===
@@ -166,7 +168,7 @@ The Connector supports the following operations.
 * Click on the connector component to open the *Properties Editor*.
 
 [.center.text-center]
-image:images/cookbook_usecase_settings.png[Flow Settings]
+image:cookbook_usecase_settings.png[Flow Settings]
 
 * Configure the following parameters:
 
@@ -198,7 +200,7 @@ The most common use cases for the Cookbook connector are listed below:
 Retrieve recently added recipe from the repository.
 
 [.center.text-center]
-image:images/cookbook_usecase_flow.png[Get recently added recipe flow]
+image:cookbook_usecase_flow.png[Get recently added recipe flow]
 
 === Anypoint Studio Visual Editor | XML Editor
 
