@@ -1,7 +1,9 @@
 = Mule Cookbook Tutorial
 
-A basic web service that helps you learn the features of Anypoint DevKit and guides you through the steps to your becoming a proficient Anypoint Connector developer.
+This is a tutorial illustrating a basic web service to help you learn the features of Anypoint DevKit.
 
-This project contains a model as well as the client interfaces for developing SOAP, REST and Java client-based Anypoint Connectors.
+Follow the tutorial and build incrementally toward full proficiency in the development of Anypoint Connectors.
 
-Also a basic server implementation is provided for you to test the connectors. For documentation: http://mulesoft.github.io/mule-cookbook-tutorial/
+You have at your disposal a model as well as the client interfaces for developing SOAP, REST and Java client-based Anypoint Connectors.
+
+Additionally, a basic server implementation is provided so you can test your connectors. For documentation: http://mulesoft.github.io/mule-cookbook-tutorial/
