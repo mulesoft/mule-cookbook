@@ -7,9 +7,13 @@
     <parent>
         <groupId>org.mule.modules</groupId>
         <artifactId>mule-cookbook</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <properties>
+        <mule.cookbook.version>1.0.0</mule.cookbook.version>
+    </properties>
 
     <build>
         <plugins>
@@ -107,7 +111,7 @@
         <dependency>
             <artifactId>soap-server</artifactId>
             <groupId>org.mule.modules</groupId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${mule.cookbook.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
